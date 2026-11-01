@@ -1,0 +1,398 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Muriel Queiroz dos Santos</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Site profissional de Muriel Queiroz dos Santos: experiência administrativa, financeira e de departamento pessoal em Salvador, Bahia.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: ficha cadastral — rótulos em coluna estreita à esquerda, conteúdo à direita; linha do tempo com datas em fonte de registro */
+:root {
+  --bg: #f5f7f6;
+  --surface: #ffffff;
+  --ink: #15292b;
+  --muted: #536466;
+  --line: #d6dfdd;
+  --accent: #1f6b57;
+  --accent-soft: #e2efe9;
+  --ai: #8a5a12;
+  --ai-soft: #f7ecd9;
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1a1b; --surface: #152324; --ink: #e6eeec; --muted: #9db0ad;
+    --line: #2a3b3c; --accent: #6cc3a6; --accent-soft: #1b3330;
+    --ai: #e5b267; --ai-soft: #2e2618; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1a1b; --surface: #152324; --ink: #e6eeec; --muted: #9db0ad;
+  --line: #2a3b3c; --accent: #6cc3a6; --accent-soft: #1b3330;
+  --ai: #e5b267; --ai-soft: #2e2618; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--f-body); font-size: 1.0625rem; line-height: 1.6;
+}
+.wrap {
+  max-width: 1040px; margin: 0 auto;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+h1, h2, h3 { font-family: var(--f-display); line-height: 1.15; text-wrap: balance; margin: 0; }
+
+/* Cabeçalho fixo */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.topbar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9;
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(8px); border-bottom: 1px solid var(--line);
+}
+.topbar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; }
+.brand { font-family: var(--f-display); font-weight: 700; color: var(--ink); text-decoration: none; font-size: 1.05rem; white-space: nowrap; }
+.brand span { color: var(--accent); }
+.nav { display: flex; gap: 4px 18px; flex-wrap: wrap; justify-content: flex-end; }
+.nav a { color: var(--muted); text-decoration: none; font-size: .95rem; font-weight: 600; }
+.nav a:hover { color: var(--accent); }
+@media (max-width: 720px) { .nav .opt { display: none; } }
+@media (max-width: 420px) { .brand { display: none; } .topbar .wrap { justify-content: center; } }
+
+/* Abertura */
+.hero { padding-block: 64px 48px; }
+.hero-grid { display: grid; grid-template-columns: 1.35fr 1fr; gap: 40px; align-items: end; }
+.eyebrow { font-family: var(--f-mono); font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0 0 14px; }
+.hero h1 { font-size: clamp(2.4rem, 6.5vw, 4.2rem); font-weight: 700; letter-spacing: -.02em; }
+.hero h1 .last { color: var(--accent); display: block; }
+.lede { font-size: 1.2rem; color: var(--muted); max-width: 34ch; margin: 20px 0 28px; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px;
+  border-radius: 8px; font-weight: 600; text-decoration: none; font-size: 1rem;
+  border: 1px solid var(--accent); font-family: var(--f-body); cursor: pointer;
+}
+.btn.primary { background: var(--accent); color: var(--bg); }
+.btn.ghost { background: transparent; color: var(--accent); }
+.btn:hover { filter: brightness(1.08); }
+
+.ficha { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px 22px; }
+.ficha-title { font-family: var(--f-mono); font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0 0 12px; padding-bottom: 10px; border-bottom: 1px dashed var(--line); }
+.ficha dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 10px 16px; }
+.ficha dt { font-family: var(--f-mono); font-size: .8rem; color: var(--muted); padding-top: 2px; }
+.ficha dd { margin: 0; font-weight: 600; min-width: 0; }
+
+/* Seções */
+section.block { padding-block: 56px; border-top: 1px solid var(--line); }
+.sec { display: grid; grid-template-columns: 200px 1fr; gap: 32px; }
+.sec > * { min-width: 0; }
+.sec-label { font-family: var(--f-mono); font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding-top: 8px; }
+.sec h2 { font-size: clamp(1.6rem, 3.4vw, 2.1rem); margin-bottom: 18px; }
+.prose p { max-width: 65ch; margin: 0 0 14px; }
+@media (max-width: 760px) {
+  .hero-grid, .sec { grid-template-columns: 1fr; gap: 20px; }
+  .hero { padding-block: 40px 36px; }
+  .sec-label { padding-top: 0; }
+}
+
+/* Linha do tempo */
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.job { display: grid; grid-template-columns: 150px 1fr; gap: 24px; padding: 22px 0; border-bottom: 1px solid var(--line); }
+.job:first-child { padding-top: 4px; }
+.job:last-child { border-bottom: 0; }
+.job > * { min-width: 0; }
+.when { font-family: var(--f-mono); font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; line-height: 1.5; }
+.when .now { display: inline-block; margin-top: 6px; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); padding: 2px 8px; border-radius: 99px; }
+.job h3 { font-size: 1.2rem; }
+.org { color: var(--muted); margin: 2px 0 10px; font-weight: 600; }
+.job p { margin: 0 0 10px; max-width: 62ch; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.tags li { font-family: var(--f-mono); font-size: .78rem; padding: 3px 9px; border: 1px solid var(--line); border-radius: 6px; color: var(--ink); background: var(--surface); }
+@media (max-width: 560px) { .job { grid-template-columns: 1fr; gap: 6px; } }
+
+/* Projetos */
+.projects { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+@media (max-width: 960px) { .projects { grid-template-columns: 1fr; } }
+.project { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 22px; display: flex; flex-direction: column; gap: 14px; }
+.p-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.p-year { font-family: var(--f-mono); font-size: .8rem; color: var(--muted); }
+.badge-ai { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .04em; color: var(--ai); background: var(--ai-soft); padding: 3px 9px; border-radius: 99px; font-weight: 500; }
+.project h3 { font-size: 1.3rem; }
+.p-where { color: var(--muted); font-size: .95rem; margin: -8px 0 0; }
+.project dl { margin: 0; display: grid; gap: 12px; }
+.project dt { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.project dd { margin: 2px 0 0; font-size: 1rem; }
+.note { margin-top: 18px; color: var(--muted); font-size: .95rem; max-width: 65ch; }
+
+/* Competências */
+.skills { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px 32px; }
+@media (max-width: 640px) { .skills { grid-template-columns: 1fr; } }
+.skills h3 { font-size: 1.05rem; margin-bottom: 10px; }
+
+/* Formação e cursos */
+.edu { background: var(--accent-soft); border-radius: 10px; padding: 20px 22px; margin-bottom: 28px; }
+.edu h3 { font-size: 1.2rem; }
+.edu p { margin: 4px 0 0; }
+.courses { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+.course { display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+.course:last-child { border-bottom: 0; padding-bottom: 0; }
+.course > * { min-width: 0; }
+.course h3 { font-size: 1.08rem; }
+.course .hrs { font-family: var(--f-mono); font-size: .85rem; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.course p { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: .98rem; }
+.lang { margin-top: 28px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; }
+.lang strong { font-family: var(--f-display); }
+
+/* Contato */
+.contact-card { background: var(--ink); color: var(--bg); border-radius: 12px; padding: 32px; display: grid; gap: 16px; }
+.contact-card h2 { color: var(--bg); margin: 0; }
+.contact-card p { margin: 0; max-width: 55ch; opacity: .85; }
+.mail-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.mail { font-family: var(--f-mono); font-size: clamp(1rem, 3.6vw, 1.25rem); user-select: all; word-break: break-all; }
+.contact-card .btn { border-color: var(--bg); }
+.contact-card .btn.primary { background: var(--bg); color: var(--ink); }
+.contact-card .btn.ghost { color: var(--bg); }
+.contact-card a:focus-visible, .contact-card button:focus-visible { outline-color: var(--bg); }
+.copied { font-size: .9rem; min-height: 1.4em; }
+
+footer { padding-block: 32px 48px; color: var(--muted); font-size: .9rem; }
+</style>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#inicio">Muriel <span>Queiroz</span></a>
+    <nav class="nav" aria-label="Seções do site">
+      <a class="opt" href="#sobre">Sobre</a>
+      <a href="#experiencia">Experiência</a>
+      <a href="#projetos">Projetos</a>
+      <a class="opt" href="#formacao">Formação</a>
+      <a href="#contato">Contato</a>
+    </nav>
+  </div>
+</header>
+
+<main id="inicio">
+  <div class="wrap hero">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow">Administrativo · Financeiro · Departamento Pessoal</p>
+        <h1>Muriel Queiroz <span class="last">dos Santos</span></h1>
+        <p class="lede">Estudante de Administração em Salvador, com experiência prática em rotinas financeiras, departamento pessoal e organização de processos.</p>
+        <div class="actions">
+          <a class="btn primary" href="#projetos">Ver projetos</a>
+          <a class="btn ghost" href="#experiencia">Experiência</a>
+          <a class="btn ghost" href="#contato">Contato</a>
+        </div>
+      </div>
+      <aside class="ficha" aria-label="Resumo">
+        <p class="ficha-title">Ficha resumida</p>
+        <dl>
+          <dt>Cargo atual</dt><dd>Estagiário Administrativo-Financeiro</dd>
+          <dt>Empresa</dt><dd>Grupo Alves da Cunha</dd>
+          <dt>Formação</dt><dd>Administração · UNIFTC (previsão 2028)</dd>
+          <dt>Local</dt><dd>Salvador, Bahia</dd>
+          <dt>Sistemas</dt><dd>TOTVS RM, Bimer, Alterdata, e-Contador</dd>
+        </dl>
+      </aside>
+    </div>
+  </div>
+
+  <section class="block" id="sobre">
+    <div class="wrap sec">
+      <div class="sec-label">Sobre mim</div>
+      <div class="prose">
+        <h2>Da rotina administrativa ao financeiro</h2>
+        <p>Sou estudante de Administração e tenho experiência nas áreas administrativa, financeira e de departamento pessoal. Comecei como Jovem Aprendiz no Grupo Alves da Cunha e hoje atuo como Estagiário Administrativo-Financeiro na mesma empresa.</p>
+        <p>No dia a dia, trabalho com contas a pagar e a receber, notas fiscais, faturamento, conciliação e controle de fundo fixo. Antes, no departamento pessoal, cuidei de admissões, benefícios e documentação trabalhista. Gosto de organizar processos e, com apoio de inteligência artificial, criei aplicativos internos que hoje ajudam as equipes do financeiro e do DP.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="experiencia">
+    <div class="wrap sec">
+      <div class="sec-label">Experiência profissional</div>
+      <div>
+        <h2>Trajetória no Grupo Alves da Cunha</h2>
+        <ol class="timeline">
+          <li class="job">
+            <div class="when">jan/2026 – atual<br><span class="now">Cargo atual</span></div>
+            <div>
+              <h3>Estagiário Administrativo-Financeiro</h3>
+              <p class="org">Grupo Alves da Cunha</p>
+              <p>Análise e lançamento de notas fiscais, contas a pagar e a receber, preparação de remessas bancárias, faturamento, baixa de títulos, conciliação financeira, controle de fundo fixo e elaboração de planilhas. Também criei, com apoio de inteligência artificial, os aplicativos internos DocControl e Fluxo Financeiro.</p>
+              <ul class="tags"><li>TOTVS RM</li><li>Bimer</li><li>Excel</li></ul>
+            </div>
+          </li>
+          <li class="job">
+            <div class="when">jun/2025 – dez/2025</div>
+            <div>
+              <h3>Estagiário Administrativo — Departamento Pessoal</h3>
+              <p class="org">Grupo Alves da Cunha</p>
+              <p>Cadastro e admissão de funcionários, lançamento de ASO, vale-transporte e vale-alimentação, organização e digitalização de documentos pessoais, trabalhistas e judiciais e atualização de planilhas.</p>
+              <ul class="tags"><li>Alterdata</li><li>e-Contador</li></ul>
+            </div>
+          </li>
+          <li class="job">
+            <div class="when">fev/2024 – abr/2025</div>
+            <div>
+              <h3>Auxiliar Administrativo — Jovem Aprendiz</h3>
+              <p class="org">Grupo Alves da Cunha</p>
+              <p>Lançamento de dados de funcionários e benefícios, digitalização e conferência de notas fiscais, organização de documentos físicos e digitais e elaboração de planilhas e documentos.</p>
+              <ul class="tags"><li>e-Contador</li><li>Excel</li><li>Word</li></ul>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="projetos">
+    <div class="wrap">
+      <div class="sec" style="margin-bottom:24px">
+        <div class="sec-label">Projetos</div>
+        <div class="prose">
+          <h2>Soluções para o dia a dia das equipes</h2>
+          <p>Dois aplicativos internos criados com apoio de inteligência artificial e um projeto acadêmico em equipe.</p>
+        </div>
+      </div>
+      <div class="projects">
+        <article class="project">
+          <div class="p-meta"><span class="p-year">2026</span><span class="badge-ai">Criado com apoio de IA</span></div>
+          <h3>DocControl</h3>
+          <p class="p-where">Grupo Alves da Cunha</p>
+          <dl>
+            <div><dt>Objetivo</dt><dd>Controlar os documentos de cada funcionário em um aplicativo web.</dd></div>
+            <div><dt>Minha contribuição</dt><dd>Criei o aplicativo com apoio de inteligência artificial. Ele é usado pelas equipes financeira e de departamento pessoal.</dd></div>
+            <div><dt>Resultado</dt><dd>Economia de tempo, menos erros e um processo documental mais organizado.</dd></div>
+          </dl>
+        </article>
+        <article class="project">
+          <div class="p-meta"><span class="p-year">2026</span><span class="badge-ai">Criado com apoio de IA</span></div>
+          <h3>Fluxo Financeiro</h3>
+          <p class="p-where">Grupo Alves da Cunha</p>
+          <dl>
+            <div><dt>Objetivo</dt><dd>Organizar as atividades diárias do setor financeiro.</dd></div>
+            <div><dt>Minha contribuição</dt><dd>Criei o aplicativo web com apoio de inteligência artificial.</dd></div>
+            <div><dt>Resultado</dt><dd>Acompanhamento da produção prevista para cada dia do setor financeiro.</dd></div>
+          </dl>
+        </article>
+        <article class="project">
+          <div class="p-meta"><span class="p-year">2025</span><span class="badge-ai">Equipe com apoio de IA</span></div>
+          <h3>Código de Ética e Conduta</h3>
+          <p class="p-where">UNIFTC · para Cavalcante Diniz Contabilidade</p>
+          <dl>
+            <div><dt>Objetivo</dt><dd>Elaborar um código de ética e conduta para a empresa Cavalcante Diniz Contabilidade.</dd></div>
+            <div><dt>Minha contribuição</dt><dd>Liderei a equipe e fiquei responsável pelo contato com a empresa e pela coleta de informações.</dd></div>
+            <div><dt>Resultado</dt><dd>Código elaborado pela equipe, que usou inteligência artificial como apoio.</dd></div>
+          </dl>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="competencias">
+    <div class="wrap sec">
+      <div class="sec-label">Conhecimentos</div>
+      <div>
+        <h2>O que trago para a equipe</h2>
+        <div class="skills">
+          <div>
+            <h3>Financeiro</h3>
+            <ul class="tags"><li>Contas a pagar</li><li>Contas a receber</li><li>Faturamento</li><li>Conciliação</li><li>Baixa de títulos</li><li>Remessa bancária</li><li>Fundo fixo</li><li>Notas fiscais</li></ul>
+          </div>
+          <div>
+            <h3>Departamento pessoal</h3>
+            <ul class="tags"><li>Admissão</li><li>ASO</li><li>Benefícios</li><li>Documentação trabalhista</li><li>Arquivologia</li><li>Gestão documental</li></ul>
+          </div>
+          <div>
+            <h3>Sistemas e ferramentas</h3>
+            <ul class="tags"><li>TOTVS RM</li><li>Alterdata</li><li>Bimer</li><li>e-Contador</li><li>Excel (intermediário)</li><li>Word (intermediário)</li><li>ChatGPT</li><li>Claude</li></ul>
+          </div>
+          <div>
+            <h3>Competências comportamentais</h3>
+            <ul class="tags"><li>Organização</li><li>Atenção aos detalhes</li><li>Comunicação clara</li><li>Liderança</li><li>Trabalho em equipe</li><li>Proatividade</li><li>Facilidade de aprendizado</li><li>Melhoria de processos</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="formacao">
+    <div class="wrap sec">
+      <div class="sec-label">Formação e cursos</div>
+      <div>
+        <h2>Formação</h2>
+        <div class="edu">
+          <h3>Graduação em Administração</h3>
+          <p>Faculdade de Tecnologia e Ciências (UNIFTC) · início em março de 2025 · previsão de conclusão em 2028</p>
+        </div>
+        <ul class="courses">
+          <li class="course">
+            <h3>Gestão Empresarial</h3><span class="hrs">2024 · 104 h</span>
+            <p>Speed Treinamento (anexo UNIFACS). Módulos de Comunicação e Marketing, Oratória, Empreendedorismo e Simulação Empresarial.</p>
+          </li>
+          <li class="course">
+            <h3>Capacitações Turmas Abertas</h3><span class="hrs">2025–2026 · 22 h</span>
+            <p>NUBE. Carreira e Competências para o Futuro, Administração do Tempo, Comunicação Não Violenta, Criatividade e Inovação, A Importância da Comunicação, Foco: Atenção e Disciplina, Falar em Público, Team Building, Qualidade no Atendimento ao Cliente, Comunicação Digital e Inteligência Emocional.</p>
+          </li>
+          <li class="course">
+            <h3>Curso do Programa Jovem Aprendiz</h3><span class="hrs">CIDE</span>
+          </li>
+        </ul>
+        <div class="lang"><strong>Idiomas</strong><span>Inglês básico</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="contato">
+    <div class="wrap">
+      <div class="contact-card">
+        <h2>Vamos conversar?</h2>
+        <p>Tenho interesse em oportunidades nas áreas administrativa, financeira e de departamento pessoal. Para contato profissional, escreva para:</p>
+        <div class="mail-row">
+          <span class="mail" id="email">murielqueiroz8@gmail.com</span>
+        </div>
+        <div class="actions">
+          <button class="btn primary" type="button" id="copy-btn">Copiar e-mail</button>
+          <a class="btn ghost" href="mailto:murielqueiroz8@gmail.com">Abrir no e-mail</a>
+        </div>
+        <span class="copied" id="copy-msg" aria-live="polite"></span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Muriel Queiroz dos Santos · Salvador, Bahia</div>
+</footer>
+
+<script>
+(function () {
+  var btn = document.getElementById('copy-btn');
+  var msg = document.getElementById('copy-msg');
+  var email = document.getElementById('email');
+  function selectEmail() {
+    var r = document.createRange(); r.selectNodeContents(email);
+    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+  }
+  btn.addEventListener('click', function () {
+    var text = email.textContent.trim();
+    var done = function () { msg.textContent = 'E-mail copiado.'; };
+    var fail = function () { selectEmail(); msg.textContent = 'E-mail selecionado. Use Ctrl+C (ou Copiar) para copiar.'; };
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, fail);
+      } else { fail(); }
+    } catch (e) { fail(); }
+  });
+})();
+</script>
+
+</body></html>
