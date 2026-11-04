@@ -6,6 +6,12 @@
 <title>Muriel Queiroz dos Santos</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Site profissional de Muriel Queiroz dos Santos: experiência administrativa, financeira e de departamento pessoal em Salvador, Bahia.">
+<meta name="theme-color" content="#1f6b57">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Muriel Queiroz dos Santos · Administrativo, Financeiro e DP">
+<meta property="og:description" content="Estudante de Administração em Salvador com experiência em contas a pagar e a receber, departamento pessoal e criação de aplicativos internos com IA.">
+<meta property="og:image" content="assets/dashboard.webp">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231f6b57'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='26' font-weight='700' fill='white' text-anchor='middle'%3EMQ%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -167,9 +173,53 @@ section.block { padding-block: 56px; border-top: 1px solid var(--line); }
 .copied { font-size: .9rem; min-height: 1.4em; }
 
 footer { padding-block: 32px 48px; color: var(--muted); font-size: .9rem; }
+
+/* Acessibilidade */
+.skip { position: absolute; left: -9999px; top: 8px; z-index: 20; background: var(--accent); color: var(--bg); padding: 8px 14px; border-radius: 6px; }
+.skip:focus { left: 12px; }
+
+/* Números de destaque */
+.stats { list-style: none; margin: 40px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); border-radius: 10px; background: var(--surface); overflow: hidden; }
+.stats li { padding: 18px 20px; border-left: 1px solid var(--line); }
+.stats li:first-child { border-left: 0; }
+.stats strong { display: block; font-family: var(--f-display); font-size: clamp(1.6rem, 3.6vw, 2.2rem); color: var(--accent); line-height: 1.1; font-variant-numeric: tabular-nums; }
+.stats span { font-size: .92rem; color: var(--muted); }
+@media (max-width: 760px) { .stats { grid-template-columns: repeat(2, 1fr); } .stats li:nth-child(3) { border-left: 0; } .stats li:nth-child(n+3) { border-top: 1px solid var(--line); } }
+
+.project { transition: border-color .2s, transform .2s; }
+.project:hover { border-color: var(--accent); }
+@media (prefers-reduced-motion: no-preference) { .project:hover { transform: translateY(-2px); } }
+.p-link { margin-top: auto; font-weight: 600; text-decoration: none; }
+.p-link:hover { text-decoration: underline; }
+
+/* Demonstração */
+.demo-video { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px; }
+.demo-video video { display: block; width: 100%; height: auto; aspect-ratio: 1366 / 720; border-radius: 8px; background: #0f1a1b; }
+.demo-caption { margin: 12px 4px 2px; color: var(--muted); font-size: .95rem; }
+.gallery { list-style: none; margin: 28px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 860px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .gallery { grid-template-columns: 1fr; } }
+.shot { margin: 0; }
+.shot button { display: block; width: 100%; padding: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--surface); cursor: zoom-in; }
+.shot button:hover { border-color: var(--accent); }
+.shot img { display: block; width: 100%; height: auto; aspect-ratio: 1600 / 837; object-fit: cover; object-position: top left; }
+.shot figcaption { margin-top: 8px; font-size: .95rem; }
+.shot figcaption strong { display: block; font-family: var(--f-display); }
+.shot figcaption span { color: var(--muted); font-size: .9rem; }
+.lightbox { border: 0; padding: 0; max-width: min(1200px, 94vw); background: transparent; }
+.lightbox::backdrop { background: rgba(10, 18, 19, .82); }
+.lightbox img { display: block; max-width: 100%; max-height: 82vh; border-radius: 8px; }
+.lightbox p { color: #e6eeec; margin: 10px 2px 0; }
+.lightbox .close { position: absolute; top: 8px; right: 8px; background: rgba(10,18,19,.75); color: #fff; border: 0; border-radius: 99px; width: 36px; height: 36px; font-size: 1.2rem; cursor: pointer; }
+
+@media print {
+  .topbar, .actions, .demo-video, .gallery, .contact-card .actions { display: none !important; }
+  section.block { padding-block: 20px; }
+}
 </style>
 </head>
 <body>
+<a class="skip" href="#sobre">Pular para o conteúdo</a>
 
 <header class="topbar">
   <div class="wrap">
@@ -178,6 +228,7 @@ footer { padding-block: 32px 48px; color: var(--muted); font-size: .9rem; }
       <a class="opt" href="#sobre">Sobre</a>
       <a href="#experiencia">Experiência</a>
       <a href="#projetos">Projetos</a>
+      <a class="opt" href="#demonstracao">Demonstração</a>
       <a class="opt" href="#formacao">Formação</a>
       <a href="#contato">Contato</a>
     </nav>
@@ -209,6 +260,12 @@ footer { padding-block: 32px 48px; color: var(--muted); font-size: .9rem; }
         </dl>
       </aside>
     </div>
+    <ul class="stats" aria-label="Destaques">
+      <li><strong>+2 anos</strong><span>no Grupo Alves da Cunha</span></li>
+      <li><strong>3 áreas</strong><span>administrativo, DP e financeiro</span></li>
+      <li><strong>2 apps</strong><span>internos criados com IA</span></li>
+      <li><strong>13 cursos</strong><span>complementares concluídos</span></li>
+    </ul>
   </div>
 
   <section class="block" id="sobre">
@@ -289,6 +346,7 @@ footer { padding-block: 32px 48px; color: var(--muted); font-size: .9rem; }
             <div><dt>Minha contribuição</dt><dd>Criei o aplicativo web com apoio de inteligência artificial.</dd></div>
             <div><dt>Resultado</dt><dd>Acompanhamento da produção prevista para cada dia do setor financeiro.</dd></div>
           </dl>
+          <a class="p-link" href="#demonstracao">Ver vídeo e telas →</a>
         </article>
         <article class="project">
           <div class="p-meta"><span class="p-year">2025</span><span class="badge-ai">Equipe com apoio de IA</span></div>
@@ -303,6 +361,39 @@ footer { padding-block: 32px 48px; color: var(--muted); font-size: .9rem; }
       </div>
     </div>
   </section>
+
+  <section class="block" id="demonstracao">
+    <div class="wrap">
+      <div class="sec" style="margin-bottom:24px">
+        <div class="sec-label">Demonstração</div>
+        <div class="prose">
+          <h2>Fluxo Financeiro na prática</h2>
+          <p>Um aplicativo web que criei com apoio de inteligência artificial para organizar as atividades do setor financeiro: painel de indicadores, tarefas com filtros, calendário de prazos, relatórios e controle de acesso por perfil.</p>
+        </div>
+      </div>
+      <div class="demo-video">
+        <video controls playsinline preload="metadata" poster="assets/dashboard.webp">
+          <source src="assets/fluxo-financeiro-demo.mp4" type="video/mp4">
+          Seu navegador não reproduz vídeos. <a href="assets/fluxo-financeiro-demo.mp4">Baixe o vídeo</a>.
+        </video>
+        <p class="demo-caption">Vídeo narrado de 1min38 com um tour pelas telas do aplicativo. Dados de colegas foram ocultados.</p>
+      </div>
+      <ul class="gallery">
+        <li><figure class="shot"><button type="button" data-full="assets/dashboard.webp" data-caption="Painel com total de tarefas, pendências, atrasos, gráfico de conclusão e próximos vencimentos."><img src="assets/dashboard.webp" alt="Painel do Fluxo Financeiro com indicadores de tarefas" loading="lazy" width="1600" height="837"></button><figcaption><strong>Painel</strong><span>Indicadores e próximos vencimentos</span></figcaption></figure></li>
+        <li><figure class="shot"><button type="button" data-full="assets/tarefas.webp" data-caption="Lista de tarefas com busca e filtros por categoria, pessoa, status e prioridade."><img src="assets/tarefas.webp" alt="Tela de tarefas com filtros" loading="lazy" width="1600" height="839"></button><figcaption><strong>Tarefas</strong><span>Busca e filtros por categoria, pessoa e status</span></figcaption></figure></li>
+        <li><figure class="shot"><button type="button" data-full="assets/nova-tarefa.webp" data-caption="Cadastro de tarefa com categoria, responsável, prazo, prioridade, status e anexos."><img src="assets/nova-tarefa.webp" alt="Formulário de nova tarefa" loading="lazy" width="1600" height="837"></button><figcaption><strong>Nova tarefa</strong><span>Responsável, prazo, prioridade e anexos</span></figcaption></figure></li>
+        <li><figure class="shot"><button type="button" data-full="assets/calendario.webp" data-caption="Calendário financeiro com os prazos e compromissos da equipe no mês."><img src="assets/calendario.webp" alt="Calendário financeiro mensal" loading="lazy" width="1600" height="836"></button><figcaption><strong>Calendário</strong><span>Prazos e compromissos do mês</span></figcaption></figure></li>
+        <li><figure class="shot"><button type="button" data-full="assets/relatorios.webp" data-caption="Relatórios de produtividade, atrasos, distribuição por categoria e pendências, com exportação em CSV e PDF."><img src="assets/relatorios.webp" alt="Tela de relatórios com indicadores" loading="lazy" width="1600" height="838"></button><figcaption><strong>Relatórios</strong><span>Produtividade, atrasos e exportação CSV/PDF</span></figcaption></figure></li>
+        <li><figure class="shot"><button type="button" data-full="assets/equipe.webp" data-caption="Equipe e permissões: perfis de colaborador, gestor financeiro e administrador. Dados de colegas ocultados."><img src="assets/equipe.webp" alt="Tela de equipe e permissões" loading="lazy" width="1600" height="837"></button><figcaption><strong>Equipe e permissões</strong><span>Perfis de acesso por pessoa</span></figcaption></figure></li>
+      </ul>
+    </div>
+  </section>
+
+  <dialog class="lightbox" id="lightbox" aria-label="Imagem ampliada">
+    <button class="close" type="button" aria-label="Fechar">×</button>
+    <img src="" alt="">
+    <p></p>
+  </dialog>
 
   <section class="block" id="competencias">
     <div class="wrap sec">
@@ -400,6 +491,21 @@ footer { padding-block: 32px 48px; color: var(--muted); font-size: .9rem; }
       } else { fail(); }
     } catch (e) { fail(); }
   });
+})();
+(function () {
+  var box = document.getElementById('lightbox');
+  if (!box || typeof box.showModal !== 'function') return;
+  var img = box.querySelector('img'), cap = box.querySelector('p');
+  document.querySelectorAll('.shot button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      img.src = b.getAttribute('data-full');
+      img.alt = b.querySelector('img').alt;
+      cap.textContent = b.getAttribute('data-caption');
+      box.showModal();
+    });
+  });
+  box.querySelector('.close').addEventListener('click', function () { box.close(); });
+  box.addEventListener('click', function (e) { if (e.target === box) box.close(); });
 })();
 </script>
 </body>
