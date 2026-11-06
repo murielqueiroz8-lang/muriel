@@ -211,6 +211,24 @@ p { margin: 0; }
 .case-card .case div { border-left-color: var(--line); }
 .case-card .case dt { color: var(--accent); }
 
+.feature.light { background: var(--surface); color: var(--ink); border: 1px solid var(--line); margin-top: 56px; }
+.feature.light .where { color: var(--muted); }
+.feature.light .chip { background: var(--accent-soft); color: var(--accent); }
+.feature.light .chip.ai { background: var(--warm-soft); color: var(--warm-ink); }
+.feature.light .case div { border-left-color: var(--accent); }
+.feature.light .case dt { color: var(--accent); }
+.feature.light .modules li { border-color: var(--line); color: var(--muted); }
+.feature.light .player { border-color: var(--line); }
+.feature.light .player p { color: var(--muted); background: var(--paper); }
+.feature.flip { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); }
+.feature.flip .player { order: -1; }
+@media (max-width: 900px) { .feature.flip { grid-template-columns: 1fr; } }
+.strip.s8 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 760px) { .strip.s8 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.case-card.solo { margin-top: 56px; border-radius: 0 0 var(--radius) var(--radius); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 20px 40px; }
+.case-card.solo .case { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 900px) { .case-card.solo { grid-template-columns: 1fr; } .case-card.solo .case { grid-template-columns: 1fr; } }
+
 /* Competências */
 .skills { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); overflow: hidden; }
 .skill { padding: 24px; border-left: 1px solid var(--line); }
@@ -453,8 +471,8 @@ footer a { color: var(--on-pine); }
         </ul>
       </div>
 
-      <div class="cases">
-        <article class="case-card" aria-labelledby="dc-t">
+      <article class="feature light flip" id="doccontrol" aria-labelledby="dc-t">
+        <div>
           <div class="meta"><span class="chip">2026</span><span class="chip ai">Criado com apoio de IA</span></div>
           <h3 id="dc-t">DocControl</h3>
           <p class="where">Grupo Alves da Cunha</p>
@@ -463,18 +481,45 @@ footer a { color: var(--on-pine); }
             <div><dt>Minha contribuição</dt><dd>Criei o aplicativo com apoio de inteligência artificial. Ele é usado pelas equipes financeira e de departamento pessoal.</dd></div>
             <div><dt>Resultado</dt><dd>Economia de tempo, menos erros e um processo documental mais organizado.</dd></div>
           </dl>
-        </article>
-        <article class="case-card alt" aria-labelledby="ce-t">
+          <ul class="modules" aria-label="Funcionalidades">
+            <li>Cadastro de funcionários</li><li>Ativos e inativos</li><li>Gestão de documentos</li><li>Alertas de vencimento</li><li>Relatórios</li>
+          </ul>
+        </div>
+        <div class="player">
+          <video controls playsinline preload="metadata" poster="assets/dc-painel.webp" aria-label="Vídeo de demonstração do DocControl">
+            <source src="assets/doccontrol-demo.mp4" type="video/mp4">
+            Seu navegador não reproduz vídeos. <a href="assets/doccontrol-demo.mp4">Baixe o vídeo</a>.
+          </video>
+          <p>Vídeo narrado de 1min53 com um tour pelas telas do aplicativo, sem cadastros de funcionários.</p>
+        </div>
+      </article>
+
+      <div class="screens">
+        <h4>Telas do DocControl</h4>
+        <ul class="strip s8">
+          <li><button class="shot" type="button" data-full="assets/dc-painel.webp" data-caption="Painel com funcionários ativos e inativos, documentos que vencem em 30 dias, vencidos e status da documentação."><span class="frame"><img src="assets/dc-painel.webp" alt="Painel do DocControl com indicadores de funcionários e documentos" loading="lazy" width="1363" height="693"></span><span class="cap">Painel<small>Visão geral</small></span></button></li>
+          <li><button class="shot" type="button" data-full="assets/dc-ativos.webp" data-caption="Funcionários ativos com busca por nome, CPF ou matrícula e filtros por setor, cargo e status documental."><span class="frame"><img src="assets/dc-ativos.webp" alt="Lista de funcionários ativos com busca e filtros" loading="lazy" width="1365" height="693"></span><span class="cap">Ativos<small>Busca e filtros</small></span></button></li>
+          <li><button class="shot" type="button" data-full="assets/dc-inativos.webp" data-caption="Funcionários inativos: registros preservados para consulta e reativação."><span class="frame"><img src="assets/dc-inativos.webp" alt="Lista de funcionários inativos" loading="lazy" width="1365" height="693"></span><span class="cap">Inativos<small>Consulta e reativação</small></span></button></li>
+          <li><button class="shot" type="button" data-full="assets/dc-documentos.webp" data-caption="Gestão de documentos: visão cruzada da situação documental da equipe, com legenda de cores por status."><span class="frame"><img src="assets/dc-documentos.webp" alt="Tela de gestão de documentos por funcionário" loading="lazy" width="1364" height="692"></span><span class="cap">Documentos<small>Situação por funcionário</small></span></button></li>
+          <li><button class="shot" type="button" data-full="assets/dc-relatorios.webp" data-caption="Relatórios com documentos em dia, a vencer e vencidos, admissões e demissões e funcionários por setor, com exportação em CSV e PDF."><span class="frame"><img src="assets/dc-relatorios.webp" alt="Tela de relatórios do DocControl" loading="lazy" width="1600" height="838"></span><span class="cap">Relatórios<small>CSV e PDF</small></span></button></li>
+          <li><button class="shot" type="button" data-full="assets/dc-alertas.webp" data-caption="Alertas e vencimentos: documentos vencidos, próximos do vencimento ou pendentes."><span class="frame"><img src="assets/dc-alertas.webp" alt="Tela de alertas e vencimentos" loading="lazy" width="1600" height="837"></span><span class="cap">Alertas<small>Vencimentos</small></span></button></li>
+          <li><button class="shot" type="button" data-full="assets/dc-cadastros.webp" data-caption="Cadastros e ajustes: setores, departamentos e cargos, com cópia de segurança dos dados."><span class="frame"><img src="assets/dc-cadastros.webp" alt="Tela de cadastros de setores e cargos" loading="lazy" width="1600" height="843"></span><span class="cap">Cadastros<small>Setores e cargos</small></span></button></li>
+          <li><button class="shot" type="button" data-full="assets/dc-tipos-documentos.webp" data-caption="Tipos de documentos, cada um marcado como obrigatório ou opcional e com ou sem validade."><span class="frame"><img src="assets/dc-tipos-documentos.webp" alt="Lista de tipos de documentos com obrigatoriedade e validade" loading="lazy" width="1600" height="841"></span><span class="cap">Tipos de documentos<small>Obrigatório e validade</small></span></button></li>
+        </ul>
+      </div>
+
+      <article class="case-card alt solo" aria-labelledby="ce-t">
+        <div class="solo-head">
           <div class="meta"><span class="chip">2025</span><span class="chip ai">Equipe com apoio de IA</span></div>
           <h3 id="ce-t">Código de Ética e Conduta</h3>
           <p class="where">UNIFTC, para Cavalcante Diniz Contabilidade</p>
-          <dl class="case">
-            <div><dt>Objetivo</dt><dd>Elaborar um código de ética e conduta para a empresa Cavalcante Diniz Contabilidade.</dd></div>
-            <div><dt>Minha contribuição</dt><dd>Liderei a equipe e fiquei responsável pelo contato com a empresa e pela coleta de informações.</dd></div>
-            <div><dt>Resultado</dt><dd>Código elaborado pela equipe, que usou inteligência artificial como apoio.</dd></div>
-          </dl>
-        </article>
-      </div>
+        </div>
+        <dl class="case">
+          <div><dt>Objetivo</dt><dd>Elaborar um código de ética e conduta para a empresa Cavalcante Diniz Contabilidade.</dd></div>
+          <div><dt>Minha contribuição</dt><dd>Liderei a equipe e fiquei responsável pelo contato com a empresa e pela coleta de informações.</dd></div>
+          <div><dt>Resultado</dt><dd>Código elaborado pela equipe, que usou inteligência artificial como apoio.</dd></div>
+        </dl>
+      </article>
     </div>
   </section>
 
@@ -650,8 +695,9 @@ footer a { color: var(--on-pine); }
 /* Galeria ampliada */
 (function () {
   var box = document.getElementById('lightbox');
-  var shots = Array.prototype.slice.call(document.querySelectorAll('.shot'));
-  if (!box || typeof box.showModal !== 'function' || !shots.length) return;
+  var all = Array.prototype.slice.call(document.querySelectorAll('.shot'));
+  if (!box || typeof box.showModal !== 'function' || !all.length) return;
+  var shots = all;
   var img = box.querySelector('img'), cap = document.getElementById('lb-cap'), count = box.querySelector('.count');
   var i = 0, opener = null;
   function show(n) {
@@ -662,8 +708,12 @@ footer a { color: var(--on-pine); }
     cap.textContent = b.getAttribute('data-caption');
     count.textContent = (i + 1) + ' de ' + shots.length;
   }
-  shots.forEach(function (b, n) {
-    b.addEventListener('click', function () { opener = b; show(n); box.showModal(); });
+  all.forEach(function (b) {
+    b.addEventListener('click', function () {
+      opener = b;
+      shots = Array.prototype.slice.call(b.closest('.strip').querySelectorAll('.shot'));
+      show(shots.indexOf(b)); box.showModal();
+    });
   });
   box.querySelectorAll('[data-step]').forEach(function (b) {
     b.addEventListener('click', function () { show(i + Number(b.getAttribute('data-step'))); });
