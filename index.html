@@ -229,6 +229,22 @@ p { margin: 0; }
 .case-card.solo .case { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 @media (max-width: 900px) { .case-card.solo { grid-template-columns: 1fr; } .case-card.solo .case { grid-template-columns: 1fr; } }
 
+.case-card.solo .solo-extra { grid-column: 1 / -1; border-top: 1px solid var(--line); padding-top: 24px; }
+.case-card.solo h4 { font-family: var(--f-display); font-size: 1.1rem; margin: 0 0 12px; }
+.doc-facts { margin-top: 12px; color: var(--muted); font-size: .98rem; }
+.doc-summary { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 20px 32px; align-items: start; margin-bottom: 28px; }
+.doc-summary .tags { margin-top: 0; }
+.toc { border: 1px solid var(--line); border-radius: 12px; background: var(--paper); }
+.toc summary { cursor: pointer; padding: 12px 16px; font-weight: 700; color: var(--accent); border-radius: 12px; }
+.toc summary:hover { background: var(--accent-soft); }
+.toc ol { margin: 0; padding: 4px 16px 14px 40px; columns: 2; column-gap: 24px; font-size: .95rem; }
+.toc li { break-inside: avoid; padding: 2px 0; font-variant-numeric: tabular-nums; }
+.toc li::marker { color: var(--accent); font-weight: 700; }
+.strip.docs { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.strip.docs .shot img { aspect-ratio: 3 / 4; object-position: top center; }
+@media (max-width: 900px) { .doc-summary { grid-template-columns: 1fr; } .strip.docs { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .strip.docs { grid-template-columns: repeat(2, minmax(0, 1fr)); } .toc ol { columns: 1; } }
+
 /* Competências */
 .skills { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); overflow: hidden; }
 .skill { padding: 24px; border-left: 1px solid var(--line); }
@@ -508,17 +524,39 @@ footer a { color: var(--on-pine); }
         </ul>
       </div>
 
-      <article class="case-card alt solo" aria-labelledby="ce-t">
+      <article class="case-card alt solo" id="codigo-etica" aria-labelledby="ce-t">
         <div class="solo-head">
           <div class="meta"><span class="chip">2025</span><span class="chip ai">Equipe com apoio de IA</span></div>
           <h3 id="ce-t">Código de Ética e Conduta</h3>
           <p class="where">UNIFTC, para Cavalcante Diniz Contabilidade</p>
+          <p class="doc-facts">Documento de 33 páginas, organizado em 14 seções.</p>
         </div>
         <dl class="case">
           <div><dt>Objetivo</dt><dd>Elaborar um código de ética e conduta para a empresa Cavalcante Diniz Contabilidade.</dd></div>
           <div><dt>Minha contribuição</dt><dd>Liderei a equipe e fiquei responsável pelo contato com a empresa e pela coleta de informações.</dd></div>
           <div><dt>Resultado</dt><dd>Código elaborado pela equipe, que usou inteligência artificial como apoio.</dd></div>
         </dl>
+        <div class="solo-extra">
+          <div class="doc-summary">
+            <div>
+              <h4>Princípios definidos no código</h4>
+              <ul class="tags"><li>Integridade e honestidade</li><li>Independência e imparcialidade</li><li>Competência e profissionalismo</li><li>Confidencialidade</li><li>Responsabilidade social e ambiental</li><li>Respeito e valorização humana</li></ul>
+            </div>
+            <details class="toc">
+              <summary>Ver as 14 seções do documento</summary>
+              <ol><li>Apresentação</li><li>Propósito</li><li>Missão, visão e valores</li><li>Princípios éticos</li><li>Condutas éticas</li><li>Relação com os colaboradores</li><li>Direitos e deveres dos empregados</li><li>Relação com o público externo</li><li>Parceiros de negócio e terceiros</li><li>LGPD</li><li>Contabilidade e auditoria</li><li>Administração pública</li><li>Sanções</li><li>Ouvidoria</li></ol>
+            </details>
+          </div>
+          <h4>Páginas do documento</h4>
+          <ul class="strip docs">
+            <li><button class="shot" type="button" data-full="assets/ce-capa.webp" data-caption="Capa do documento, com a identidade visual da empresa."><span class="frame"><img src="assets/ce-capa.webp" alt="Capa do Código de Ética e Conduta" loading="lazy" width="900" height="1271"></span><span class="cap">Capa<small>Identidade do cliente</small></span></button></li>
+            <li><button class="shot" type="button" data-full="assets/ce-indice.webp" data-caption="Índice com as 14 seções do código."><span class="frame"><img src="assets/ce-indice.webp" alt="Índice com as 14 seções do código" loading="lazy" width="900" height="1271"></span><span class="cap">Índice<small>14 seções</small></span></button></li>
+            <li><button class="shot" type="button" data-full="assets/ce-capitulo.webp" data-caption="Cada capítulo abre com uma página de destaque."><span class="frame"><img src="assets/ce-capitulo.webp" alt="Página de abertura do capítulo Missão, visão e valores" loading="lazy" width="900" height="1271"></span><span class="cap">Abertura de capítulo<small>Padrão visual</small></span></button></li>
+            <li><button class="shot" type="button" data-full="assets/ce-missao.webp" data-caption="Missão, visão e valores da empresa."><span class="frame"><img src="assets/ce-missao.webp" alt="Página com missão, visão e valores" loading="lazy" width="900" height="1271"></span><span class="cap">Missão, visão e valores<small>Identidade da empresa</small></span></button></li>
+            <li><button class="shot" type="button" data-full="assets/ce-principios.webp" data-caption="Os seis princípios éticos definidos no código."><span class="frame"><img src="assets/ce-principios.webp" alt="Página com os princípios éticos" loading="lazy" width="900" height="1271"></span><span class="cap">Princípios éticos<small>Seis princípios</small></span></button></li>
+            <li><button class="shot" type="button" data-full="assets/ce-condutas.webp" data-caption="Condutas éticas esperadas de colaboradores e parceiros."><span class="frame"><img src="assets/ce-condutas.webp" alt="Página com as condutas éticas" loading="lazy" width="900" height="1271"></span><span class="cap">Condutas éticas<small>O que se espera de todos</small></span></button></li>
+          </ul>
+        </div>
       </article>
     </div>
   </section>
