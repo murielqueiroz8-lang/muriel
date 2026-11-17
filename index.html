@@ -114,6 +114,22 @@ p { margin: 0; }
 .value { font-size: clamp(1.15rem, 2.2vw, 1.35rem); color: var(--on-pine); max-width: 36ch; margin: 26px 0 30px; line-height: 1.5; }
 .paths { display: flex; flex-wrap: wrap; gap: 12px; }
 .card-id { background: var(--pine-2); border: 1px solid var(--pine-line); border-radius: var(--radius); padding: 22px 24px; position: relative; }
+.card-id { margin-top: 104px; }
+.avatar { display: block; width: 176px; height: 176px; margin: -124px 0 14px; filter: drop-shadow(0 10px 18px rgba(0,0,0,.28)); cursor: default; }
+.avatar:focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; border-radius: 50%; }
+.avatar .av-eyes, .avatar .av-arm, .avatar .av-body { transform-box: view-box; }
+.avatar .av-eyes { transform-origin: 120px 116px; }
+.avatar .av-arm { transform-origin: 78px 196px; }
+@media (prefers-reduced-motion: no-preference) {
+  .avatar .av-eyes { animation: blink 5.5s infinite 2s; }
+  .avatar .av-arm { animation: wave 1.6s ease-in-out .9s 2; }
+  .avatar:hover .av-arm, .avatar:focus-visible .av-arm { animation: wave 1.6s ease-in-out 1; }
+  .avatar .av-body { animation: breathe 4.5s ease-in-out infinite; }
+}
+@keyframes blink { 0%, 94%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.1); } }
+@keyframes wave { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-14deg); } 40% { transform: rotate(8deg); } 60% { transform: rotate(-12deg); } 80% { transform: rotate(6deg); } }
+@keyframes breathe { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1.5px); } }
+@media (max-width: 860px) { .card-id { margin-top: 72px; } .avatar { width: 124px; height: 124px; margin-top: -86px; } }
 .card-id h2 { font-size: 1rem; font-family: var(--f-body); font-weight: 700; color: var(--mint); margin-bottom: 14px; }
 .card-id dl { margin: 0; display: grid; gap: 12px; }
 .card-id dl div { display: grid; grid-template-columns: 92px 1fr; gap: 12px; padding-bottom: 12px; border-bottom: 1px dashed var(--pine-line); }
@@ -379,6 +395,61 @@ footer a { color: var(--on-pine); }
         </div>
       </div>
       <aside class="card-id reveal d4" aria-labelledby="ficha-t">
+        <svg class="avatar" viewBox="0 0 240 240" role="img" aria-labelledby="av-t" tabindex="0">
+<title id="av-t">Ilustração de Muriel Queiroz, de blazer verde e camisa branca, acenando</title>
+<defs>
+  <clipPath id="av-c"><circle cx="120" cy="120" r="116"/></clipPath>
+</defs>
+<circle cx="120" cy="120" r="116" fill="#17413a"/>
+<circle cx="120" cy="120" r="116" fill="none" stroke="#8fd9bd" stroke-width="4"/>
+<g clip-path="url(#av-c)">
+  <path d="M10 196 H70 V170 H130 V140 H190 V112 H232" fill="none" stroke="#2a564d" stroke-width="3"/>
+  <g class="av-body">
+    <g transform="translate(0 -12)">
+    <path d="M44 250 C46 196 74 178 120 176 C166 178 194 196 196 250 Z" fill="#0f2e28"/>
+    <path d="M100 178 L120 214 L140 178 Z" fill="#f6f7f5"/>
+    <path d="M114 186 L126 186 L123 196 L127 226 L120 234 L113 226 L117 196 Z" fill="#f2c46d"/>
+    <path d="M100 178 L120 214 L108 222 L90 184 Z" fill="#1f6b57"/>
+    <path d="M140 178 L120 214 L132 222 L150 184 Z" fill="#1f6b57"/>
+    <rect x="150" y="204" width="14" height="14" rx="3.5" fill="#1f6b57" stroke="#8fd9bd" stroke-width="1.2"/>
+    <path d="M153.2 215V207.6l3.4 4 2.4-2.9V215" fill="none" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <path d="M107 148 H133 V168 C126 174 114 174 107 168 Z" fill="#9c6340"/>
+    <ellipse cx="81" cy="118" rx="7" ry="10" fill="#a86b45"/>
+    <ellipse cx="159" cy="118" rx="7" ry="10" fill="#a86b45"/>
+    <ellipse cx="120" cy="112" rx="38" ry="44" fill="#b9784c"/>
+    <g fill="#1d1612">
+      <circle cx="88" cy="86" r="14"/><circle cx="102" cy="74" r="15"/><circle cx="120" cy="70" r="16"/>
+      <circle cx="138" cy="74" r="15"/><circle cx="152" cy="86" r="14"/><circle cx="82" cy="100" r="10"/>
+      <circle cx="158" cy="100" r="10"/><circle cx="110" cy="80" r="12"/><circle cx="130" cy="80" r="12"/>
+    </g>
+    <g fill="#2c221c">
+      <circle cx="96" cy="72" r="5"/><circle cx="118" cy="62" r="5"/><circle cx="142" cy="70" r="5"/><circle cx="156" cy="84" r="4"/>
+    </g>
+    <path d="M98 104 q8 -5 16 -1" fill="none" stroke="#1d1612" stroke-width="3.2" stroke-linecap="round"/>
+    <path d="M126 103 q8 -4 16 1" fill="none" stroke="#1d1612" stroke-width="3.2" stroke-linecap="round"/>
+    <g class="av-eyes" fill="#1d1612">
+      <ellipse cx="106" cy="116" rx="4" ry="5"/>
+      <ellipse cx="134" cy="116" rx="4" ry="5"/>
+    </g>
+    <path d="M120 120 q-3 10 1 12" fill="none" stroke="#8a5536" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M107 138 q13 11 26 0" fill="none" stroke="#5b3221" stroke-width="3.2" stroke-linecap="round"/>
+    <ellipse cx="98" cy="130" rx="6" ry="3.5" fill="#c9856a" opacity=".45"/>
+    <ellipse cx="142" cy="130" rx="6" ry="3.5" fill="#c9856a" opacity=".45"/>
+  </g>
+  <g class="av-arm">
+    <path d="M78 196 C62 186 54 172 50 158" fill="none" stroke="#0f2e28" stroke-width="22" stroke-linecap="round"/>
+    <path d="M49 156 L47 150" fill="none" stroke="#f6f7f5" stroke-width="20" stroke-linecap="round"/>
+    <g fill="#b9784c">
+      <ellipse cx="45" cy="134" rx="13" ry="15"/>
+      <rect x="34" y="112" width="6" height="20" rx="3"/>
+      <rect x="41" y="108" width="6" height="22" rx="3"/>
+      <rect x="48" y="110" width="6" height="21" rx="3"/>
+      <rect x="55" y="128" width="6" height="16" rx="3" transform="rotate(35 58 136)"/>
+    </g>
+  </g>
+</g>
+</svg>
         <h2 id="ficha-t">Ficha resumida</h2>
         <dl>
           <div><dt>Cargo atual</dt><dd>Estagiário Administrativo-Financeiro</dd></div>
