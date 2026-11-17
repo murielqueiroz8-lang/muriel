@@ -329,6 +329,40 @@ footer .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-cont
 footer .who { display: flex; align-items: center; gap: 10px; }
 footer a { color: var(--on-pine); }
 
+/* Personagem que acompanha a leitura */
+.buddy { position: fixed; left: 0; bottom: max(10px, env(safe-area-inset-bottom, 0px)); z-index: 25; width: 72px; pointer-events: none; transform: translateX(var(--bx, 16px)); opacity: 0; transition: opacity .35s; }
+.buddy.on { opacity: 1; }
+.buddy[hidden] { display: none; }
+.buddy-body { width: 72px; height: 121px; pointer-events: auto; cursor: pointer; }
+.buddy-svg { width: 100%; height: 100%; overflow: visible; transition: transform .25s; filter: drop-shadow(0 0 1.5px rgba(238,244,240,.75)) drop-shadow(0 6px 8px rgba(0,0,0,.18)); }
+.buddy.left .buddy-svg { transform: scaleX(-1); }
+.buddy-hide { position: absolute; top: -6px; right: -10px; width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: 700 .95rem/1 var(--f-body); cursor: pointer; pointer-events: auto; opacity: 0; transition: opacity .2s; }
+.buddy:hover .buddy-hide, .buddy-hide:focus-visible, .buddy:focus-within .buddy-hide { opacity: 1; }
+@media (hover: none) { .buddy-hide { opacity: .85; } }
+.buddy-bubble { position: absolute; bottom: calc(100% + 8px); left: 0; width: max-content; max-width: 220px; margin: 0; padding: 8px 12px; border-radius: 12px; background: var(--pine); color: var(--on-pine); border: 1px solid var(--mint); font: 600 .92rem/1.35 var(--f-body); box-shadow: 0 8px 22px -10px rgba(0,0,0,.45); opacity: 0; transform: translateY(6px); transition: opacity .25s, transform .25s; }
+.buddy-bubble::after { content: ""; position: absolute; top: calc(100% + 1px); left: 24px; border: 7px solid transparent; border-top-color: var(--pine); }
+.buddy.flip .buddy-bubble { left: auto; right: 0; }
+.buddy.flip .buddy-bubble::after { left: auto; right: 24px; }
+.buddy.talk .buddy-bubble { opacity: 1; transform: none; }
+.buddy .b-leg, .buddy .b-arm { transform-box: view-box; }
+.buddy .b-leg-l { transform-origin: 44px 106px; } .buddy .b-leg-r { transform-origin: 57px 106px; }
+.buddy .b-arm-l { transform-origin: 30px 63px; } .buddy .b-arm-r { transform-origin: 70px 63px; }
+.buddy .b-eyes { transform-box: view-box; transform-origin: 50px 32px; }
+@media (prefers-reduced-motion: no-preference) {
+  .buddy .b-eyes { animation: blink 6s infinite 1s; }
+  .buddy .b-all { animation: idle 3.2s ease-in-out infinite; }
+  .buddy.walking .b-all { animation: bob .44s ease-in-out infinite; }
+  .buddy.walking .b-leg-l, .buddy.walking .b-arm-r { animation: swing .44s ease-in-out infinite alternate; }
+  .buddy.walking .b-leg-r, .buddy.walking .b-arm-l { animation: swing .44s ease-in-out infinite alternate-reverse; }
+  .buddy.waving .b-arm-r { animation: buddyWave .9s ease-in-out 2; }
+}
+@keyframes swing { from { transform: rotate(18deg); } to { transform: rotate(-18deg); } }
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2.5px); } }
+@keyframes idle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1px); } }
+@keyframes buddyWave { 0%, 100% { transform: rotate(0); } 30% { transform: rotate(-150deg); } 60% { transform: rotate(-125deg); } 80% { transform: rotate(-150deg); } }
+@media (max-width: 600px) { .buddy, .buddy-body { width: 54px; } .buddy-body { height: 91px; } .buddy-bubble { max-width: 180px; font-size: .86rem; } }
+@media print { .buddy { display: none !important; } }
+
 /* Galeria ampliada */
 .lightbox { border: 0; padding: 0; width: min(1200px, 94vw); max-width: none; max-height: 94vh; background: transparent; color: var(--on-pine); overflow: visible; }
 .lightbox::backdrop { background: rgba(6, 18, 15, .88); }
@@ -720,6 +754,33 @@ footer a { color: var(--on-pine); }
   </section>
 </main>
 
+<div class="buddy" id="buddy" hidden>
+  <p class="buddy-bubble" aria-hidden="true"></p>
+  <div class="buddy-body">
+    <svg class="buddy-svg" viewBox="0 0 100 168" aria-hidden="true" focusable="false">
+      <ellipse class="b-shadow" cx="50" cy="163" rx="24" ry="4" fill="rgba(15,46,40,.22)"/>
+      <g class="b-all">
+        <g class="b-leg b-leg-l"><rect x="38" y="104" width="12" height="46" rx="5" fill="#13241f"/><ellipse cx="42" cy="152" rx="10" ry="5" fill="#0b1513"/></g>
+        <g class="b-leg b-leg-r"><rect x="51" y="104" width="12" height="46" rx="5" fill="#1b302a"/><ellipse cx="59" cy="152" rx="10" ry="5" fill="#0b1513"/></g>
+        <g class="b-arm b-arm-r"><rect x="64" y="60" width="11" height="40" rx="5.5" fill="#0f2e28"/><rect x="64" y="94" width="11" height="5" fill="#f6f7f5"/><circle cx="69.5" cy="104" r="6" fill="#b9784c"/></g>
+        <path d="M30 66 C30 58 38 55 50 55 C62 55 70 58 70 66 L68 110 H32 Z" fill="#0f2e28"/>
+        <path d="M43 56 L50 74 L57 56 Z" fill="#f6f7f5"/>
+        <path d="M48 60 H52 L51 64 L53 78 L50 82 L47 78 L49 64 Z" fill="#f2c46d"/>
+        <path d="M43 56 L50 74 L45 80 L38 59 Z" fill="#1f6b57"/><path d="M57 56 L50 74 L55 80 L62 59 Z" fill="#1f6b57"/>
+        <rect x="58" y="78" width="6" height="6" rx="1.5" fill="#1f6b57" stroke="#8fd9bd" stroke-width=".6"/>
+        <g class="b-arm b-arm-l"><rect x="25" y="60" width="11" height="40" rx="5.5" fill="#123a32"/><rect x="25" y="94" width="11" height="5" fill="#f6f7f5"/><circle cx="30.5" cy="104" r="6" fill="#b9784c"/></g>
+        <path d="M45 44 H55 V56 C52 58 48 58 45 56 Z" fill="#9c6340"/>
+        <ellipse cx="34" cy="32" rx="3.5" ry="5" fill="#a86b45"/><ellipse cx="66" cy="32" rx="3.5" ry="5" fill="#a86b45"/>
+        <ellipse cx="50" cy="30" rx="16" ry="19" fill="#b9784c"/>
+        <g fill="#1d1612"><circle cx="37" cy="19" r="6.5"/><circle cx="43" cy="13" r="7"/><circle cx="50" cy="11" r="7.5"/><circle cx="57" cy="13" r="7"/><circle cx="63" cy="19" r="6.5"/><circle cx="35" cy="26" r="4.5"/><circle cx="65" cy="26" r="4.5"/><circle cx="46" cy="17" r="5.5"/><circle cx="54" cy="17" r="5.5"/></g>
+        <g class="b-eyes" fill="#1d1612"><ellipse cx="44" cy="32" rx="2" ry="2.5"/><ellipse cx="56" cy="32" rx="2" ry="2.5"/></g>
+        <path d="M44 41 q6 5 12 0" fill="none" stroke="#5b3221" stroke-width="1.8" stroke-linecap="round"/>
+      </g>
+    </svg>
+  </div>
+  <button class="buddy-hide" type="button" aria-label="Ocultar o personagem animado">×</button>
+</div>
+
 <footer>
   <div class="wrap">
     <span class="who"><svg width="22" height="22" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="12" fill="#1f6b57"/><path d="M11 36V15l10 12 7-8.4V36" fill="none" stroke="#fff" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M28 18.6 36.5 10M30.5 10h6v6" fill="none" stroke="#f2c46d" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Muriel Queiroz dos Santos, Salvador, Bahia</span>
@@ -839,6 +900,85 @@ footer a { color: var(--on-pine); }
     if (e.key === 'ArrowLeft') { e.preventDefault(); show(i - 1); }
   });
   box.addEventListener('close', function () { if (opener) opener.focus(); });
+})();
+
+/* Personagem que acompanha a leitura */
+(function () {
+  var el = document.getElementById('buddy');
+  if (!el) return;
+  try { if (localStorage.getItem('buddyOff') === '1') return; } catch (e) {}
+  el.hidden = false;
+  var bubble = el.querySelector('.buddy-bubble');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var hero = document.querySelector('.hero');
+  var tips = {
+    sobre: 'Um pouco sobre mim',
+    experiencia: 'Minha trajetória no Grupo Alves da Cunha',
+    projetos: 'Meus projetos, com vídeos e telas',
+    competencias: 'O que trago para a equipe',
+    formacao: 'Formação e cursos',
+    contato: 'Vamos conversar? Meu e-mail está aqui.'
+  };
+  var ids = Object.keys(tips);
+  var x = 16, target = 16, last = null, talkTimer = null, raf = null;
+  function width() { return el.offsetWidth || 72; }
+  function computeTarget() {
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    var p = h > 0 ? Math.min(1, Math.max(0, window.scrollY / h)) : 0;
+    var max = document.documentElement.clientWidth - width() - 24;
+    return 16 + p * Math.max(0, max - 16);
+  }
+  function say(text) {
+    bubble.textContent = text;
+    el.classList.toggle('flip', target > document.documentElement.clientWidth / 2);
+    el.classList.add('talk');
+    clearTimeout(talkTimer);
+    talkTimer = setTimeout(function () { el.classList.remove('talk'); }, 2800);
+  }
+  function current() {
+    var y = window.scrollY + window.innerHeight * 0.4, cur = null;
+    ids.forEach(function (id) { var s = document.getElementById(id); if (s && s.offsetTop <= y) cur = id; });
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) cur = 'contato';
+    return cur;
+  }
+  function step() {
+    var dx = target - x;
+    if (reduce.matches) { x = target; dx = 0; }
+    else x += dx * 0.08;
+    el.style.setProperty('--bx', x.toFixed(1) + 'px');
+    if (Math.abs(dx) > 0.6) {
+      el.classList.add('walking');
+      el.classList.toggle('left', dx < 0);
+      raf = requestAnimationFrame(step);
+    } else {
+      el.classList.remove('walking');
+      raf = null;
+    }
+  }
+  function update() {
+    var show = hero ? window.scrollY > hero.offsetHeight * 0.55 : true;
+    el.classList.toggle('on', show);
+    target = computeTarget();
+    if (!raf) raf = requestAnimationFrame(step);
+    var c = show ? current() : null;
+    if (c && c !== last) { last = c; say(tips[c]); }
+    if (!show) last = null;
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(function () { update(); ticking = false; }); } }, { passive: true });
+  window.addEventListener('resize', update);
+  el.querySelector('.buddy-body').addEventListener('click', function () {
+    el.classList.remove('waving'); void el.offsetWidth; el.classList.add('waving');
+    setTimeout(function () { el.classList.remove('waving'); }, 1900);
+    say(last ? tips[last] : 'Olá! Role a página para conhecer meu trabalho.');
+  });
+  el.querySelector('.buddy-hide').addEventListener('click', function () {
+    el.hidden = true;
+    try { localStorage.setItem('buddyOff', '1'); } catch (e) {}
+  });
+  x = target = computeTarget();
+  el.style.setProperty('--bx', x + 'px');
+  update();
 })();
 </script>
 </body>
