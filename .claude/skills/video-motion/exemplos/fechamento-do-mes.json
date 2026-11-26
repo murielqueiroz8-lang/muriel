@@ -1,0 +1,58 @@
+{
+  "formato": "9:16",
+  "marca": { "handle": "@murielqueiroz", "nome": "Muriel" },
+  "cenas": [
+    {
+      "type": "hook",
+      "etiqueta": "rotina financeira",
+      "texto": "Fechar o mês em *1 dia* em vez de 5?",
+      "sub": "3 passos que eu uso na prática"
+    },
+    {
+      "type": "step",
+      "numero": 1,
+      "titulo": "concilia o banco",
+      "janela": {
+        "titulo": "Financeiro · Conciliação",
+        "cabecalho": "Extrato x Lançamentos",
+        "icone": "🏦",
+        "item": "extrato_nov.ofx",
+        "sub": "142 lançamentos importados",
+        "botao": "conciliar",
+        "concluido": "100% conciliado"
+      }
+    },
+    {
+      "type": "step",
+      "numero": 2,
+      "titulo": "revisa contas a pagar",
+      "janela": {
+        "titulo": "Financeiro · Contas a pagar",
+        "cabecalho": "Vencimentos da semana",
+        "icone": "📅",
+        "item": "18 títulos em aberto",
+        "sub": "R$ 47.320,00",
+        "botao": "aprovar",
+        "concluido": "pagamentos agendados"
+      }
+    },
+    {
+      "type": "list",
+      "titulo": "3. Antes de fechar, *confere*:",
+      "itens": ["Notas fiscais lançadas", "Folha e encargos provisionados", "Centros de custo corretos"]
+    },
+    {
+      "type": "stat",
+      "antes": "Resultado:",
+      "valor": 80,
+      "sufixo": "%",
+      "texto": "menos tempo no *fechamento*"
+    },
+    {
+      "type": "cta",
+      "texto": "Salva e me segue para mais *rotinas*",
+      "botao": "Seguir",
+      "sub": "Administrativo · Financeiro · DP"
+    }
+  ]
+}
