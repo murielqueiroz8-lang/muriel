@@ -73,6 +73,8 @@ const durDe = (c) => {
   const n = (c.itens || []).length;
   if (c.type === 'list') return 1.6 + 0.7 * n + 1;
   if (c.type === 'fatos') return 1.4 + 0.9 * n + 1.4;
+  if (c.type === 'grafico') return 1.6 + 0.6 * (c.itens || []).length + 2.4;
+  if (c.type === 'pov') return 1.4 + 0.9 * (c.reacoes || []).length + 0.9;
   if (c.type === 'manchete') return Math.max(4.6, 2.4 + 0.12 * String(c.texto || '').split(/\s+/).length + (c.sub ? 1 : 0));
   return DUR_PADRAO[c.type] || 3;
 };
@@ -128,6 +130,8 @@ const ICONES = [
   svg('<path d="M22 3 11 13M22 3l-7 19-4-9-9-4z"/>'),
   svg('<path d="M6 3h12v18l-6-4.5L6 21z"/>'),
 ];
+const KEYFRAMES_EXTRA = [];
+let uidGraf = 0;
 const CENAS = {
   hook(c, t) {
     som('pop', t + 0.1); if (c.sub) som('tick', t + 1.2);
@@ -190,6 +194,39 @@ const CENAS = {
       ${txt(c.topo, 'top')}${txt(c.base, 'base')}
     </div>
     ${c.credito ? `<div class="fonte" style="${anim('vm-up', t + 0.8, 0.4)}">Imagem: ${esc(c.credito)}</div>` : ''}`;
+  },
+
+  // ---------- formatos de meme: gráfico de pizza e POV ----------
+  grafico(c, t) {
+    const itens = c.itens || [], id = uidGraf++;
+    const cores = ['#22c55e', '#facc15', '#ef4444', AZUL, '#f97316'];
+    const total = itens.reduce((a, x) => a + (+x.valor || 0), 0) || 1;
+    let acc = 0;
+    const fatias = itens.map((x, i) => {
+      const v = ((+x.valor || 0) / total) * 100, ini = acc; acc += v;
+      const nome = `vm-fatia-${id}-${i}`, ts = t + 0.7 + i * 0.6;
+      KEYFRAMES_EXTRA.push(`@keyframes ${nome}{from{stroke-dasharray:0 100}to{stroke-dasharray:${v.toFixed(2)} 100}}`);
+      som('pop', ts);
+      return { cor: x.cor || cores[i % cores.length], v, ini, nome, ts, texto: x.texto };
+    });
+    const fim = t + 0.7 + itens.length * 0.6 + 0.3;
+    if (c.emoji) som(c.som || 'boing', fim);
+    return `<h2 class="mid left" style="${anim('vm-up', t + 0.1, 0.5)}">${rich(c.titulo || 'Coisas que mais falei essa semana')}</h2>
+      <ul class="graf-leg">${fatias.map((f) => `<li style="${anim('vm-left', f.ts, 0.4)}"><i style="background:${f.cor}"></i>${esc(f.texto)}</li>`).join('')}</ul>
+      <div class="graf-pizza" style="${anim('vm-pop', t + 0.4, 0.5)}"><svg viewBox="0 0 100 100">${fatias.map((f) => `<circle cx="50" cy="50" r="25" pathLength="100" fill="none" stroke="${f.cor}" stroke-width="50" stroke-dasharray="${f.v.toFixed(2)} 100" stroke-dashoffset="${(-f.ini).toFixed(2)}" transform="rotate(-90 50 50)" style="animation:${f.nome} .5s ease-out ${f.ts.toFixed(3)}s both"/>`).join('')}</svg>
+        ${c.emoji ? `<div class="graf-emoji" style="animation:vm-slam .5s cubic-bezier(.2,1.3,.3,1) ${fim.toFixed(3)}s both">${esc(c.emoji)}</div>` : ''}</div>
+      ${c.destaque ? `<div class="pill" style="${anim('vm-pop', fim + 0.4, 0.5)}">${esc(c.destaque)}</div>` : ''}`;
+  },
+  pov(c, t) {
+    const r = c.reacoes || ['😳'], dt = 0.9, t0 = t + 0.7;
+    r.forEach((_, i) => som(i === r.length - 1 ? 'hit' : 'pop', t0 + i * dt));
+    const caras = r.map((e, i) => { const ini = t0 + i * dt, ultimo = i === r.length - 1;
+      return `<div class="pov-emoji" style="animation:vm-slam .4s cubic-bezier(.2,1.3,.3,1) ${ini.toFixed(3)}s both${ultimo ? '' : `, vm-fade .12s ease ${(ini + dt - 0.12).toFixed(3)}s forwards`}">${esc(e)}</div>`; }).join('');
+    return `<div class="meme-card" style="animation:vm-slam .5s cubic-bezier(.2,1.3,.3,1) ${(t + 0.03).toFixed(3)}s both">
+      <div class="m-txt top" style="${anim('vm-pop', t + 0.2, 0.4)}">${esc(c.texto || 'POV:')}</div>
+      ${caras}
+      ${c.base ? `<div class="m-txt base" style="${anim('vm-pop', t0 + (r.length - 1) * dt + 0.2, 0.4)}">${esc(c.base)}</div>` : ''}
+    </div>`;
   },
 
   // ---------- cenas criativas ----------
@@ -467,6 +504,13 @@ button{font:inherit;border:0;background:var(--botao);color:var(--botaoTexto);fon
 .m-txt{position:absolute;left:24px;right:24px;text-align:center;font-weight:900;font-size:80px;line-height:1.04;text-transform:uppercase;color:#fff;-webkit-text-stroke:12px #000;paint-order:stroke fill;text-shadow:0 5px 0 #000;letter-spacing:-.01em;z-index:2}
 .m-txt.top{top:28px}.m-txt.base{bottom:28px}
 @keyframes vm-shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-2.2deg) scale(1.02)}75%{transform:rotate(2.2deg) scale(1.02)}}
+.graf-leg{list-style:none;align-self:stretch;display:flex;flex-direction:column;gap:12px;text-align:left}
+.graf-leg li{display:flex;align-items:center;gap:20px;font-size:46px;font-weight:700}
+.graf-leg i{width:34px;height:34px;border-radius:8px;display:block;flex:none}
+.graf-pizza{position:relative;width:600px;height:600px;filter:drop-shadow(0 30px 30px rgba(40,20,120,.3))}
+.graf-pizza svg{width:100%;height:100%;overflow:visible}
+.graf-emoji{position:absolute;left:8%;top:14%;font-size:260px;line-height:1}
+.pov-emoji{position:absolute;font-size:480px;line-height:1;filter:drop-shadow(0 20px 20px rgba(0,0,0,.25))}
 @keyframes vm-zoom{from{transform:scale(1.18)}to{transform:scale(1)}}
 @keyframes vm-blink{0%{opacity:1}100%{opacity:.15}}
 @keyframes vm-ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
@@ -495,6 +539,7 @@ ${marca.handle && roteiro.mostrarMarca !== false ? (() => {
 })() : ''}
 ${cenas.map((c) => c.html).join('\n')}
 ${wipesHtml}
+<style>${KEYFRAMES_EXTRA.join('')}</style>
 <script>
 const ease = (x) => 1 - Math.pow(1 - x, 3);
 window.__seek = (ms) => {

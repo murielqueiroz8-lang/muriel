@@ -99,12 +99,16 @@ Todo vídeo sai com **trilha original sintetizada** (batida + acordes, sem direi
 
 Cena `meme`: `imagem?` (arquivo do meme) ou `emoji` (meme original, sem imagem), `topo?`, `base?` (texto clássico branco com contorno preto), `som?` (`hit` impacto, `boing` mola, `fail` trombone triste, `tada` comemoração, `shine`), `credito?`, duração padrão 2,8 s.
 
+Formatos de meme prontos (todos originais, feitos com emoji):
+- `grafico` — "Coisas que mais falei essa semana": `titulo`, `itens[]` (`{texto, valor, cor?}`, o último costuma ter o maior `valor` e ser o assunto), `emoji?` (reação que aparece na pizza), `destaque?` (frase final), `som?`.
+- `pov` — "POV: …": `texto`, `reacoes[]` (2–4 emojis que se sucedem, ex.: `["😴","😳","🤩"]`), `base?` (frase final).
+
 **Como escolher o meme (siga sempre):**
 - Use **1 ou 2 memes por vídeo**, curtos, só em momento leve: depois de um `fatos`/`curiosidade` ou logo antes da `enquete`. O meme **reage** à notícia ou ao assunto ("Eu quando…", "Todo mundo depois de…"); nunca zoa quem foi afetado.
 - **Nunca** use meme em notícia de morte, crime, violência, desastre, doença, acidente, guerra, luto, abuso ou qualquer assunto com vítimas. Nesses vídeos, nenhum meme e nenhum som de humor.
 - Em **política**: só humor sobre a situação ou o processo (prazo, burocracia, "ninguém entendeu"). Nada que ridicularize a aparência, a saúde ou a família de alguém, e nada que favoreça lado político.
 - **Fonte dos memes**, em ordem de preferência: (1) a biblioteca da pessoa em `marcas/seres-hu/memes/` (leia `memes.json` e escolha pelo `tom` e `usar_em`; o caminho da imagem no roteiro é relativo ao JSON do roteiro, então aponte até a pasta `memes/`); (2) meme **original de emoji**, feito pela própria skill; (3) imagem de uso livre (ex.: Wikimedia Commons com licença que permita), com `credito` na tela.
-- **Não baixe memes aleatórios da internet** nem use prints de redes sociais: têm dono, e muitos mostram pessoas comuns. Não use meme com foto de criança nem de pessoa comum identificável, nem com conteúdo discriminatório, sexual ou de ódio.
+- **Não reutilize vídeos baixados do TikTok ou de outros criadores** (têm marca d'água, dono e música licenciada, e o Instagram reduz o alcance de repostagens com marca d'água): recrie o *formato* do meme com elementos originais. Também **não baixe memes aleatórios da internet** nem use prints de redes sociais: têm dono, e muitos mostram pessoas comuns. Não use meme com foto de criança nem de pessoa comum identificável, nem com conteúdo discriminatório, sexual ou de ódio.
 - O texto do meme tem no máximo ~6 palavras por linha, em português, e deve fazer sentido sem contexto.
 
 ### Marcas salvas
