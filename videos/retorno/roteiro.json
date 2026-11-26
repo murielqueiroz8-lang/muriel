@@ -1,0 +1,30 @@
+{
+  "estilo": "seres",
+  "marca": { "handle": "@seres.hu", "nome": "Muriel Queiroz", "logo": "../../.claude/skills/video-motion/marcas/seres-hu/logo.png" },
+  "tickerRotulo": "NOVIDADE",
+  "ticker": ["O Seres HU voltou", "Notícias todo dia às 7h", "Curiosidades", "Coisas anormais", "Política sem enrolação", "Fake news desmentidas"],
+  "cenas": [
+    { "type": "hook", "texto": "Sentiu nossa *falta?*", "sub": "Então presta atenção…", "duracao": 2.6 },
+    { "type": "capitulo", "numero": 3, "duracao": 0.8, "transicao": false },
+    { "type": "capitulo", "numero": 2, "duracao": 0.8, "transicao": false },
+    { "type": "capitulo", "numero": 1, "duracao": 0.8, "transicao": false },
+    { "type": "vinheta", "texto": "voltou! 🔥", "duracao": 2.4, "transicao": false },
+    { "type": "hook", "etiqueta": "a partir de agora", "texto": "Notícia *todo dia* às 7h da manhã", "sub": "Direto ao ponto, em 1 minuto ⏱️", "duracao": 3.4 },
+    {
+      "type": "fatos",
+      "titulo": "O que vai ter *aqui*:",
+      "itens": [
+        { "icone": "📰", "texto": "Notícias do *Brasil e do mundo*" },
+        { "icone": "🤯", "texto": "Curiosidades e *coisas anormais*" },
+        { "icone": "🏛️", "texto": "Política *sem enrolação*" },
+        { "icone": "❌", "texto": "Fake news *desmentidas*" },
+        { "icone": "🎬", "texto": "Famosos, filmes, games e música" }
+      ],
+      "duracao": 6.8
+    },
+    { "type": "local", "lugar": "Do Brasil para o mundo", "bandeira": "🇧🇷", "texto": "Tudo que importa, *num só lugar*", "duracao": 3.4 },
+    { "type": "curiosidade", "etiqueta": "Nossa promessa", "pergunta": "E o *diferencial?*", "texto": "Toda notícia é conferida em *pelo menos 2 fontes*, e a fonte aparece na tela. Fake news aqui não passa.", "duracao": 5.4 },
+    { "type": "enquete", "pergunta": "Qual assunto você quer ver *primeiro?*", "opcoes": ["Política", "Coisas anormais", "Famosos"], "sub": "Vota nos comentários 👇" },
+    { "type": "cta", "texto": "Ativa o 🔔 e segue o *Seres HU*", "botao": "Seguir", "sub": "Amanhã às 7h tem notícia nova", "rodape": "SE VOCÊ GOSTOU DO CONTEÚDO" }
+  ]
+}

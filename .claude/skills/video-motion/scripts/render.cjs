@@ -268,12 +268,12 @@ const cenas = (roteiro.cenas || []).map((c, i, arr) => {
     ${c.legenda ? `<div class="caption" style="${anim('vm-up', t + 0.3, 0.4)}">${rich(c.legenda)}</div>` : ''}
   </section>`;
   const inicio = t; t += d;
-  return { html, inicio, d };
+  return { html, inicio, d, semWipe: c.transicao === false };
 });
 const TOTAL = t;
 const transicao = roteiro.transicao || (noticia ? 'wipe' : 'fade');
 const logoMarca = imagemDataURI(marca.logo);
-const wipesHtml = transicao === 'wipe' ? cenas.slice(1).map(({ inicio }) => {
+const wipesHtml = transicao === 'wipe' ? cenas.slice(1).filter((c) => !c.semWipe).map(({ inicio }) => {
   som('whoosh', inicio - 0.38);
   const a = (inicio - 0.36).toFixed(3), b = (inicio - 0.28).toFixed(3);
   return `<div class="wipe w2" style="animation:vm-wipe .72s cubic-bezier(.7,0,.3,1) ${b}s both"></div><div class="wipe w1" style="animation:vm-wipe .72s cubic-bezier(.7,0,.3,1) ${a}s both">${logoMarca ? `<img src="${logoMarca}">` : ''}</div>`;
@@ -425,7 +425,7 @@ button{font:inherit;border:0;background:var(--botao);color:var(--botaoTexto);fon
 .vinheta .vg{position:absolute;inset:0;width:100%;height:100%}
 .vlogo{position:relative;width:400px;height:400px;border-radius:50%;overflow:hidden;box-shadow:0 30px 80px rgba(40,20,120,.35);display:grid;place-items:center;background:${AZUL};color:#fff;font-size:70px;font-weight:900}
 .vlogo img{width:100%;height:100%;object-fit:cover}
-.vtexto{font-size:48px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+.vtexto{font-size:96px;font-weight:900;letter-spacing:.01em;text-transform:uppercase;color:var(--acento);line-height:1}
 .cap{display:flex;align-items:flex-end;gap:20px;line-height:.8}
 .cap-n{font-size:460px;font-weight:900;letter-spacing:-.06em;color:var(--acento);text-shadow:18px 18px 0 ${AZUL}}
 .cap-de{font-size:80px;font-weight:900;color:var(--suave);padding-bottom:40px}
