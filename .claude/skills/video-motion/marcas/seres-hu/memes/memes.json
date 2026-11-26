@@ -1,0 +1,4 @@
+{
+  "_instrucoes": "Coloque as imagens de meme (jpg/png/webp) nesta pasta e liste cada uma abaixo. 'tom' ajuda a escolher: surpresa, deboche, choque-leve, comemoracao, confusao, cansaco, orgulho. 'usar_em' diz o tipo de notícia leve onde combina. 'nao_usar_em' lista o que evitar. O Claude só usa memes listados aqui ou memes originais de emoji.",
+  "memes": []
+}

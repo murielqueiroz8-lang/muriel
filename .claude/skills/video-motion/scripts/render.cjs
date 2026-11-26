@@ -67,7 +67,7 @@ const tema = Object.assign({
 const catCor = (c) => c.cor || (seres ? tema.acento : corCategoria(c.categoria || roteiro.categoria) || tema.acento);
 const marca = roteiro.marca || {};
 
-const DUR_PADRAO = { hook: 3, texto: 3.2, step: 4.8, stat: 3.6, cta: 4.2, manchete: 4.6, citacao: 5, enquete: 4.4, vinheta: 1.8, capitulo: 1.4, local: 3.4, curiosidade: 5.2 };
+const DUR_PADRAO = { hook: 3, texto: 3.2, step: 4.8, stat: 3.6, cta: 4.2, manchete: 4.6, citacao: 5, enquete: 4.4, vinheta: 1.8, meme: 2.8, capitulo: 1.4, local: 3.4, curiosidade: 5.2 };
 const durDe = (c) => {
   if (c.duracao) return c.duracao;
   const n = (c.itens || []).length;
@@ -178,6 +178,18 @@ const CENAS = {
       <span style="${anim('vm-pop', t + 1.5, 0.5)}"><button class="follow" style="animation:vm-pulse 1.3s ease-in-out ${(t + 2).toFixed(3)}s infinite">${esc(c.botao || 'Seguir')}</button></span>
       ${c.sub ? `<p class="sub" style="${anim('vm-up', t + 1.9, 0.5)}">${rich(c.sub)}</p>` : ''}
       ${c.rodape ? `<div class="rodape"><span style="${anim('vm-up', t + 2.1, 0.5)}">${esc(c.rodape)}</span><div class="icons">${ICONES.map((ic, i) => `<span style="${anim('vm-pop', t + 2.4 + i * 0.18, 0.45)}">${ic}</span>`).join('')}</div></div>` : ''}`;
+  },
+
+  // ---------- meme (humor) ----------
+  meme(c, t) {
+    const img = imagemDataURI(c.imagem);
+    som('whoosh', t - 0.05); som(c.som || 'hit', t + 0.18);
+    const txt = (v, cls) => v ? `<div class="m-txt ${cls}" style="${anim('vm-pop', t + 0.35 + (cls === 'base' ? 0.3 : 0), 0.4)}">${esc(v)}</div>` : '';
+    return `<div class="meme-card" style="animation:vm-slam .5s cubic-bezier(.2,1.3,.3,1) ${(t + 0.03).toFixed(3)}s both, vm-shake .6s ease-in-out ${(t + 0.7).toFixed(3)}s 3">
+      ${img ? `<img src="${img}">` : `<div class="m-emoji" style="animation:vm-bob 1.6s ease-in-out ${t.toFixed(3)}s infinite">${esc(c.emoji || '😂')}</div>`}
+      ${txt(c.topo, 'top')}${txt(c.base, 'base')}
+    </div>
+    ${c.credito ? `<div class="fonte" style="${anim('vm-up', t + 0.8, 0.4)}">Imagem: ${esc(c.credito)}</div>` : ''}`;
   },
 
   // ---------- cenas criativas ----------
@@ -449,6 +461,12 @@ button{font:inherit;border:0;background:var(--botao);color:var(--botaoTexto);fon
 @keyframes vm-unblur{from{filter:blur(22px);opacity:.55}to{filter:blur(0);opacity:1}}
 @keyframes vm-scan{from{transform:translateY(-130px)}to{transform:translateY(600px)}}
 @keyframes vm-push{from{transform:scale(1)}to{transform:scale(1.035)}}
+.meme-card{position:relative;width:100%;aspect-ratio:1/1.05;border-radius:28px;overflow:hidden;background:linear-gradient(135deg,var(--acento),${AZUL});box-shadow:0 30px 80px rgba(40,20,120,.35);display:grid;place-items:center}
+.meme-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.m-emoji{font-size:500px;line-height:1;filter:drop-shadow(0 20px 20px rgba(0,0,0,.25))}
+.m-txt{position:absolute;left:24px;right:24px;text-align:center;font-weight:900;font-size:80px;line-height:1.04;text-transform:uppercase;color:#fff;-webkit-text-stroke:12px #000;paint-order:stroke fill;text-shadow:0 5px 0 #000;letter-spacing:-.01em;z-index:2}
+.m-txt.top{top:28px}.m-txt.base{bottom:28px}
+@keyframes vm-shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-2.2deg) scale(1.02)}75%{transform:rotate(2.2deg) scale(1.02)}}
 @keyframes vm-zoom{from{transform:scale(1.18)}to{transform:scale(1)}}
 @keyframes vm-blink{0%{opacity:1}100%{opacity:.15}}
 @keyframes vm-ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}

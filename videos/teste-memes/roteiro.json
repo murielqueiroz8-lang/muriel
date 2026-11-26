@@ -1,0 +1,14 @@
+{
+  "estilo": "seres",
+  "marca": { "handle": "@seres.hu", "nome": "Muriel Queiroz", "logo": "../../.claude/skills/video-motion/marcas/seres-hu/logo.png" },
+  "tickerRotulo": "TESTE",
+  "ticker": ["Teste das cenas de meme do Seres HU"],
+  "cenas": [
+    { "type": "hook", "etiqueta": "teste de memes", "texto": "Meme *original* no Seres HU", "sub": "Humor sem sair da linha 😅", "duracao": 2.6 },
+    { "type": "meme", "emoji": "😱", "topo": "Acordei às 7h", "base": "A notícia já tá no feed", "som": "hit" },
+    { "type": "meme", "emoji": "🤨", "topo": "Fonte: \"um amigo meu\"", "base": "Aqui não, parceiro", "som": "boing" },
+    { "type": "meme", "emoji": "🥲", "topo": "Eu depois de conferir", "base": "2 fontes por notícia", "som": "fail" },
+    { "type": "meme", "emoji": "🎉", "topo": "Gostou do vídeo?", "base": "Segue o Seres HU!", "som": "tada" },
+    { "type": "cta", "texto": "Segue o *Seres HU*", "botao": "Seguir", "sub": "Notícia todo dia às 7h" }
+  ]
+}

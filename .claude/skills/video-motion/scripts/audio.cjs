@@ -110,6 +110,35 @@ function gerarAudio(arquivo, total, sfx, opcoes = {}) {
       for (let k = 0; k < d; k++) { const p = k / d; ph += (2 * Math.PI * (1000 - 760 * p)) / SR; add(efeitos, i0 + k, Math.sin(ph) * (1 - p) * 0.28); }
       FX.tick(i0 + d);
     },
+    boing(i0) {
+      const d = 0.55 * SR; let ph = 0;
+      for (let k = 0; k < d; k++) {
+        const tt = k / SR, p = k / d;
+        ph += (2 * Math.PI * (380 + 330 * Math.sin(2 * Math.PI * 7 * tt) * Math.exp(-tt * 5))) / SR;
+        add(efeitos, i0 + k, Math.sin(ph) * Math.exp(-p * 4) * 0.3);
+      }
+    },
+    fail(i0) {
+      // "trombone triste": quatro notas descendo
+      const notas = [[233, 0.3], [220, 0.3], [208, 0.3], [196, 0.9]];
+      let o = i0;
+      notas.forEach(([f, dur], j) => {
+        const d = dur * SR;
+        for (let k = 0; k < d; k++) {
+          const tt = k / SR, vib = j === 3 ? 1 + 0.025 * Math.sin(2 * Math.PI * 6 * tt) : 1;
+          const w = 2 * Math.PI * f * vib * tt;
+          const env = Math.min(1, tt / 0.03) * Math.exp(-(k / d) * 1.6);
+          add(efeitos, o + k, (Math.sin(w) + 0.5 * Math.sin(2 * w) + 0.25 * Math.sin(3 * w)) * env * 0.17);
+        }
+        o += Math.round((dur - 0.02) * SR);
+      });
+    },
+    tada(i0) {
+      [523.25, 659.25, 783.99, 1046.5].forEach((f, j) => {
+        const o = i0 + Math.round(j * 0.08 * SR), d = 0.7 * SR;
+        for (let k = 0; k < d; k++) add(efeitos, o + k, (Math.sin((2 * Math.PI * f * k) / SR) + 0.3 * Math.sin((4 * Math.PI * f * k) / SR)) * Math.exp((-k / d) * 5) * 0.14);
+      });
+    },
   };
   for (const [tipo, tt] of sfx) if (FX[tipo]) FX[tipo](Math.round(Math.max(0, tt) * SR));
 
