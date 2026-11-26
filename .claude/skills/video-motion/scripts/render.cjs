@@ -527,7 +527,7 @@ window.__seek = (ms) => {
   let wav = null;
   if (comSom) {
     wav = saida.replace(/\.mp4$/i, '') + '-audio.wav';
-    require('./audio.cjs').gerarAudio(wav, TOTAL, SFX, { trilha: roteiro.trilha !== false && !musica, bpm: roteiro.bpm });
+    require('./audio.cjs').gerarAudio(wav, TOTAL, SFX, { trilha: roteiro.trilha !== false && !musica, estilo: typeof roteiro.trilha === 'string' ? roteiro.trilha : roteiro.estiloMusica, bpm: roteiro.bpm });
   }
   const ffArgs = ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'mjpeg', '-i', '-'];
   if (wav) ffArgs.push('-i', wav);

@@ -15,51 +15,67 @@ function gerarAudio(arquivo, total, sfx, opcoes = {}) {
   const add = (buf, i, v) => { if (i >= 0 && i < n) buf[i] += v; };
 
   // ---------------- trilha ----------------
+  // estilos: "funk" (batida de baile leve), "pop" (animado, 4x4), "trap" (808 + sinos)
   if (opcoes.trilha !== false) {
-    const bpm = opcoes.bpm || 104;
-    const beat = 60 / bpm;
-    // Am - F - C - G (4 tempos cada)
-    const acordes = [
-      [220.0, 261.63, 329.63, 110.0],
-      [174.61, 220.0, 261.63, 87.31],
-      [196.0, 261.63, 329.63, 65.41],
-      [196.0, 246.94, 293.66, 98.0],
-    ];
-    const compasso = beat * 4;
-    let lp = 0, lpSn = 0;
+    const estilo = ['funk', 'pop', 'trap'].includes(opcoes.estilo) ? opcoes.estilo : 'funk';
+    const midi = (m) => 440 * Math.pow(2, (m - 69) / 12);
+    const put = (i0, len, fn) => { for (let k = 0; k < len; k++) { const i = i0 + k; if (i >= n) break; musica[i] += fn(k / SR, k / len); } };
+    const kick = (i0, a = 0.7) => put(i0, (0.32 * SR) | 0, (t) => Math.sin(2 * Math.PI * (45 * t + (110 / 35) * (1 - Math.exp(-35 * t)))) * Math.exp(-t * 11) * a);
+    const hat = (i0, aberto = false, a = 0.09) => { let y = 0; put(i0, ((aberto ? 0.22 : 0.05) * SR) | 0, (t) => { const r = ruido(); y += 0.4 * (r - y); return (r - y) * Math.exp(-t * (aberto ? 14 : 75)) * a; }); };
+    const clap = (i0, a = 0.3) => { let y = 0; put(i0, (0.22 * SR) | 0, (t) => { const r = ruido(); y += 0.25 * (r - y); const env = Math.exp(-t * 20) + (t > 0.012 ? 0.8 * Math.exp(-(t - 0.012) * 60) : 0) + (t > 0.026 ? 0.6 * Math.exp(-(t - 0.026) * 60) : 0); return y * 2.5 * env * a; }); };
+    const baixo = (i0, f, dur = 0.4, a = 0.55) => put(i0, (dur * SR) | 0, (t, p) => { const ph = 2 * Math.PI * f * (t + (0.5 * (1 - Math.exp(-30 * t))) / 30); return (Math.sin(ph) + 0.3 * Math.sin(2 * ph)) * Math.min(1, t / 0.005) * Math.exp(-t * 2.8) * Math.min(1, (1 - p) * 20) * a; });
+    const marimba = (i0, f, dur = 0.35, a = 0.22) => put(i0, (dur * SR) | 0, (t, p) => (Math.sin(2 * Math.PI * f * t) + 0.5 * Math.sin(2 * Math.PI * f * 4 * t) * Math.exp(-t * 30) + 0.2 * Math.sin(2 * Math.PI * f * 2 * t)) * Math.exp(-t * 7) * Math.min(1, (1 - p) * 20) * a);
+    const sino = (i0, f, a = 0.2) => put(i0, (0.9 * SR) | 0, (t, p) => (Math.sin(2 * Math.PI * f * t) + 0.5 * Math.sin(2 * Math.PI * f * 2.76 * t) + 0.25 * Math.sin(2 * Math.PI * f * 5.4 * t)) * Math.exp(-t * 4) * Math.min(1, (1 - p) * 20) * a);
+    const acorde = (i0, notas, dur = 0.2, a = 0.1) => put(i0, (dur * SR) | 0, (t, p) => { let v = 0; for (const m of notas) { const f = midi(m); for (let h = 1; h <= 5; h++) v += Math.sin(2 * Math.PI * f * h * t) / h; } return (v / notas.length) * Math.exp(-t * 10) * Math.min(1, t / 0.004) * Math.min(1, (1 - p) * 20) * a; });
+
+    const bpm = opcoes.bpm || { funk: 130, pop: 120, trap: 140 }[estilo];
+    const passo = 60 / bpm / 4;
+    const compassos = Math.ceil((total + 1) / (passo * 16));
+    const at = (c, st, swing = 0) => Math.round(((c * 16 + st) * passo + (st % 2 ? swing * passo : 0)) * SR);
+
+    for (let c = 0; c < compassos; c++) {
+      if (estilo === 'funk') {
+        const raiz = [45, 45, 41, 43][c % 4];
+        const riff = [[0, 72], [3, 76], [6, 79], [8, 76], [10, 72], [12, 69], [14, 72], [16, 74], [19, 77], [22, 81], [24, 77], [26, 74], [28, 72], [30, 69]];
+        [0, 3, 6, 8, 11, 14].forEach((st) => kick(at(c, st)));
+        [4, 12].forEach((st) => clap(at(c, st)));
+        for (let st = 0; st < 16; st++) hat(at(c, st, 0.12), st % 4 === 2, st % 2 ? 0.05 : 0.09);
+        [0, 6, 8, 14].forEach((st) => baixo(at(c, st), midi(raiz), 0.3));
+        [3, 11].forEach((st) => baixo(at(c, st), midi(raiz + 12), 0.2, 0.4));
+        riff.filter(([st]) => Math.floor(st / 16) === c % 2).forEach(([st, m]) => marimba(at(c, st % 16, 0.12), midi(m)));
+        [6, 14].forEach((st) => sino(at(c, st), midi(93), 0.05));
+      } else if (estilo === 'pop') {
+        const acordes = [[60, 64, 67], [59, 62, 67], [57, 60, 64], [57, 60, 65]];
+        const ac = acordes[c % 4];
+        const raiz = [48, 43, 45, 41][c % 4];
+        [0, 4, 8, 12].forEach((st) => kick(at(c, st), 0.65));
+        [4, 12].forEach((st) => clap(at(c, st)));
+        for (let st = 0; st < 16; st++) hat(at(c, st), st % 4 === 2, st % 2 ? 0.04 : 0.07);
+        [0, 6, 8, 14].forEach((st) => baixo(at(c, st), midi(raiz), 0.22, 0.5));
+        [3, 11].forEach((st) => baixo(at(c, st), midi(raiz + 12), 0.18, 0.4));
+        [0, 6, 10].forEach((st) => acorde(at(c, st), ac, 0.18, 0.13));
+        [0, 2, 4, 7, 8, 10, 12, 14].forEach((st, k) => marimba(at(c, st), midi(ac[[0, 1, 2, 1, 2, 1, 0, 1][k]] + 12), 0.25, 0.17));
+      } else {
+        const raiz = [36, 44, 39, 46][c % 4];
+        const mel = [[[0, 79], [3, 77], [6, 75], [8, 72], [11, 75], [14, 77]], [[0, 75], [3, 77], [6, 79], [10, 82], [12, 79], [14, 77]]][c % 2];
+        [0, 7, 10].forEach((st) => kick(at(c, st), 0.6));
+        clap(at(c, 8), 0.34);
+        baixo(at(c, 0), midi(raiz), 0.9, 0.65);
+        baixo(at(c, 10), midi(raiz), 0.5, 0.55);
+        for (let st = 0; st < 16; st++) {
+          hat(at(c, st), false, st % 4 === 0 ? 0.09 : 0.055);
+          if (c % 2 === 1 && st >= 12) hat(at(c, st) + Math.round((passo * SR) / 2), false, 0.05);
+        }
+        mel.forEach(([st, m]) => sino(at(c, st), midi(m), 0.2));
+      }
+    }
+    // normaliza e aplica entrada/saída suaves
+    let pico = 0;
+    for (let i = 0; i < n; i++) pico = Math.max(pico, Math.abs(musica[i]));
+    const esc = pico > 0 ? 0.9 / pico : 1;
     for (let i = 0; i < n; i++) {
       const tt = i / SR;
-      const ac = acordes[Math.floor(tt / compasso) % 4];
-      const tc = tt % compasso;
-      // pad (acorde) com ataque suave
-      const envPad = Math.min(1, tc / 0.35) * (0.75 + 0.25 * Math.cos((2 * Math.PI * tt) / compasso));
-      let v = 0;
-      for (let k = 0; k < 3; k++) {
-        v += Math.sin(2 * Math.PI * ac[k] * tt) * 0.028 + Math.sin(2 * Math.PI * (ac[k] * 1.004) * tt) * 0.022;
-      }
-      v *= envPad;
-      // arpejo em colcheias
-      const colcheia = beat / 2;
-      const idx = Math.floor(tt / colcheia);
-      const tn = tt % colcheia;
-      const notaArp = ac[[0, 1, 2, 1][idx % 4]] * 2;
-      v += Math.sin(2 * Math.PI * notaArp * tt) * Math.exp(-tn * 9) * 0.045;
-      // baixo
-      const tb = tt % beat;
-      v += Math.sin(2 * Math.PI * ac[3] * tt) * Math.exp(-tb * 3) * 0.12;
-      // bumbo em todos os tempos
-      const fk = 45 + 75 * Math.exp(-tb * 30);
-      v += Math.sin(2 * Math.PI * fk * tb) * Math.exp(-tb * 9) * 0.42;
-      // caixa (tempos 2 e 4)
-      const nb = Math.floor(tt / beat) % 4;
-      if (nb === 1 || nb === 3) { lpSn += 0.35 * (ruido() - lpSn); v += lpSn * Math.exp(-tb * 16) * 0.22; }
-      // chimbal nos contratempos
-      const th = (tt + beat / 2) % beat;
-      const r = ruido(); lp += 0.5 * (r - lp);
-      v += (r - lp) * Math.exp(-th * 45) * 0.07;
-      // fade in / out
-      const fade = Math.min(1, tt / 0.6) * Math.min(1, Math.max(0, (total - tt) / 1.5));
-      musica[i] = v * fade * (opcoes.volumeTrilha ?? 0.55);
+      musica[i] *= esc * Math.min(1, tt / 0.4) * Math.min(1, Math.max(0, (total - tt) / 1.5)) * (opcoes.volumeTrilha ?? 0.5);
     }
   }
 

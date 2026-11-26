@@ -82,6 +82,7 @@ Recursos automáticos no modo notícia: transição com faixas coloridas cruzand
 ### Som
 
 Todo vídeo sai com **trilha original sintetizada** (batida + acordes, sem direitos autorais) e **efeitos sincronizados** (swoosh nas transições, pop nas etiquetas, impacto nos capítulos, brilho nas revelações). A trilha abaixa sozinha quando entra um efeito.
+- `"trilha": "funk" | "pop" | "trap"` → escolhe o estilo da música (padrão: `funk`, batida de baile leve com marimba; `pop` é animado em 4x4; `trap` tem 808 e sinos). O perfil @seres.hu usa o estilo definido em `marcas/seres-hu/marca.json` (`"trilha"`).
 - `"trilha": false` → só os efeitos (ideal para a pessoa colocar um áudio em alta do Instagram por cima).
 - `"som": false` → vídeo mudo.
 - `--musica arquivo.mp3` → usa a música da pessoa no lugar da trilha, mantendo os efeitos.
