@@ -67,7 +67,7 @@ const tema = Object.assign({
 const catCor = (c) => c.cor || (seres ? tema.acento : corCategoria(c.categoria || roteiro.categoria) || tema.acento);
 const marca = roteiro.marca || {};
 
-const DUR_PADRAO = { hook: 3, texto: 3.2, step: 4.8, stat: 3.6, cta: 3.8, manchete: 4.6, citacao: 5, enquete: 4.4 };
+const DUR_PADRAO = { hook: 3, texto: 3.2, step: 4.8, stat: 3.6, cta: 4.2, manchete: 4.6, citacao: 5, enquete: 4.4, vinheta: 1.8, capitulo: 1.4, local: 3.4, curiosidade: 5.2 };
 const durDe = (c) => {
   if (c.duracao) return c.duracao;
   const n = (c.itens || []).length;
@@ -91,7 +91,8 @@ function palavras(texto, t0, passo = 0.12) {
     const abre = w.startsWith('*'), fecha = w.endsWith('*') && (w.length > 1 || !abre);
     if (abre) dentro = true;
     const limpo = esc(w.replace(/\*/g, ''));
-    const html = `<span class="w${dentro ? ' hl' : ''}" style="${anim('vm-word', t0 + i++ * passo, 0.5)}">${limpo}</span>`;
+    const tw = t0 + i++ * passo;
+    const html = `<span class="w${dentro ? ' hl' : ''}" style="${anim('vm-word', tw, 0.5)}${dentro ? `--d:${(tw + 0.35).toFixed(3)}s` : ''}">${limpo}</span>`;
     if (fecha) dentro = false;
     return html;
   }).join(' ');
@@ -104,6 +105,21 @@ function imagemDataURI(p) {
   return `data:image/${ext};base64,${fs.readFileSync(abs).toString('base64')}`;
 }
 
+// ---------- efeitos sonoros (marcados no tempo; o áudio é sintetizado no final) ----------
+const SFX = [];
+const som = (tipo, tt) => { SFX.push([tipo, tt]); return ''; };
+
+// ---------- globo (identidade "mundo/notícias") ----------
+const AZUL = tema.azul || tema.destaque;
+function globoSVG(cls, cor, periodo = 8, estilo = '') {
+  const lat = [-60, -30, 0, 30, 60].map((y) => { const r = Math.sqrt(90 * 90 - y * y); return `<ellipse cx="100" cy="${100 + y}" rx="${r.toFixed(1)}" ry="${(r * 0.14).toFixed(1)}"/>`; }).join('');
+  const mer = [0, 1, 2, 3, 4, 5].map((k) => `<ellipse class="meri" cx="100" cy="100" rx="90" ry="90" style="animation:vm-meri ${periodo}s ease-in-out ${(-k * periodo / 6).toFixed(2)}s infinite"/>`).join('');
+  return `<svg class="${cls}" style="${estilo}" viewBox="-20 -20 240 240" fill="none" stroke="${cor}" stroke-width="1.8"><circle cx="100" cy="100" r="90"/>${lat}${mer}<ellipse cx="100" cy="100" rx="118" ry="30" stroke-width="4" transform="rotate(-14 100 100)"/></svg>`;
+}
+let semente = 7;
+const rnd = () => ((semente = (semente * 16807) % 2147483647) / 2147483647);
+const ESTRELA = '<svg viewBox="0 0 24 24"><path d="M12 0c.8 6.4 5.6 11.2 12 12-6.4.8-11.2 5.6-12 12-.8-6.4-5.6-11.2-12-12C6.4 11.2 11.2 6.4 12 0z" fill="currentColor"/></svg>';
+
 // ---------- cenas ----------
 const svg = (d) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
 const ICONES = [
@@ -114,6 +130,7 @@ const ICONES = [
 ];
 const CENAS = {
   hook(c, t) {
+    som('pop', t + 0.1); if (c.sub) som('tick', t + 1.2);
     return `${c.etiqueta ? `<div class="pill" style="${anim('vm-pop', t + 0.1, 0.5)}">${esc(c.etiqueta)}</div>` : ''}
       <h1 class="big">${palavras(c.texto, t + 0.25, 0.14)}</h1>
       ${c.sub ? `<p class="sub" style="${anim('vm-up', t + 1.2, 0.6)}">${rich(c.sub)}</p>` : ''}`;
@@ -152,6 +169,7 @@ const CENAS = {
       <p class="mid small" style="${anim('vm-up', t + 1.1, 0.6)}">${rich(c.texto || '')}</p>`;
   },
   cta(c, t) {
+    som('pop', t + 0.15); som('pop', t + 1.55);
     const logo = imagemDataURI(marca.logo);
     const inicial = esc((marca.nome || marca.handle || '?').replace('@', '').charAt(0).toUpperCase());
     return `<div class="avatar" style="${anim('vm-pop', t + 0.1, 0.6)}">${logo ? `<img src="${logo}">` : inicial}</div>
@@ -162,15 +180,49 @@ const CENAS = {
       ${c.rodape ? `<div class="rodape"><span style="${anim('vm-up', t + 2.1, 0.5)}">${esc(c.rodape)}</span><div class="icons">${ICONES.map((ic, i) => `<span style="${anim('vm-pop', t + 2.4 + i * 0.18, 0.45)}">${ic}</span>`).join('')}</div></div>` : ''}`;
   },
 
+  // ---------- cenas criativas ----------
+  vinheta(c, t) {
+    const logo = imagemDataURI(c.logo || marca.logo);
+    som('riser', t); som('hit', t + 0.5);
+    return `<div class="vinheta">
+        ${globoSVG('vg', AZUL, 3, anim('vm-pop', t, 0.7))}
+        <span class="ring grande" style="animation:vm-ring 1s ease-out ${(t + 0.5).toFixed(3)}s both"></span>
+        <div class="vlogo" style="animation:vm-slam .65s cubic-bezier(.2,1.3,.3,1) ${(t + 0.4).toFixed(3)}s both">${logo ? `<img src="${logo}">` : `<b>${esc(marca.nome || marca.handle || '')}</b>`}</div>
+      </div>
+      ${c.texto ? `<div class="vtexto" style="${anim('vm-up', t + 0.85, 0.5)}">${rich(c.texto)}</div>` : ''}`;
+  },
+  capitulo(c, t) {
+    som('hit', t + 0.12);
+    return `<div class="cap"><span class="cap-n" style="animation:vm-slam .55s cubic-bezier(.2,1.3,.3,1) ${(t + 0.08).toFixed(3)}s both">${esc(c.numero ?? '')}</span>${c.total ? `<span class="cap-de" style="${anim('vm-up', t + 0.4, 0.4)}">de ${esc(c.total)}</span>` : ''}</div>
+      ${c.titulo ? `<div class="tags" style="${anim('vm-pop', t + 0.45, 0.45)}"><span class="tag" style="background:${catCor(c)}">${esc(c.titulo)}</span></div>` : ''}`;
+  },
+  local(c, t) {
+    som('pop', t + 0.15); som('drop', t + 0.95);
+    return `<div class="globo-local" style="${anim('vm-pop', t + 0.1, 0.6)}">${globoSVG('gl', catCor(c), 6)}
+        <div class="pin" style="animation:vm-pin .7s cubic-bezier(.3,1.5,.5,1) ${(t + 0.7).toFixed(3)}s both"><svg viewBox="0 0 24 32"><path d="M12 0C5.4 0 0 5.2 0 11.7 0 20.4 12 32 12 32s12-11.6 12-20.3C24 5.2 18.6 0 12 0z" fill="#e11d2e"/><circle cx="12" cy="11.5" r="4.6" fill="#fff"/></svg></div>
+        <span class="ring pinring" style="animation:vm-ring 1s ease-out ${(t + 1.05).toFixed(3)}s both"></span>
+      </div>
+      <div class="tags" style="${anim('vm-pop', t + 1.1, 0.45)}"><span class="tag lugar" style="background:${catCor(c)}">${esc(c.bandeira || '📍')} ${esc(c.lugar || '')}</span></div>
+      ${c.texto ? `<h2 class="mid">${palavras(c.texto, t + 1.35, 0.08)}</h2>` : ''}`;
+  },
+  curiosidade(c, t) {
+    som('pop', t + 0.15); som('shine', t + 1.7);
+    return `<div class="tags" style="${anim('vm-pop', t + 0.1, 0.45)}"><span class="tag" style="background:${catCor(c)}">${esc(c.etiqueta || 'Curiosidade')}</span></div>
+      <h2 class="big">${palavras(c.pergunta || 'Você *sabia?*', t + 0.3, 0.1)}</h2>
+      <div class="revela" style="${anim('vm-up', t + 0.8, 0.5)}"><p style="animation:vm-unblur .9s ease ${(t + 1.7).toFixed(3)}s both">${rich(c.texto || '')}</p><span class="scan" style="animation:vm-scan .9s ease-in-out ${(t + 1.6).toFixed(3)}s both"></span></div>
+      ${fonteHtml(c, t + 2.5)}`;
+  },
+
   // ---------- modo notícia ----------
   manchete(c, t, d) {
     const cor = catCor(c), img = imagemDataURI(c.imagem);
     const visual = img
       ? `<div class="foto" style="${anim('vm-up', t + 0.05, 0.6)}"><img src="${img}" style="animation:vm-zoom ${d.toFixed(2)}s linear ${t.toFixed(3)}s both"></div>`
-      : c.icone ? `<div class="emoji" style="${anim('vm-pop', t + 0.05, 0.6)}">${esc(c.icone)}</div>` : '';
+      : c.icone ? `<div class="emoji-wrap" style="${anim('vm-pop', t + 0.05, 0.6)}"><span class="ring" style="animation:vm-ring .9s ease-out ${(t + 0.2).toFixed(3)}s both"></span><span class="emoji" style="animation:vm-bob 2.6s ease-in-out ${t.toFixed(3)}s infinite">${esc(c.icone)}</span></div>` : '';
     const tags = (c.fake ? `<span class="tag fake">✕</span>` : '') + (c.urgente ? `<span class="tag urg"><i style="animation:vm-blink .9s steps(2,jump-none) ${t.toFixed(3)}s infinite"></i>${esc(c.urgente === true ? 'URGENTE' : c.urgente)}</span>` : '')
       + (c.categoria || roteiro.categoria ? `<span class="tag" style="background:${cor}">${esc(c.categoria || roteiro.categoria)}</span>` : '');
     const nPal = String(c.texto || '').split(/\s+/).length;
+    som('pop', t + 0.25); if (c.fake) som('hit', t + 0.3);
     return `${visual}
       ${tags ? `<div class="tags" style="${anim('vm-pop', t + 0.25, 0.5)}">${tags}</div>` : ''}
       <h1 class="news">${palavras(c.texto, t + 0.45, 0.09)}</h1>
@@ -179,6 +231,7 @@ const CENAS = {
   },
   fatos(c, t) {
     const cor = catCor(c), itens = c.itens || [];
+    itens.forEach((_, i) => som('tick', t + 0.75 + i * 0.9));
     return `${c.titulo ? `<h2 class="mid" style="${anim('vm-up', t + 0.15, 0.6)}">${rich(c.titulo)}</h2>` : ''}
       <div class="fatos-list">${itens.map((it, i) => {
         const o = typeof it === 'string' ? { texto: it } : it;
@@ -187,6 +240,7 @@ const CENAS = {
       ${fonteHtml(c, t + 0.9 + itens.length * 0.9)}`;
   },
   citacao(c, t) {
+    som('pop', t + 0.15);
     const cor = catCor(c), img = imagemDataURI(c.imagem);
     return `<div class="aspas" style="${anim('vm-pop', t + 0.1, 0.5)}color:${cor}">“</div>
       <blockquote class="quote">${palavras(c.texto, t + 0.3, 0.07)}</blockquote>
@@ -195,6 +249,7 @@ const CENAS = {
   },
   enquete(c, t) {
     const cor = catCor(c);
+    (c.opcoes || []).slice(0, 3).forEach((_, i) => som('pop', t + 1.15 + i * 0.35));
     return `<h2 class="mid">${palavras(c.pergunta || 'E você, o que acha?', t + 0.2, 0.09)}</h2>
       <div class="opcoes">${(c.opcoes || []).slice(0, 3).map((o, i) => `<div class="opcao" style="${anim('vm-pop', t + 1.1 + i * 0.35, 0.5)}"><b style="background:${cor}">${String.fromCharCode(65 + i)}</b><span>${rich(o)}</span></div>`).join('')}</div>
       <p class="sub" style="${anim('vm-up', t + 2.2, 0.5)}">${rich(c.sub || 'Comenta aqui embaixo 👇')}</p>`;
@@ -209,13 +264,25 @@ const cenas = (roteiro.cenas || []).map((c, i, arr) => {
   if (!gerar) throw new Error(`Tipo de cena desconhecido: "${c.type}" (use: ${Object.keys(CENAS).join(', ')})`);
   const ultima = i === arr.length - 1;
   const html = `<section class="scene" style="animation:vm-in .45s cubic-bezier(.2,.8,.2,1) ${t.toFixed(3)}s both${ultima ? '' : `, vm-out .4s ease-in ${(t + d - 0.4).toFixed(3)}s forwards`}">
-    <div class="content ${c.type}">${gerar(c, t, d)}</div>
+    <div class="content ${c.type}" style="animation:vm-push ${d.toFixed(2)}s linear ${t.toFixed(3)}s both">${gerar(c, t, d)}</div>
     ${c.legenda ? `<div class="caption" style="${anim('vm-up', t + 0.3, 0.4)}">${rich(c.legenda)}</div>` : ''}
   </section>`;
   const inicio = t; t += d;
   return { html, inicio, d };
 });
 const TOTAL = t;
+const transicao = roteiro.transicao || (noticia ? 'wipe' : 'fade');
+const logoMarca = imagemDataURI(marca.logo);
+const wipesHtml = transicao === 'wipe' ? cenas.slice(1).map(({ inicio }) => {
+  som('whoosh', inicio - 0.38);
+  const a = (inicio - 0.36).toFixed(3), b = (inicio - 0.28).toFixed(3);
+  return `<div class="wipe w2" style="animation:vm-wipe .72s cubic-bezier(.7,0,.3,1) ${b}s both"></div><div class="wipe w1" style="animation:vm-wipe .72s cubic-bezier(.7,0,.3,1) ${a}s both">${logoMarca ? `<img src="${logoMarca}">` : ''}</div>`;
+}).join('') : '';
+const enfeites = roteiro.enfeites ?? noticia;
+const estrelasHtml = enfeites ? Array.from({ length: 9 }, (_, i) => {
+  const x = (8 + rnd() * 84).toFixed(1), y = (10 + rnd() * 80).toFixed(1), sz = Math.round(26 + rnd() * 34), dl = (-rnd() * 3).toFixed(2);
+  return `<span class="estrela" style="left:${x}%;top:${y}%;width:${sz}px;height:${sz}px;animation:vm-twinkle ${(2.2 + rnd() * 1.6).toFixed(2)}s ease-in-out ${dl}s infinite">${ESTRELA}</span>`;
+}).join('') + globoSVG('globo-bg', AZUL, 14) : '';
 const quadros = Math.round(TOTAL * FPS);
 const seguro = H >= 1900 ? [220, 380] : H >= 1300 ? [120, 160] : [80, 100];
 const tickerTxt = roteiro.ticker ? (Array.isArray(roteiro.ticker) ? roteiro.ticker : [roteiro.ticker]) : null;
@@ -229,7 +296,7 @@ const tickerHtml = tickerTxt ? (() => {
 })() : '';
 
 const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><style>
-:root{--fundo:${tema.fundo};--fundo2:${tema.fundo2};--texto:${tema.texto};--suave:${tema.suave};--destaque:${tema.destaque};--acento:${tema.acento};--cartao:${tema.cartao};--cartaoTexto:${tema.cartaoTexto};--botao:${tema.botao};--botaoTexto:${tema.botaoTexto}}
+:root{--marcador:${tema.marcador || (seres ? '#c4b1ff' : 'rgba(255,210,63,.3)')};--fundo:${tema.fundo};--fundo2:${tema.fundo2};--texto:${tema.texto};--suave:${tema.suave};--destaque:${tema.destaque};--acento:${tema.acento};--cartao:${tema.cartao};--cartaoTexto:${tema.cartaoTexto};--botao:${tema.botao};--botaoTexto:${tema.botaoTexto}}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:${W}px;height:${H}px;overflow:hidden;background:var(--fundo);color:var(--texto);font-family:'${tema.fonte}','Inter','Noto Color Emoji',sans-serif;-webkit-font-smoothing:antialiased}
 .bg{position:absolute;inset:0;overflow:hidden}
@@ -338,6 +405,50 @@ button{font:inherit;border:0;background:var(--botao);color:var(--botaoTexto);fon
 .estilo-seres .avatar{border-color:${tema.azul || '#4f6ef7'}}
 .estilo-seres .follow{background:var(--acento);color:#fff}
 .estilo-seres .caption{background:var(--acento);color:#fff}
+.hl{position:relative}
+.hl::after{content:'';position:absolute;left:-6px;right:-6px;bottom:.04em;height:.38em;background:var(--marcador);z-index:-1;transform-origin:left;animation:vm-mark .45s cubic-bezier(.6,0,.2,1) var(--d,0s) both}
+.estilo-seres .news .hl{color:#fff}
+.estilo-seres .news{--marcador:${AZUL}}
+.emoji-wrap{position:relative;display:grid;place-items:center;width:210px;height:210px}
+.emoji-wrap .emoji{font-size:170px;line-height:1;display:block}
+.ring{position:absolute;left:50%;top:50%;width:220px;height:220px;margin:-110px 0 0 -110px;border-radius:50%;border:10px solid var(--acento);pointer-events:none}
+.ring.grande{width:560px;height:560px;margin:-280px 0 0 -280px;border-color:${AZUL}}
+.estrela{position:absolute;color:${AZUL};opacity:.0}
+.estrela svg{width:100%;height:100%;display:block}
+.globo-bg{position:absolute;width:1300px;height:1300px;right:-520px;bottom:-380px;opacity:.13}
+.meri{transform-box:fill-box;transform-origin:center}
+.wipe{position:absolute;top:-10%;bottom:-10%;left:-30%;width:160%;z-index:30;display:grid;place-items:center}
+.wipe.w1{background:var(--acento)}
+.wipe.w2{background:${AZUL}}
+.wipe img{width:260px;height:260px;border-radius:50%;transform:skewX(14deg)}
+.vinheta{position:relative;width:640px;height:640px;display:grid;place-items:center}
+.vinheta .vg{position:absolute;inset:0;width:100%;height:100%}
+.vlogo{position:relative;width:400px;height:400px;border-radius:50%;overflow:hidden;box-shadow:0 30px 80px rgba(40,20,120,.35);display:grid;place-items:center;background:${AZUL};color:#fff;font-size:70px;font-weight:900}
+.vlogo img{width:100%;height:100%;object-fit:cover}
+.vtexto{font-size:48px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+.cap{display:flex;align-items:flex-end;gap:20px;line-height:.8}
+.cap-n{font-size:460px;font-weight:900;letter-spacing:-.06em;color:var(--acento);text-shadow:18px 18px 0 ${AZUL}}
+.cap-de{font-size:80px;font-weight:900;color:var(--suave);padding-bottom:40px}
+.globo-local{position:relative;width:620px;height:620px}
+.globo-local .gl{width:100%;height:100%}
+.pin{position:absolute;left:41%;top:24%;width:96px;height:128px;filter:drop-shadow(0 12px 10px rgba(0,0,0,.3))}
+.pin svg{width:100%;height:100%}
+.pinring{left:calc(41% + 48px);top:calc(24% + 128px);width:120px;height:44px;margin:-22px 0 0 -60px;border-width:6px;border-color:#e11d2e}
+.tag.lugar{font-size:44px;text-transform:none;letter-spacing:0;font-style:normal}
+.revela{position:relative;overflow:hidden;align-self:stretch;background:var(--cartao);color:var(--cartaoTexto);border-radius:26px;padding:40px 44px;font-size:52px;font-weight:700;line-height:1.25;text-align:left;box-shadow:0 20px 50px rgba(40,20,120,.18)}
+.estilo-seres .revela{border-left:14px solid var(--acento);border-radius:0 26px 26px 0}
+.scan{position:absolute;left:0;right:0;top:0;height:120px;background:linear-gradient(transparent,rgba(255,255,255,.95),transparent)}
+@keyframes vm-mark{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes vm-ring{from{opacity:.9;transform:scale(.3)}to{opacity:0;transform:scale(1.9)}}
+@keyframes vm-bob{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-16px) rotate(5deg)}}
+@keyframes vm-twinkle{0%,100%{opacity:0;transform:scale(.4) rotate(0)}50%{opacity:.85;transform:scale(1) rotate(45deg)}}
+@keyframes vm-meri{from{transform:scaleX(1)}to{transform:scaleX(-1)}}
+@keyframes vm-wipe{from{transform:translateX(-150%) skewX(-14deg)}to{transform:translateX(150%) skewX(-14deg)}}
+@keyframes vm-slam{0%{opacity:0;transform:scale(2.6) rotate(-10deg)}60%{opacity:1;transform:scale(.93) rotate(2deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes vm-pin{from{opacity:0;transform:translateY(-420px)}30%{opacity:1}to{opacity:1;transform:translateY(0)}}
+@keyframes vm-unblur{from{filter:blur(22px);opacity:.55}to{filter:blur(0);opacity:1}}
+@keyframes vm-scan{from{transform:translateY(-130px)}to{transform:translateY(600px)}}
+@keyframes vm-push{from{transform:scale(1)}to{transform:scale(1.035)}}
 @keyframes vm-zoom{from{transform:scale(1.18)}to{transform:scale(1)}}
 @keyframes vm-blink{0%{opacity:1}100%{opacity:.15}}
 @keyframes vm-ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
@@ -355,7 +466,7 @@ button{font:inherit;border:0;background:var(--botao);color:var(--botaoTexto);fon
 @keyframes vm-drift1{from{transform:translate(0,0)}to{transform:translate(380px,${Math.round(H * 0.35)}px)}}
 @keyframes vm-drift2{from{transform:translate(0,0)}to{transform:translate(-320px,-${Math.round(H * 0.3)}px)}}
 </style></head><body class="estilo-${esc(roteiro.estilo || 'padrao')}">
-<div class="bg"><div class="blob b1"></div><div class="blob b2"></div><div class="grain"></div></div>
+<div class="bg"><div class="blob b1"></div><div class="blob b2"></div><div class="grain"></div>${estrelasHtml}</div>
 ${roteiro.barraProgresso === false ? '' : '<div class="progress"><div></div></div>'}
 ${tickerHtml}
 ${marca.handle && roteiro.mostrarMarca !== false ? (() => {
@@ -365,6 +476,7 @@ ${marca.handle && roteiro.mostrarMarca !== false ? (() => {
     : `<div class="brand">${esc(marca.handle)}</div>`;
 })() : ''}
 ${cenas.map((c) => c.html).join('\n')}
+${wipesHtml}
 <script>
 const ease = (x) => 1 - Math.pow(1 - x, 3);
 window.__seek = (ms) => {
@@ -392,10 +504,21 @@ window.__seek = (ms) => {
   await page.evaluate(() => document.fonts.ready);
   await page.evaluate(() => window.__seek(0));
 
+  // áudio: trilha sintetizada + efeitos (desligue com "som": false; só efeitos com "trilha": false)
+  const comSom = roteiro.som !== false;
+  let wav = null;
+  if (comSom) {
+    wav = saida.replace(/\.mp4$/i, '') + '-audio.wav';
+    require('./audio.cjs').gerarAudio(wav, TOTAL, SFX, { trilha: roteiro.trilha !== false && !musica, bpm: roteiro.bpm });
+  }
   const ffArgs = ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'mjpeg', '-i', '-'];
+  if (wav) ffArgs.push('-i', wav);
   if (musica) ffArgs.push('-i', path.resolve(musica));
   ffArgs.push('-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-pix_fmt', 'yuv420p', '-r', String(FPS));
-  if (musica) ffArgs.push('-c:a', 'aac', '-b:a', '192k', '-af', `afade=t=out:st=${Math.max(0, TOTAL - 1.5).toFixed(2)}:d=1.5`, '-shortest');
+  const fadeOut = `afade=t=out:st=${Math.max(0, TOTAL - 1.5).toFixed(2)}:d=1.5`;
+  if (wav && musica) ffArgs.push('-filter_complex', `[2:a]volume=0.35,${fadeOut}[m];[1:a][m]amix=inputs=2:duration=first:normalize=0[a]`, '-map', '0:v', '-map', '[a]');
+  else if (musica) ffArgs.push('-af', fadeOut);
+  if (wav || musica) ffArgs.push('-c:a', 'aac', '-b:a', '192k', '-t', TOTAL.toFixed(3));
   ffArgs.push('-movflags', '+faststart', saida);
   const ff = spawn('ffmpeg', ffArgs, { stdio: ['pipe', 'inherit', 'inherit'] });
   const fim = new Promise((ok, erro) => ff.on('close', (code) => (code === 0 ? ok() : erro(new Error('ffmpeg saiu com código ' + code)))));
@@ -416,6 +539,7 @@ window.__seek = (ms) => {
 
   await browser.close();
   await fim;
+  if (wav) fs.unlinkSync(wav);
   process.stdout.write('\rRenderizando 100%\n');
   console.log('Vídeo:', saida);
   console.log('Capa: ', capa);

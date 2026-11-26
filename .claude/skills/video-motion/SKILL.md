@@ -68,6 +68,32 @@ Exemplos completos: `exemplos/fechamento-do-mes.json` (educativo) e `exemplos/no
 - Números em `stat` devem ser reais ou claramente ilustrativos — não invente dados apresentados como fatos sobre terceiros.
 - Escreva no idioma e no tom do perfil da pessoa; português do Brasil por padrão.
 
+### Cenas criativas (use para deixar o vídeo vivo)
+
+| type | campos | duração padrão | para quê |
+|---|---|---|---|
+| `vinheta` | `texto?`, `logo?` | 1,8 s | abertura com o logo da marca entrando sobre um globo girando + impacto sonoro |
+| `capitulo` | `numero`, `total?`, `titulo?` | 1,4 s | divisória "1 de 3" gigante entre notícias |
+| `local` | `lugar`, `bandeira` (emoji), `texto?` | 3,4 s | globo com pino caindo — onde a notícia aconteceu |
+| `curiosidade` | `pergunta`, `texto`, `etiqueta?`, `fonte?` | 5,2 s | "Você sabia?" com o texto desfocado que se revela |
+
+Recursos automáticos no modo notícia: transição com faixas coloridas cruzando a tela (com o logo), marca-texto animado nas `*palavras*`, emoji flutuando com onda, estrelas e globo girando no fundo, leve zoom contínuo. Controle com `"transicao": "wipe" | "fade"` e `"enfeites": false`.
+
+### Som
+
+Todo vídeo sai com **trilha original sintetizada** (batida + acordes, sem direitos autorais) e **efeitos sincronizados** (swoosh nas transições, pop nas etiquetas, impacto nos capítulos, brilho nas revelações). A trilha abaixa sozinha quando entra um efeito.
+- `"trilha": false` → só os efeitos (ideal para a pessoa colocar um áudio em alta do Instagram por cima).
+- `"som": false` → vídeo mudo.
+- `--musica arquivo.mp3` → usa a música da pessoa no lugar da trilha, mantendo os efeitos.
+- `"bpm": 104` → velocidade da trilha.
+
+### Roteiro que prende (estrutura recomendada para notícias)
+
+1. `vinheta` (marca) → 2. `hook` com promessa + motivo para ficar ("Fica até o fim: tem enquete 👀") → para cada notícia: `capitulo` → `local` (se for de outro lugar) ou direto `manchete` → `fatos` ou `citacao` → um `curiosidade` com um detalhe surpreendente **verificado** → `enquete` → `cta`.
+- Ganchos em forma de pergunta ou contraste ("O que *todo mundo* está comentando hoje", "Isso *não* é o que parece") funcionam melhor que títulos neutros.
+- Cada notícia: 10–15 s. Vídeo total: 30–60 s.
+- A curiosidade precisa vir de fonte, como o resto — é o "momento uau", não invenção.
+
 ### Marcas salvas
 
 `marcas/<nome>/marca.json` guarda a identidade de um perfil (estilo, @, nome, logo, CTA e editorias). Ao fazer vídeo para um perfil salvo, copie desses campos para o roteiro; `marca.logo` é relativo ao JSON do roteiro, então use o caminho até `marcas/<nome>/logo.png`.
