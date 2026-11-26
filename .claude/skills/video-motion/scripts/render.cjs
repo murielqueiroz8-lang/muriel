@@ -67,7 +67,7 @@ const tema = Object.assign({
 const catCor = (c) => c.cor || (seres ? tema.acento : corCategoria(c.categoria || roteiro.categoria) || tema.acento);
 const marca = roteiro.marca || {};
 
-const DUR_PADRAO = { hook: 3, texto: 3.2, step: 4.8, stat: 3.6, cta: 4.2, manchete: 4.6, citacao: 5, enquete: 4.4, vinheta: 1.8, meme: 2.8, capitulo: 1.4, local: 3.4, curiosidade: 5.2 };
+const DUR_PADRAO = { hook: 3, texto: 3.2, step: 4.8, stat: 3.6, cta: 4.2, manchete: 4.6, citacao: 5, enquete: 4.4, vinheta: 1.8, meme: 2.8, clipe: 4, capitulo: 1.4, local: 3.4, curiosidade: 5.2 };
 const durDe = (c) => {
   if (c.duracao) return c.duracao;
   const n = (c.itens || []).length;
@@ -131,6 +131,8 @@ const ICONES = [
   svg('<path d="M6 3h12v18l-6-4.5L6 21z"/>'),
 ];
 const KEYFRAMES_EXTRA = [];
+const CLIPES = [];      // vídeos de meme usados (frames extraídos antes do render)
+const MUDO = [];        // trechos em que a trilha some para o áudio do clipe tocar
 let uidGraf = 0;
 const CENAS = {
   hook(c, t) {
@@ -194,6 +196,22 @@ const CENAS = {
       ${txt(c.topo, 'top')}${txt(c.base, 'base')}
     </div>
     ${c.credito ? `<div class="fonte" style="${anim('vm-up', t + 0.8, 0.4)}">Imagem: ${esc(c.credito)}</div>` : ''}`;
+  },
+
+  // ---------- clipe de meme (vídeo do usuário, com o áudio original) ----------
+  clipe(c, t, d) {
+    const arq = path.resolve(baseDir, c.arquivo || '');
+    if (!fs.existsSync(arq)) throw new Error('Clipe não encontrado: ' + arq);
+    const k = CLIPES.length, ss = +c.inicio || 0;
+    CLIPES.push({ k, arquivo: arq, ss, dur: d, ini: t, audio: c.audio !== false, vol: c.volume ?? 0.85 });
+    if (c.audio !== false) MUDO.push([t - 0.05, t + d + 0.1]);
+    som('whoosh', t - 0.05);
+    const txt = (v, cls) => v ? `<div class="m-txt ${cls}" style="font-size:64px;${anim('vm-pop', t + 0.3, 0.4)}">${esc(v)}</div>` : '';
+    return `<div class="clipe-card" style="animation:vm-slam .45s cubic-bezier(.2,1.3,.3,1) ${(t + 0.03).toFixed(3)}s both">
+        <img class="clipe-bg" data-clipe="${k}"><img class="clipe-img" data-clipe="${k}">
+        ${txt(c.topo, 'top')}${txt(c.base, 'base')}
+      </div>
+      ${c.credito ? `<div class="fonte" style="${anim('vm-up', t + 0.5, 0.4)}">🎥 ${esc(c.credito)}</div>` : ''}`;
   },
 
   // ---------- formatos de meme: gráfico de pizza e POV ----------
@@ -344,6 +362,7 @@ const tickerHtml = tickerTxt ? (() => {
   return `<div class="ticker"><span class="tk-label">${esc(roteiro.tickerRotulo || 'AGORA')}</span><div class="tk-track"><div class="tk-move" style="animation:vm-ticker ${Math.max(10, chars * 0.16 * 2).toFixed(1)}s linear 0s infinite">${seg.repeat(2)}${seg.repeat(2)}</div></div></div>`;
 })() : '';
 
+const FRAMES_DIR = saida.replace(/\.mp4$/i, '') + '-frames';
 const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><style>
 :root{--marcador:${tema.marcador || (seres ? '#c4b1ff' : 'rgba(255,210,63,.3)')};--fundo:${tema.fundo};--fundo2:${tema.fundo2};--texto:${tema.texto};--suave:${tema.suave};--destaque:${tema.destaque};--acento:${tema.acento};--cartao:${tema.cartao};--cartaoTexto:${tema.cartaoTexto};--botao:${tema.botao};--botaoTexto:${tema.botaoTexto}}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -511,6 +530,9 @@ button{font:inherit;border:0;background:var(--botao);color:var(--botaoTexto);fon
 .graf-pizza svg{width:100%;height:100%;overflow:visible}
 .graf-emoji{position:absolute;left:8%;top:14%;font-size:260px;line-height:1}
 .pov-emoji{position:absolute;font-size:480px;line-height:1;filter:drop-shadow(0 20px 20px rgba(0,0,0,.25))}
+.clipe-card{position:relative;width:100%;height:1150px;border-radius:28px;overflow:hidden;background:#000;box-shadow:0 30px 80px rgba(40,20,120,.35)}
+.clipe-bg{position:absolute;inset:-60px;width:calc(100% + 120px);height:calc(100% + 120px);object-fit:cover;filter:blur(38px) brightness(.7)}
+.clipe-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
 @keyframes vm-zoom{from{transform:scale(1.18)}to{transform:scale(1)}}
 @keyframes vm-blink{0%{opacity:1}100%{opacity:.15}}
 @keyframes vm-ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
@@ -542,7 +564,17 @@ ${wipesHtml}
 <style>${KEYFRAMES_EXTRA.join('')}</style>
 <script>
 const ease = (x) => 1 - Math.pow(1 - x, 3);
+const CLIPES = ${JSON.stringify(CLIPES.map((c) => ({ k: c.k, ini: c.ini * 1000, dur: c.dur * 1000, n: Math.ceil(c.dur * FPS), dir: 'file://' + FRAMES_DIR + '/c' + c.k })))};
+window.__pend = [];
+window.__ready = async () => { await Promise.all(window.__pend.splice(0)); };
 window.__seek = (ms) => {
+  for (const c of CLIPES) {
+    const idx = Math.min(c.n, Math.max(1, Math.floor(((ms - c.ini) / 1000) * ${FPS}) + 1));
+    const url = c.dir + '/f_' + String(idx).padStart(4, '0') + '.jpg';
+    for (const el of document.querySelectorAll('[data-clipe="' + c.k + '"]')) {
+      if (el.dataset.cur !== url) { el.dataset.cur = url; el.src = url; window.__pend.push(el.decode().catch(() => {})); }
+    }
+  }
   for (const a of document.getAnimations()) { a.pause(); a.currentTime = ms; }
   for (const el of document.querySelectorAll('[data-count]')) {
     const p = Math.min(1, Math.max(0, (ms - +el.dataset.start) / +el.dataset.dur));
@@ -563,31 +595,49 @@ window.__seek = (ms) => {
   const { chromium } = require('playwright');
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
+  for (const c of CLIPES) {
+    const dir = path.join(FRAMES_DIR, 'c' + c.k);
+    fs.mkdirSync(dir, { recursive: true });
+    const r = require('child_process').spawnSync('ffmpeg', ['-y', '-loglevel', 'error', '-ss', String(c.ss), '-t', c.dur.toFixed(3), '-i', c.arquivo, '-vf', `fps=${FPS},scale=720:-2`, '-q:v', '4', path.join(dir, 'f_%04d.jpg')]);
+    if (r.status !== 0) throw new Error('Falha ao extrair quadros de ' + c.arquivo);
+  }
   await page.goto('file://' + htmlPath);
   await page.evaluate(() => document.fonts.ready);
   await page.evaluate(() => window.__seek(0));
+  await page.evaluate(() => window.__ready());
 
   // áudio: trilha sintetizada + efeitos (desligue com "som": false; só efeitos com "trilha": false)
   const comSom = roteiro.som !== false;
   let wav = null;
   if (comSom) {
     wav = saida.replace(/\.mp4$/i, '') + '-audio.wav';
-    require('./audio.cjs').gerarAudio(wav, TOTAL, SFX, { trilha: roteiro.trilha !== false && !musica, estilo: typeof roteiro.trilha === 'string' ? roteiro.trilha : roteiro.estiloMusica, bpm: roteiro.bpm });
+    require('./audio.cjs').gerarAudio(wav, TOTAL, SFX, { trilha: roteiro.trilha !== false && !musica, estilo: typeof roteiro.trilha === 'string' ? roteiro.trilha : roteiro.estiloMusica, bpm: roteiro.bpm, mudo: MUDO });
   }
   const ffArgs = ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'mjpeg', '-i', '-'];
-  if (wav) ffArgs.push('-i', wav);
-  if (musica) ffArgs.push('-i', path.resolve(musica));
-  ffArgs.push('-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-pix_fmt', 'yuv420p', '-r', String(FPS));
   const fadeOut = `afade=t=out:st=${Math.max(0, TOTAL - 1.5).toFixed(2)}:d=1.5`;
-  if (wav && musica) ffArgs.push('-filter_complex', `[2:a]volume=0.35,${fadeOut}[m];[1:a][m]amix=inputs=2:duration=first:normalize=0[a]`, '-map', '0:v', '-map', '[a]');
-  else if (musica) ffArgs.push('-af', fadeOut);
-  if (wav || musica) ffArgs.push('-c:a', 'aac', '-b:a', '192k', '-t', TOTAL.toFixed(3));
+  const filtros = [], rotulos = [];
+  let idx = 1;
+  if (wav) { ffArgs.push('-i', wav); rotulos.push(`[${idx}:a]`); idx++; }
+  if (musica) { ffArgs.push('-i', path.resolve(musica)); filtros.push(`[${idx}:a]volume=0.35,${fadeOut}[m]`); rotulos.push('[m]'); idx++; }
+  if (comSom) for (const c of CLIPES.filter((x) => x.audio)) {
+    ffArgs.push('-ss', String(c.ss), '-t', c.dur.toFixed(3), '-i', c.arquivo);
+    const ms = Math.max(0, Math.round(c.ini * 1000));
+    filtros.push(`[${idx}:a]aresample=44100,aformat=channel_layouts=mono,volume=${c.vol},adelay=${ms}|${ms}[c${c.k}]`);
+    rotulos.push(`[c${c.k}]`); idx++;
+  }
+  ffArgs.push('-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-pix_fmt', 'yuv420p', '-r', String(FPS));
+  if (rotulos.length > 1) {
+    filtros.push(`${rotulos.join('')}amix=inputs=${rotulos.length}:duration=longest:normalize=0[a]`);
+    ffArgs.push('-filter_complex', filtros.join(';'), '-map', '0:v', '-map', '[a]');
+  } else if (musica) ffArgs.push('-af', fadeOut);
+  if (rotulos.length) ffArgs.push('-c:a', 'aac', '-b:a', '192k', '-t', TOTAL.toFixed(3));
   ffArgs.push('-movflags', '+faststart', saida);
   const ff = spawn('ffmpeg', ffArgs, { stdio: ['pipe', 'inherit', 'inherit'] });
   const fim = new Promise((ok, erro) => ff.on('close', (code) => (code === 0 ? ok() : erro(new Error('ffmpeg saiu com código ' + code)))));
 
   for (let f = 0; f < quadros; f++) {
     await page.evaluate((ms) => window.__seek(ms), (f / FPS) * 1000);
+    await page.evaluate(() => window.__ready());
     const buf = await page.screenshot({ type: 'jpeg', quality: 94 });
     if (!ff.stdin.write(buf)) await new Promise((r) => ff.stdin.once('drain', r));
     if (f % FPS === 0) process.stdout.write(`\rRenderizando ${Math.round((f / quadros) * 100)}%`);
@@ -597,12 +647,14 @@ window.__seek = (ms) => {
   // capa (thumbnail): por padrão, o fim da primeira cena
   const tCapa = capaSeg != null ? +capaSeg : Math.max(0.5, (cenas[0]?.d || 1) - 0.6);
   await page.evaluate((ms) => window.__seek(ms), tCapa * 1000);
+  await page.evaluate(() => window.__ready());
   const capa = saida.replace(/\.mp4$/i, '') + '-capa.jpg';
   await page.screenshot({ path: capa, type: 'jpeg', quality: 92 });
 
   await browser.close();
   await fim;
   if (wav) fs.unlinkSync(wav);
+  fs.rmSync(FRAMES_DIR, { recursive: true, force: true });
   process.stdout.write('\rRenderizando 100%\n');
   console.log('Vídeo:', saida);
   console.log('Capa: ', capa);

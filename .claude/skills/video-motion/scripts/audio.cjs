@@ -75,6 +75,12 @@ function gerarAudio(arquivo, total, sfx, opcoes = {}) {
     const esc = pico > 0 ? 0.9 / pico : 1;
     for (let i = 0; i < n; i++) {
       const tt = i / SR;
+      let mudo = 1;
+      for (const [a0, b0] of opcoes.mudo || []) {
+        const m = tt >= a0 && tt <= b0 ? 0 : Math.min(1, (tt < a0 ? a0 - tt : tt - b0) / 0.15);
+        mudo = Math.min(mudo, m);
+      }
+      musica[i] *= mudo;
       musica[i] *= esc * Math.min(1, tt / 0.4) * Math.min(1, Math.max(0, (total - tt) / 1.5)) * (opcoes.volumeTrilha ?? 0.5);
     }
   }

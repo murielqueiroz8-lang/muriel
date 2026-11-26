@@ -97,6 +97,8 @@ Todo vídeo sai com **trilha original sintetizada** (batida + acordes, sem direi
 
 ### Memes (humor)
 
+Cena `clipe`: vídeo de meme da biblioteca, com o áudio original — `arquivo`, `inicio?` (s), `duracao?` (padrão 4), `credito`, `topo?`, `base?`, `audio?` (false para tirar o som), `volume?` (padrão 0.85). O catálogo dos clipes disponíveis, com tom e onde usar, está em `marcas/seres-hu/memes/memes.json`.
+
 Cena `meme`: `imagem?` (arquivo do meme) ou `emoji` (meme original, sem imagem), `topo?`, `base?` (texto clássico branco com contorno preto), `som?` (`hit` impacto, `boing` mola, `fail` trombone triste, `tada` comemoração, `shine`), `credito?`, duração padrão 2,8 s.
 
 Formatos de meme prontos (todos originais, feitos com emoji):
@@ -108,7 +110,7 @@ Formatos de meme prontos (todos originais, feitos com emoji):
 - **Nunca** use meme em notícia de morte, crime, violência, desastre, doença, acidente, guerra, luto, abuso ou qualquer assunto com vítimas. Nesses vídeos, nenhum meme e nenhum som de humor.
 - Em **política**: só humor sobre a situação ou o processo (prazo, burocracia, "ninguém entendeu"). Nada que ridicularize a aparência, a saúde ou a família de alguém, e nada que favoreça lado político.
 - **Fonte dos memes**, em ordem de preferência: (1) a biblioteca da pessoa em `marcas/seres-hu/memes/` (leia `memes.json` e escolha pelo `tom` e `usar_em`; o caminho da imagem no roteiro é relativo ao JSON do roteiro, então aponte até a pasta `memes/`); (2) meme **original de emoji**, feito pela própria skill; (3) imagem de uso livre (ex.: Wikimedia Commons com licença que permita), com `credito` na tela.
-- **Não reutilize vídeos baixados do TikTok ou de outros criadores** (têm marca d'água, dono e música licenciada, e o Instagram reduz o alcance de repostagens com marca d'água): recrie o *formato* do meme com elementos originais. Também **não baixe memes aleatórios da internet** nem use prints de redes sociais: têm dono, e muitos mostram pessoas comuns. Não use meme com foto de criança nem de pessoa comum identificável, nem com conteúdo discriminatório, sexual ou de ódio.
+- **Clipes de meme reais** (cena `clipe`): só use **os arquivos que a pessoa colocou na biblioteca** (`marcas/seres-hu/memes/`), sempre com `credito` do criador na tela, em trechos curtos de 3 a 6 s. O áudio original do clipe toca e a trilha some enquanto ele passa. Avise a pessoa, uma vez, que clipes com marca d'água do TikTok podem ter menos alcance no Instagram e que o áudio original pode ser silenciado se tiver direito autoral. **Não baixe nem copie memes da internet por conta própria**, nem use prints de redes sociais: têm dono, e muitos mostram pessoas comuns. Não use meme com foto de criança nem de pessoa comum identificável, nem com conteúdo discriminatório, sexual ou de ódio.
 - O texto do meme tem no máximo ~6 palavras por linha, em português, e deve fazer sentido sem contexto.
 
 ### Marcas salvas

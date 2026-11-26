@@ -1,4 +1,33 @@
 {
   "_instrucoes": "Coloque as imagens de meme (jpg/png/webp) nesta pasta e liste cada uma abaixo. 'tom' ajuda a escolher: surpresa, deboche, choque-leve, comemoracao, confusao, cansaco, orgulho. 'usar_em' diz o tipo de notícia leve onde combina. 'nao_usar_em' lista o que evitar. O Claude só usa memes listados aqui ou memes originais de emoji.",
-  "memes": []
+  "memes": [
+    {
+      "arquivo": "pizza-coisas-que-mais-falei.mp4",
+      "tipo": "video",
+      "duracao_s": 50,
+      "credito": "@vitorzer0 (TikTok)",
+      "tom": "deboche, humor absurdo",
+      "usar_em": "entretenimento, curiosidades, coisas anormais, games; qualquer notícia leve de 'todo mundo só fala disso'",
+      "descricao": "Gráfico de pizza 'Coisas que mais falei essa semana' com personagens de jogo reagindo e falas engraçadas. Use um trecho de 4 a 6 s (campo 'inicio')."
+    },
+    {
+      "arquivo": "pov-teaser-vingadores.mp4",
+      "tipo": "video",
+      "duracao_s": 17,
+      "credito": "@fr4nkl1nfk (TikTok)",
+      "tom": "empolgação, choque, emoção exagerada",
+      "usar_em": "filmes, séries, trailers, lançamentos de games, notícia que o público esperava",
+      "descricao": "'POV: manos vendo o novo teaser de Vingadores: Doomsday', com reações dramáticas. Só combina com notícia de cinema/lançamento."
+    },
+    {
+      "arquivo": "clima-letra-musica.mp4",
+      "tipo": "video",
+      "duracao_s": 45,
+      "credito": "@tessinaiss (TikTok)",
+      "tom": "romântico, emocional, estético",
+      "usar_em": "referência de clima; música/famosos/romance leves. Não usar como meme de humor",
+      "descricao": "Vídeo com letra de música na tela e imagens cinematográficas."
+    }
+  ],
+  "_como_usar": "Cena 'clipe': {\"type\":\"clipe\",\"arquivo\":\"<caminho relativo ao roteiro>/pizza-coisas-que-mais-falei.mp4\",\"inicio\":0,\"duracao\":5,\"credito\":\"@vitorzer0 (TikTok)\"}. Use trechos de 3 a 6 s. O áudio original toca e a trilha some durante o clipe."
 }
