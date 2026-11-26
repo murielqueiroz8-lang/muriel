@@ -1,6 +1,6 @@
 ---
 name: video-motion
-description: Cria vídeos animados curtos (Reels, TikTok, Shorts, Stories) sem gravar nada — texto animado, janelas de sistema simuladas, listas, números e chamada para seguir — e entrega um MP4 pronto para postar, mais a capa. Use quando a pessoa pedir um vídeo, reel, post em vídeo, vídeo animado, motion, conteúdo diário em vídeo ou "um vídeo por dia" sobre qualquer tema.
+description: Cria vídeos animados curtos (Reels, TikTok, Shorts, Stories) sem gravar nada — texto animado, janelas de sistema simuladas, listas, números, e um modo notícia com manchete, fatos, citação, enquete e letreiro — e entrega um MP4 pronto para postar, mais a capa e a legenda. Use quando a pessoa pedir um vídeo, reel, vídeo de notícia, resumo de notícias (política, famosos, mundo, games, filmes, música, esportes), vídeo animado, motion ou "um vídeo por dia" sobre qualquer tema.
 ---
 
 # video-motion
@@ -44,7 +44,20 @@ Requisitos: `node`, `ffmpeg` e o pacote `playwright` com Chromium. Se faltar, in
 | `stat` | `valor`, `prefixo?`, `sufixo?`, `de?`, `decimais?`, `antes?`, `texto` | 3,6 s | número grande com contagem animada |
 | `cta` | `texto`, `botao?`, `sub?` | 3,8 s | encerramento com avatar, @ e botão "Seguir" pulsando |
 
-Veja `exemplos/fechamento-do-mes.json` para um roteiro completo.
+### Modo notícia
+
+Adicione `"estilo": "noticia"` (tema escuro de telejornal) e `"categoria"` (define a cor: `politica`, `famosos`, `mundo`, `games`, `filmes`, `series`, `musica`, `esportes`, `tecnologia`, `economia`, `brasil`, `entretenimento`). Opcional: `"ticker": ["outra notícia", "..."]` cria um letreiro passando no rodapé (`"tickerRotulo"` muda o rótulo "AGORA").
+
+| type | campos | duração padrão | para quê |
+|---|---|---|---|
+| `manchete` | `texto`, `urgente?` (true ou texto do selo), `categoria?`, `icone?` (emoji), `imagem?`, `sub?`, `fonte`, `data` | ~4,6 s | abertura da notícia |
+| `fatos` | `titulo?`, `itens[]` (texto ou `{icone, texto}`), `fonte?` | 1,4 + 0,9/item + 1,4 s | os pontos principais |
+| `citacao` | `texto`, `autor`, `cargo?`, `imagem?`, `fonte`, `data?` | 5 s | declaração literal |
+| `enquete` | `pergunta`, `opcoes[]` (até 3), `sub?` | 4,4 s | gerar comentários |
+
+`fonte` e `data` aparecem na tela abaixo do conteúdo. Toda cena também aceita `categoria` própria (para resumos com várias editorias).
+
+Exemplos completos: `exemplos/fechamento-do-mes.json` (educativo) e `exemplos/noticia-gta6.json` (notícia).
 
 ## Regras de roteiro (o que faz o vídeo reter)
 
@@ -55,6 +68,20 @@ Veja `exemplos/fechamento-do-mes.json` para um roteiro completo.
 - Números em `stat` devem ser reais ou claramente ilustrativos — não invente dados apresentados como fatos sobre terceiros.
 - Escreva no idioma e no tom do perfil da pessoa; português do Brasil por padrão.
 
+## Regras para vídeos de notícia (obrigatórias)
+
+- **Pesquise antes de escrever**: use a busca na web para encontrar a notícia e confirme os fatos principais em **pelo menos 2 fontes** confiáveis. Nunca escreva notícia "de memória" — o conhecimento do modelo fica desatualizado.
+- **Fonte e data na tela** em `manchete` e `fatos`. Se as fontes divergem (datas, números), use o dado confirmado ou diga "segundo X".
+- **Nada inventado**: `citacao` só com frase literal publicada por um veículo, com autor correto. Não crie números, declarações ou detalhes para "completar" a história.
+- **Boato não é fato**: fofoca de famosos sem confirmação não vira manchete; se for relevante, deixe explícito ("segundo o jornal X, sem confirmação de…").
+- **Política com neutralidade**: relate o fato e as posições dos lados envolvidos, sem adjetivos opinativos nem chamadas enganosas; não faça vídeos sobre eleições que possam confundir sobre datas, locais ou regras de votação.
+- **Sem imitar veículos reais**: não use nome, logo ou vinheta de emissoras e jornais como se o vídeo fosse deles. A marca é a do perfil da pessoa.
+- **Imagens**: use `imagem` só com arquivos que a pessoa forneceu ou tem direito de usar. Sem foto, use `icone` (emoji). Não baixe fotos de famosos da internet.
+- Tragédias, mortes e crimes: tom sóbrio, sem selo piscando nem emoji, sem detalhes gráficos, e com a legenda do post respeitosa.
+- Entregue junto da legenda do post as URLs das fontes usadas.
+
 ## Um vídeo por dia
 
-Para produção recorrente, mantenha um arquivo `pautas.md` com a lista de temas e marque os já usados. A cada execução: pegue o próximo tema, escreva o roteiro, renderize, salve em `videos/AAAA-MM-DD/` (mp4, capa, legenda.txt) e marque a pauta. Postar automaticamente exige uma conta Instagram Profissional conectada à API do Meta (Graph API, com token); sem isso, entregue os arquivos prontos para upload manual.
+Para notícias diárias: a cada execução, busque as notícias do dia nas editorias pedidas, escolha 1 principal (ou monte um resumo "3 notícias de hoje" com uma `manchete` por notícia e categorias diferentes) e use as demais no `ticker`.
+
+Para conteúdo educativo, mantenha um arquivo `pautas.md` com a lista de temas e marque os já usados. A cada execução: pegue o próximo tema, escreva o roteiro, renderize, salve em `videos/AAAA-MM-DD/` (mp4, capa, legenda.txt) e marque a pauta. Postar automaticamente exige uma conta Instagram Profissional conectada à API do Meta (Graph API, com token); sem isso, entregue os arquivos prontos para upload manual.

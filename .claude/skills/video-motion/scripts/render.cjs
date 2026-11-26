@@ -33,6 +33,18 @@ const baseDir = path.dirname(path.resolve(entrada));
 const FORMATOS = { '9:16': [1080, 1920], '4:5': [1080, 1350], '1:1': [1080, 1080] };
 const [W, H] = FORMATOS[roteiro.formato || '9:16'] || FORMATOS['9:16'];
 const FPS = roteiro.fps || 30;
+const CATEGORIAS = {
+  politica: '#e53935', famosos: '#ff4fa3', celebridades: '#ff4fa3', mundo: '#2f80ed', internacional: '#2f80ed',
+  games: '#8b5cf6', jogos: '#8b5cf6', filmes: '#f59e0b', cinema: '#f59e0b', series: '#f97316', musica: '#10b981',
+  esportes: '#22c55e', tecnologia: '#06b6d4', economia: '#eab308', brasil: '#16a34a', entretenimento: '#ec4899',
+};
+const normal = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+const corCategoria = (cat) => CATEGORIAS[normal(cat)] || null;
+const noticia = roteiro.estilo === 'noticia';
+const TEMA_NOTICIA = {
+  fundo: '#0b0e14', fundo2: '#1d2a48', texto: '#ffffff', suave: '#a9b4c7', destaque: '#ffd23f',
+  acento: corCategoria(roteiro.categoria) || '#ff3b3b', botao: corCategoria(roteiro.categoria) || '#ff3b3b',
+};
 const tema = Object.assign({
   fundo: '#0f2e28',        // fundo do vídeo
   fundo2: '#1b5e4c',       // cor das manchas de luz no fundo
@@ -45,11 +57,21 @@ const tema = Object.assign({
   botao: '#e0522d',        // botão das janelas
   botaoTexto: '#ffffff',
   fonte: 'Inter',
-}, roteiro.tema || {});
+}, noticia ? TEMA_NOTICIA : {}, roteiro.tema || {});
+const catCor = (c) => corCategoria(c.categoria || roteiro.categoria) || tema.acento;
 const marca = roteiro.marca || {};
 
-const DUR_PADRAO = { hook: 3, texto: 3.2, step: 4.8, list: null, stat: 3.6, cta: 3.8 };
-const durDe = (c) => c.duracao || (c.type === 'list' ? 1.6 + 0.7 * (c.itens || []).length + 1 : DUR_PADRAO[c.type] || 3);
+const DUR_PADRAO = { hook: 3, texto: 3.2, step: 4.8, stat: 3.6, cta: 3.8, manchete: 4.6, citacao: 5, enquete: 4.4 };
+const durDe = (c) => {
+  if (c.duracao) return c.duracao;
+  const n = (c.itens || []).length;
+  if (c.type === 'list') return 1.6 + 0.7 * n + 1;
+  if (c.type === 'fatos') return 1.4 + 0.9 * n + 1.4;
+  if (c.type === 'manchete') return Math.max(4.6, 2.4 + 0.12 * String(c.texto || '').split(/\s+/).length + (c.sub ? 1 : 0));
+  return DUR_PADRAO[c.type] || 3;
+};
+const fonteHtml = (c, t) => (c.fonte || c.data)
+  ? `<div class="fonte" style="${anim('vm-up', t, 0.5)}">${c.fonte ? 'Fonte: ' + esc(c.fonte) : ''}${c.fonte && c.data ? ' · ' : ''}${esc(c.data || '')}</div>` : '';
 
 // ---------- utilitários ----------
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
@@ -125,6 +147,44 @@ const CENAS = {
       <span style="${anim('vm-pop', t + 1.5, 0.5)}"><button class="follow" style="animation:vm-pulse 1.3s ease-in-out ${(t + 2).toFixed(3)}s infinite">${esc(c.botao || 'Seguir')}</button></span>
       ${c.sub ? `<p class="sub" style="${anim('vm-up', t + 1.9, 0.5)}">${rich(c.sub)}</p>` : ''}`;
   },
+
+  // ---------- modo notícia ----------
+  manchete(c, t, d) {
+    const cor = catCor(c), img = imagemDataURI(c.imagem);
+    const visual = img
+      ? `<div class="foto" style="${anim('vm-up', t + 0.05, 0.6)}"><img src="${img}" style="animation:vm-zoom ${d.toFixed(2)}s linear ${t.toFixed(3)}s both"></div>`
+      : c.icone ? `<div class="emoji" style="${anim('vm-pop', t + 0.05, 0.6)}">${esc(c.icone)}</div>` : '';
+    const tags = (c.urgente ? `<span class="tag urg"><i style="animation:vm-blink .9s steps(2,jump-none) ${t.toFixed(3)}s infinite"></i>${esc(c.urgente === true ? 'URGENTE' : c.urgente)}</span>` : '')
+      + (c.categoria || roteiro.categoria ? `<span class="tag" style="background:${cor}">${esc(c.categoria || roteiro.categoria)}</span>` : '');
+    const nPal = String(c.texto || '').split(/\s+/).length;
+    return `${visual}
+      ${tags ? `<div class="tags" style="${anim('vm-pop', t + 0.25, 0.5)}">${tags}</div>` : ''}
+      <h1 class="news">${palavras(c.texto, t + 0.45, 0.09)}</h1>
+      ${c.sub ? `<p class="sub" style="${anim('vm-up', t + 0.7 + nPal * 0.09, 0.6)}">${rich(c.sub)}</p>` : ''}
+      ${fonteHtml(c, t + 1 + nPal * 0.09)}`;
+  },
+  fatos(c, t) {
+    const cor = catCor(c), itens = c.itens || [];
+    return `${c.titulo ? `<h2 class="mid" style="${anim('vm-up', t + 0.15, 0.6)}">${rich(c.titulo)}</h2>` : ''}
+      <div class="fatos-list">${itens.map((it, i) => {
+        const o = typeof it === 'string' ? { texto: it } : it;
+        return `<div class="fato" style="${anim('vm-left', t + 0.7 + i * 0.9, 0.55)}border-left-color:${cor}"><span class="fi">${esc(o.icone || '▸')}</span><span>${rich(o.texto)}</span></div>`;
+      }).join('')}</div>
+      ${fonteHtml(c, t + 0.9 + itens.length * 0.9)}`;
+  },
+  citacao(c, t) {
+    const cor = catCor(c), img = imagemDataURI(c.imagem);
+    return `<div class="aspas" style="${anim('vm-pop', t + 0.1, 0.5)}color:${cor}">“</div>
+      <blockquote class="quote">${palavras(c.texto, t + 0.3, 0.07)}</blockquote>
+      <div class="autor" style="${anim('vm-up', t + 1.3, 0.5)}">${img ? `<img src="${img}">` : `<span class="barra" style="background:${cor}"></span>`}<div><b>${esc(c.autor || '')}</b>${c.cargo ? `<small>${esc(c.cargo)}</small>` : ''}</div></div>
+      ${fonteHtml(c, t + 1.6)}`;
+  },
+  enquete(c, t) {
+    const cor = catCor(c);
+    return `<h2 class="mid">${palavras(c.pergunta || 'E você, o que acha?', t + 0.2, 0.09)}</h2>
+      <div class="opcoes">${(c.opcoes || []).slice(0, 3).map((o, i) => `<div class="opcao" style="${anim('vm-pop', t + 1.1 + i * 0.35, 0.5)}"><b style="background:${cor}">${String.fromCharCode(65 + i)}</b><span>${rich(o)}</span></div>`).join('')}</div>
+      <p class="sub" style="${anim('vm-up', t + 2.2, 0.5)}">${rich(c.sub || 'Comenta aqui embaixo 👇')}</p>`;
+  },
 };
 
 // ---------- linha do tempo ----------
@@ -135,7 +195,7 @@ const cenas = (roteiro.cenas || []).map((c, i, arr) => {
   if (!gerar) throw new Error(`Tipo de cena desconhecido: "${c.type}" (use: ${Object.keys(CENAS).join(', ')})`);
   const ultima = i === arr.length - 1;
   const html = `<section class="scene" style="animation:vm-in .45s cubic-bezier(.2,.8,.2,1) ${t.toFixed(3)}s both${ultima ? '' : `, vm-out .4s ease-in ${(t + d - 0.4).toFixed(3)}s forwards`}">
-    <div class="content">${gerar(c, t, d)}</div>
+    <div class="content ${c.type}">${gerar(c, t, d)}</div>
     ${c.legenda ? `<div class="caption" style="${anim('vm-up', t + 0.3, 0.4)}">${rich(c.legenda)}</div>` : ''}
   </section>`;
   const inicio = t; t += d;
@@ -144,6 +204,15 @@ const cenas = (roteiro.cenas || []).map((c, i, arr) => {
 const TOTAL = t;
 const quadros = Math.round(TOTAL * FPS);
 const seguro = H >= 1900 ? [220, 380] : H >= 1300 ? [120, 160] : [80, 100];
+const tickerTxt = roteiro.ticker ? (Array.isArray(roteiro.ticker) ? roteiro.ticker : [roteiro.ticker]) : null;
+const TK_H = 76, tkBottom = Math.round(seguro[1] * 0.78);
+const padBaixo = tickerTxt ? tkBottom + TK_H + 40 : seguro[1];
+const legBaixo = tickerTxt ? tkBottom + TK_H + 16 : Math.round(seguro[1] * 0.55);
+const tickerHtml = tickerTxt ? (() => {
+  const seg = tickerTxt.map((x) => `<span>${esc(x)}</span><span class="dot">•</span>`).join('');
+  const chars = tickerTxt.join(' ').length;
+  return `<div class="ticker"><span class="tk-label">${esc(roteiro.tickerRotulo || 'AGORA')}</span><div class="tk-track"><div class="tk-move" style="animation:vm-ticker ${Math.max(10, chars * 0.16 * 2).toFixed(1)}s linear 0s infinite">${seg.repeat(2)}${seg.repeat(2)}</div></div></div>`;
+})() : '';
 
 const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><style>
 :root{--fundo:${tema.fundo};--fundo2:${tema.fundo2};--texto:${tema.texto};--suave:${tema.suave};--destaque:${tema.destaque};--acento:${tema.acento};--cartao:${tema.cartao};--cartaoTexto:${tema.cartaoTexto};--botao:${tema.botao};--botaoTexto:${tema.botaoTexto}}
@@ -157,7 +226,7 @@ html,body{width:${W}px;height:${H}px;overflow:hidden;background:var(--fundo);col
 .progress{position:absolute;left:40px;right:40px;top:${Math.round(seguro[0] * 0.35)}px;height:8px;border-radius:8px;background:rgba(255,255,255,.15);overflow:hidden;z-index:5}
 .progress>div{height:100%;background:var(--acento);animation:vm-fill ${TOTAL}s linear 0s both}
 .brand{position:absolute;top:${Math.round(seguro[0] * 0.35) + 30}px;left:40px;font-weight:700;font-size:30px;color:var(--suave);z-index:5;letter-spacing:.02em}
-.scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:${seguro[0]}px 80px ${seguro[1]}px}
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:${seguro[0]}px 72px ${padBaixo}px}
 .content{width:100%;display:flex;flex-direction:column;align-items:center;gap:44px;text-align:center}
 .big{font-size:${H >= 1900 ? 112 : 96}px;line-height:1.05;font-weight:900;letter-spacing:-.03em}
 .mid{font-size:76px;line-height:1.1;font-weight:800;letter-spacing:-.02em}
@@ -194,8 +263,40 @@ button{font:inherit;border:0;background:var(--botao);color:var(--botaoTexto);fon
 .avatar img{width:100%;height:100%;object-fit:cover}
 .handle{font-size:46px;font-weight:700;color:var(--suave)}
 .follow{font-size:46px;padding:24px 72px;border-radius:999px;background:var(--acento);color:var(--fundo)}
-.caption{position:absolute;left:60px;right:60px;bottom:${Math.round(seguro[1] * 0.55)}px;text-align:center;font-size:40px;font-weight:700;line-height:1.3}
+.caption{position:absolute;left:60px;right:60px;bottom:${legBaixo}px;text-align:center;font-size:40px;font-weight:700;line-height:1.3}
 .caption{background:rgba(0,0,0,.55);padding:18px 28px;border-radius:18px}
+.content.manchete,.content.fatos,.content.citacao{align-items:flex-start;text-align:left;gap:36px}
+.content.fatos .mid,.content.citacao .mid{text-align:left}
+.foto{width:100%;aspect-ratio:16/10;border-radius:28px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.foto img{width:100%;height:100%;object-fit:cover;transform-origin:50% 40%}
+.emoji{font-size:180px;line-height:1}
+.tags{display:flex;gap:16px;flex-wrap:wrap}
+.tag{display:inline-flex;align-items:center;gap:14px;font-size:34px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;padding:12px 26px;border-radius:12px;color:#fff;background:var(--acento)}
+.tag.urg{background:#d50000}
+.tag.urg i{width:18px;height:18px;border-radius:50%;background:#fff;display:block}
+.news{font-size:${H >= 1900 ? 88 : 76}px;line-height:1.08;font-weight:900;letter-spacing:-.025em}
+.fonte{font-size:30px;font-weight:600;color:var(--suave);padding-top:6px;border-top:2px solid rgba(255,255,255,.15)}
+.fatos-list{align-self:stretch;display:flex;flex-direction:column;gap:26px}
+.fato{display:flex;align-items:flex-start;gap:24px;font-size:46px;font-weight:700;line-height:1.2;background:rgba(255,255,255,.07);border-left:12px solid var(--acento);padding:28px 30px;border-radius:10px 22px 22px 10px}
+.fi{flex:none;font-size:46px;line-height:1.2}
+.aspas{font-size:260px;line-height:.6;font-weight:900;height:130px;font-family:Georgia,serif}
+.quote{font-size:68px;line-height:1.18;font-weight:800;letter-spacing:-.015em}
+.autor{display:flex;align-items:center;gap:24px}
+.autor img{width:110px;height:110px;border-radius:50%;object-fit:cover}
+.autor .barra{width:12px;height:90px;border-radius:6px}
+.autor b{display:block;font-size:42px}
+.autor small{display:block;font-size:32px;color:var(--suave);margin-top:4px}
+.opcoes{align-self:stretch;display:flex;flex-direction:column;gap:24px}
+.opcao{display:flex;align-items:center;gap:26px;font-size:48px;font-weight:700;text-align:left;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.14);padding:22px 28px;border-radius:24px}
+.opcao b{flex:none;width:76px;height:76px;border-radius:18px;display:grid;place-items:center;color:#fff;font-size:42px}
+.ticker{position:absolute;left:0;right:0;bottom:${tkBottom}px;height:${TK_H}px;display:flex;align-items:stretch;background:rgba(255,255,255,.96);color:#0b0e14;z-index:6;font-size:34px;font-weight:700}
+.tk-label{flex:none;display:flex;align-items:center;padding:0 28px;background:var(--botao);color:#fff;font-weight:900;letter-spacing:.08em}
+.tk-track{flex:1;overflow:hidden;display:flex;align-items:center}
+.tk-move{display:flex;white-space:nowrap;gap:28px;padding-left:28px}
+.tk-move .dot{color:var(--botao)}
+@keyframes vm-zoom{from{transform:scale(1.18)}to{transform:scale(1)}}
+@keyframes vm-blink{0%{opacity:1}100%{opacity:.15}}
+@keyframes vm-ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @keyframes vm-in{from{opacity:0;transform:translateY(40px) scale(.98)}to{opacity:1;transform:none}}
 @keyframes vm-out{to{opacity:0;transform:translateY(-40px) scale(.98)}}
 @keyframes vm-fade{to{opacity:0}}
@@ -212,6 +313,7 @@ button{font:inherit;border:0;background:var(--botao);color:var(--botaoTexto);fon
 </style></head><body>
 <div class="bg"><div class="blob b1"></div><div class="blob b2"></div><div class="grain"></div></div>
 ${roteiro.barraProgresso === false ? '' : '<div class="progress"><div></div></div>'}
+${tickerHtml}
 ${marca.handle && roteiro.mostrarMarca !== false ? `<div class="brand">${esc(marca.handle)}</div>` : ''}
 ${cenas.map((c) => c.html).join('\n')}
 <script>
