@@ -40,7 +40,12 @@ const CATEGORIAS = {
 };
 const normal = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
 const corCategoria = (cat) => CATEGORIAS[normal(cat)] || null;
-const noticia = roteiro.estilo === 'noticia';
+const seres = roteiro.estilo === 'seres';           // estilo do perfil @seres.hu (roxo + azul, fundo claro)
+const noticia = roteiro.estilo === 'noticia' || seres;
+const TEMA_SERES = {
+  fundo: '#f3f0fb', fundo2: '#cfc2ff', texto: '#170f2e', suave: '#5d5675', destaque: '#6a2cf5',
+  acento: '#6a2cf5', azul: '#4f6ef7', cartao: '#ffffff', cartaoTexto: '#170f2e', botao: '#6a2cf5', botaoTexto: '#ffffff',
+};
 const TEMA_NOTICIA = {
   fundo: '#0b0e14', fundo2: '#1d2a48', texto: '#ffffff', suave: '#a9b4c7', destaque: '#ffd23f',
   acento: corCategoria(roteiro.categoria) || '#ff3b3b', botao: corCategoria(roteiro.categoria) || '#ff3b3b',
@@ -57,8 +62,9 @@ const tema = Object.assign({
   botao: '#e0522d',        // botão das janelas
   botaoTexto: '#ffffff',
   fonte: 'Inter',
-}, noticia ? TEMA_NOTICIA : {}, roteiro.tema || {});
-const catCor = (c) => corCategoria(c.categoria || roteiro.categoria) || tema.acento;
+}, noticia ? TEMA_NOTICIA : {}, seres ? TEMA_SERES : {}, roteiro.tema || {});
+// no estilo seres todas as editorias usam o roxo da marca (como nos posts do perfil)
+const catCor = (c) => c.cor || (seres ? tema.acento : corCategoria(c.categoria || roteiro.categoria) || tema.acento);
 const marca = roteiro.marca || {};
 
 const DUR_PADRAO = { hook: 3, texto: 3.2, step: 4.8, stat: 3.6, cta: 3.8, manchete: 4.6, citacao: 5, enquete: 4.4 };
@@ -99,6 +105,13 @@ function imagemDataURI(p) {
 }
 
 // ---------- cenas ----------
+const svg = (d) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+const ICONES = [
+  svg('<path d="M12 21s-8-5.2-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.8-8 11-8 11z" fill="currentColor"/>'),
+  svg('<path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/>'),
+  svg('<path d="M22 3 11 13M22 3l-7 19-4-9-9-4z"/>'),
+  svg('<path d="M6 3h12v18l-6-4.5L6 21z"/>'),
+];
 const CENAS = {
   hook(c, t) {
     return `${c.etiqueta ? `<div class="pill" style="${anim('vm-pop', t + 0.1, 0.5)}">${esc(c.etiqueta)}</div>` : ''}
@@ -145,7 +158,8 @@ const CENAS = {
       ${marca.handle ? `<div class="handle" style="${anim('vm-up', t + 0.45, 0.5)}">${esc(marca.handle)}</div>` : ''}
       <h2 class="mid">${palavras(c.texto || 'Me segue para mais', t + 0.7, 0.1)}</h2>
       <span style="${anim('vm-pop', t + 1.5, 0.5)}"><button class="follow" style="animation:vm-pulse 1.3s ease-in-out ${(t + 2).toFixed(3)}s infinite">${esc(c.botao || 'Seguir')}</button></span>
-      ${c.sub ? `<p class="sub" style="${anim('vm-up', t + 1.9, 0.5)}">${rich(c.sub)}</p>` : ''}`;
+      ${c.sub ? `<p class="sub" style="${anim('vm-up', t + 1.9, 0.5)}">${rich(c.sub)}</p>` : ''}
+      ${c.rodape ? `<div class="rodape"><span style="${anim('vm-up', t + 2.1, 0.5)}">${esc(c.rodape)}</span><div class="icons">${ICONES.map((ic, i) => `<span style="${anim('vm-pop', t + 2.4 + i * 0.18, 0.45)}">${ic}</span>`).join('')}</div></div>` : ''}`;
   },
 
   // ---------- modo notícia ----------
@@ -154,7 +168,7 @@ const CENAS = {
     const visual = img
       ? `<div class="foto" style="${anim('vm-up', t + 0.05, 0.6)}"><img src="${img}" style="animation:vm-zoom ${d.toFixed(2)}s linear ${t.toFixed(3)}s both"></div>`
       : c.icone ? `<div class="emoji" style="${anim('vm-pop', t + 0.05, 0.6)}">${esc(c.icone)}</div>` : '';
-    const tags = (c.urgente ? `<span class="tag urg"><i style="animation:vm-blink .9s steps(2,jump-none) ${t.toFixed(3)}s infinite"></i>${esc(c.urgente === true ? 'URGENTE' : c.urgente)}</span>` : '')
+    const tags = (c.fake ? `<span class="tag fake">✕</span>` : '') + (c.urgente ? `<span class="tag urg"><i style="animation:vm-blink .9s steps(2,jump-none) ${t.toFixed(3)}s infinite"></i>${esc(c.urgente === true ? 'URGENTE' : c.urgente)}</span>` : '')
       + (c.categoria || roteiro.categoria ? `<span class="tag" style="background:${cor}">${esc(c.categoria || roteiro.categoria)}</span>` : '');
     const nPal = String(c.texto || '').split(/\s+/).length;
     return `${visual}
@@ -294,6 +308,36 @@ button{font:inherit;border:0;background:var(--botao);color:var(--botaoTexto);fon
 .tk-track{flex:1;overflow:hidden;display:flex;align-items:center}
 .tk-move{display:flex;white-space:nowrap;gap:28px;padding-left:28px}
 .tk-move .dot{color:var(--botao)}
+.brand.com-logo{display:flex;align-items:center;gap:16px;color:var(--texto)}
+.brand.com-logo img{width:68px;height:68px;border-radius:50%;object-fit:cover}
+.brand.com-logo b{display:block;font-size:28px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
+.brand.com-logo small{display:block;font-size:24px;font-weight:600;color:var(--suave)}
+.rodape{display:flex;flex-direction:column;align-items:center;gap:20px;margin-top:10px;font-size:30px;font-weight:800;letter-spacing:.1em;color:var(--suave)}
+.rodape .icons{display:flex;gap:34px;color:var(--acento)}
+.rodape svg{width:62px;height:62px}
+.tag.fake{background:#e11d2e;padding:12px 22px}
+/* ---------- estilo seres (@seres.hu) ---------- */
+.estilo-seres .progress{background:rgba(23,15,46,.1)}
+.estilo-seres .grain{background-image:radial-gradient(rgba(106,44,245,.08) 1px,transparent 1px)}
+.estilo-seres .tag{border-radius:0;font-style:italic;padding:12px 30px;box-shadow:8px 8px 0 ${tema.azul || '#4f6ef7'}}
+.estilo-seres .tag.urg{box-shadow:none}
+.estilo-seres .tag.fake{box-shadow:none;font-style:normal}
+.estilo-seres .pill{background:var(--acento);color:#fff;border-radius:0;font-style:italic;text-transform:uppercase;letter-spacing:.06em;box-shadow:8px 8px 0 ${tema.azul || '#4f6ef7'}}
+.estilo-seres .news{position:relative;background:var(--acento);color:#fff;padding:34px 40px 38px;margin:6px 0 10px}
+.estilo-seres .news em,.estilo-seres .news .hl{color:#c3ceff}
+.estilo-seres .news::before,.estilo-seres .news::after{content:'';position:absolute;width:70px;height:70px;border:9px solid ${tema.azul || '#4f6ef7'}}
+.estilo-seres .news::before{left:-18px;top:-18px;border-right:0;border-bottom:0}
+.estilo-seres .news::after{right:-18px;bottom:-18px;border-left:0;border-top:0}
+.estilo-seres .sub{color:var(--suave)}
+.estilo-seres .fonte{border-top-color:rgba(23,15,46,.15)}
+.estilo-seres .fato,.estilo-seres .opcao,.estilo-seres .list li{background:#fff;border-color:rgba(106,44,245,.18);box-shadow:0 12px 30px rgba(60,30,140,.12)}
+.estilo-seres .fato{border-left-color:var(--acento)}
+.estilo-seres .ticker{background:var(--acento);color:#fff}
+.estilo-seres .tk-label{background:${tema.azul || '#4f6ef7'}}
+.estilo-seres .tk-move .dot{color:#c3ceff}
+.estilo-seres .avatar{border-color:${tema.azul || '#4f6ef7'}}
+.estilo-seres .follow{background:var(--acento);color:#fff}
+.estilo-seres .caption{background:var(--acento);color:#fff}
 @keyframes vm-zoom{from{transform:scale(1.18)}to{transform:scale(1)}}
 @keyframes vm-blink{0%{opacity:1}100%{opacity:.15}}
 @keyframes vm-ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
@@ -310,11 +354,16 @@ button{font:inherit;border:0;background:var(--botao);color:var(--botaoTexto);fon
 @keyframes vm-cursor{from{opacity:0;transform:translate(260px,320px)}25%{opacity:1}to{opacity:1;transform:translate(0,0)}}
 @keyframes vm-drift1{from{transform:translate(0,0)}to{transform:translate(380px,${Math.round(H * 0.35)}px)}}
 @keyframes vm-drift2{from{transform:translate(0,0)}to{transform:translate(-320px,-${Math.round(H * 0.3)}px)}}
-</style></head><body>
+</style></head><body class="estilo-${esc(roteiro.estilo || 'padrao')}">
 <div class="bg"><div class="blob b1"></div><div class="blob b2"></div><div class="grain"></div></div>
 ${roteiro.barraProgresso === false ? '' : '<div class="progress"><div></div></div>'}
 ${tickerHtml}
-${marca.handle && roteiro.mostrarMarca !== false ? `<div class="brand">${esc(marca.handle)}</div>` : ''}
+${marca.handle && roteiro.mostrarMarca !== false ? (() => {
+  const logo = imagemDataURI(marca.logo);
+  return logo && marca.nome
+    ? `<div class="brand com-logo"><img src="${logo}"><div><b>${esc(marca.nome)}</b><small>${esc(marca.handle)}</small></div></div>`
+    : `<div class="brand">${esc(marca.handle)}</div>`;
+})() : ''}
 ${cenas.map((c) => c.html).join('\n')}
 <script>
 const ease = (x) => 1 - Math.pow(1 - x, 3);

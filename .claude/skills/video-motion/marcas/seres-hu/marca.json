@@ -1,0 +1,12 @@
+{
+  "estilo": "seres",
+  "marca": { "handle": "@seres.hu", "nome": "Muriel Queiroz", "logo": "logo.png" },
+  "tickerRotulo": "MUNDO",
+  "cta": {
+    "texto": "Segue o *Seres HU* para notícias todo dia",
+    "botao": "Seguir",
+    "sub": "Curiosidades · Coisas anormais · Política",
+    "rodape": "SE VOCÊ GOSTOU DO CONTEÚDO"
+  },
+  "editorias": ["Notícia", "Curiosidade", "Coisas anormais", "Política", "Realidade", "Fake News", "Famosos", "Mundo", "Games", "Filmes", "Música"]
+}

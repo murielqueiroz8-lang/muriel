@@ -68,6 +68,12 @@ Exemplos completos: `exemplos/fechamento-do-mes.json` (educativo) e `exemplos/no
 - Números em `stat` devem ser reais ou claramente ilustrativos — não invente dados apresentados como fatos sobre terceiros.
 - Escreva no idioma e no tom do perfil da pessoa; português do Brasil por padrão.
 
+### Marcas salvas
+
+`marcas/<nome>/marca.json` guarda a identidade de um perfil (estilo, @, nome, logo, CTA e editorias). Ao fazer vídeo para um perfil salvo, copie desses campos para o roteiro; `marca.logo` é relativo ao JSON do roteiro, então use o caminho até `marcas/<nome>/logo.png`.
+
+- **`seres-hu`** (@seres.hu, Muriel Queiroz, perfil de notícias, curiosidades, coisas anormais e política): use `"estilo": "seres"`. Ele usa fundo claro lilás, manchete dentro de bloco roxo com cantoneiras azuis, etiquetas retas em itálico e cabeçalho com logo + "MURIEL QUEIROZ". Todas as editorias ficam no roxo da marca. Use `"fake": true` na `manchete` para o selo ✕ vermelho de **Fake News** (desmentidos), e no `cta` o `rodape: "SE VOCÊ GOSTOU DO CONTEÚDO"` (mostra os ícones de curtir/comentar/enviar/salvar). A etiqueta do `hook` costuma ser "notícia do dia · DD/MM".
+
 ## Regras para vídeos de notícia (obrigatórias)
 
 - **Pesquise antes de escrever**: use a busca na web para encontrar a notícia e confirme os fatos principais em **pelo menos 2 fontes** confiáveis. Nunca escreva notícia "de memória" — o conhecimento do modelo fica desatualizado.
