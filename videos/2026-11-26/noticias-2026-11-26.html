@@ -1,0 +1,163 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><style>
+:root{--fundo:#0b0e14;--fundo2:#1d2a48;--texto:#ffffff;--suave:#a9b4c7;--destaque:#ffd23f;--acento:#ff3b3b;--cartao:#f6f4ee;--cartaoTexto:#14231f;--botao:#ff3b3b;--botaoTexto:#ffffff}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--fundo);color:var(--texto);font-family:'Inter','Inter','Noto Color Emoji',sans-serif;-webkit-font-smoothing:antialiased}
+.bg{position:absolute;inset:0;overflow:hidden}
+.blob{position:absolute;width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,var(--fundo2) 0%,transparent 65%);opacity:.55}
+.b1{left:-300px;top:-200px;animation:vm-drift1 31.099999999999998s ease-in-out 0s both}
+.b2{right:-350px;bottom:-250px;animation:vm-drift2 31.099999999999998s ease-in-out 0s both}
+.grain{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);background-size:6px 6px}
+.progress{position:absolute;left:40px;right:40px;top:77px;height:8px;border-radius:8px;background:rgba(255,255,255,.15);overflow:hidden;z-index:5}
+.progress>div{height:100%;background:var(--acento);animation:vm-fill 31.099999999999998s linear 0s both}
+.brand{position:absolute;top:107px;left:40px;font-weight:700;font-size:30px;color:var(--suave);z-index:5;letter-spacing:.02em}
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:220px 72px 412px}
+.content{width:100%;display:flex;flex-direction:column;align-items:center;gap:44px;text-align:center}
+.big{font-size:112px;line-height:1.05;font-weight:900;letter-spacing:-.03em}
+.mid{font-size:76px;line-height:1.1;font-weight:800;letter-spacing:-.02em}
+.mid.small{font-size:58px;font-weight:700}
+.mid.left{text-align:left;align-self:stretch}
+.sub{font-size:42px;line-height:1.3;color:var(--suave);font-weight:500}
+em,.hl{font-style:normal;color:var(--destaque)}
+.w{display:inline-block}
+.pill{display:inline-flex;align-items:center;gap:20px;background:#fff;color:#14231f;font-weight:800;font-size:44px;padding:16px 36px 16px 16px;border-radius:999px;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.pill:not(.num){padding:16px 36px}
+.pill b{display:grid;place-items:center;width:70px;height:70px;border-radius:50%;background:var(--botao);color:#fff;font-size:38px}
+.win{width:100%;background:var(--cartao);color:var(--cartaoTexto);border-radius:28px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.45);text-align:left}
+.win-bar{display:flex;align-items:center;gap:12px;padding:22px 28px;border-bottom:2px solid rgba(0,0,0,.08);font-size:28px;font-weight:600;color:#6b6b6b}
+.win-bar i{width:20px;height:20px;border-radius:50%;display:block}
+.win-bar span{margin-left:14px}
+.win-body{padding:40px 40px 48px;display:flex;flex-direction:column;gap:32px}
+.win-body h3{font-size:50px;font-weight:800}
+.win-item{position:relative;display:flex;align-items:center;gap:26px;border:3px solid var(--botao);border-radius:22px;padding:26px}
+.ico{width:88px;height:88px;flex:none;border-radius:20px;background:var(--botao);display:grid;place-items:center;font-size:46px}
+.txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.txt b{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.txt small{font-size:28px;color:#666}
+.press{display:inline-block;flex:none}
+button{font:inherit;border:0;background:var(--botao);color:var(--botaoTexto);font-weight:800;font-size:32px;padding:16px 28px;border-radius:14px}
+.cursor{position:absolute;right:40px;bottom:-14px;width:64px;height:64px;z-index:3}
+.bar{height:16px;border-radius:16px;background:rgba(0,0,0,.08);overflow:hidden}
+.fill{height:100%;background:#22a94f;border-radius:16px}
+.done{align-self:flex-start;font-size:34px;font-weight:800;color:#1b7a3e;background:#dcf3e3;padding:10px 24px;border-radius:999px}
+.list{list-style:none;align-self:stretch;display:flex;flex-direction:column;gap:30px;text-align:left}
+.list li{display:flex;align-items:center;gap:28px;font-size:50px;font-weight:700;line-height:1.15;background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.1);padding:28px 32px;border-radius:24px}
+.chk{flex:none;width:64px;height:64px;border-radius:50%;background:var(--acento);color:var(--fundo);display:grid;place-items:center;font-size:38px;font-weight:900}
+.stat{font-size:250px;font-weight:900;letter-spacing:-.05em;line-height:1;color:var(--destaque);font-variant-numeric:tabular-nums}
+.avatar{width:240px;height:240px;border-radius:50%;border:8px solid var(--acento);background:var(--fundo2);display:grid;place-items:center;font-size:110px;font-weight:900;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.handle{font-size:46px;font-weight:700;color:var(--suave)}
+.follow{font-size:46px;padding:24px 72px;border-radius:999px;background:var(--acento);color:var(--fundo)}
+.caption{position:absolute;left:60px;right:60px;bottom:388px;text-align:center;font-size:40px;font-weight:700;line-height:1.3}
+.caption{background:rgba(0,0,0,.55);padding:18px 28px;border-radius:18px}
+.content.manchete,.content.fatos,.content.citacao{align-items:flex-start;text-align:left;gap:36px}
+.content.fatos .mid,.content.citacao .mid{text-align:left}
+.foto{width:100%;aspect-ratio:16/10;border-radius:28px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.foto img{width:100%;height:100%;object-fit:cover;transform-origin:50% 40%}
+.emoji{font-size:180px;line-height:1}
+.tags{display:flex;gap:16px;flex-wrap:wrap}
+.tag{display:inline-flex;align-items:center;gap:14px;font-size:34px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;padding:12px 26px;border-radius:12px;color:#fff;background:var(--acento)}
+.tag.urg{background:#d50000}
+.tag.urg i{width:18px;height:18px;border-radius:50%;background:#fff;display:block}
+.news{font-size:88px;line-height:1.08;font-weight:900;letter-spacing:-.025em}
+.fonte{font-size:30px;font-weight:600;color:var(--suave);padding-top:6px;border-top:2px solid rgba(255,255,255,.15)}
+.fatos-list{align-self:stretch;display:flex;flex-direction:column;gap:26px}
+.fato{display:flex;align-items:flex-start;gap:24px;font-size:46px;font-weight:700;line-height:1.2;background:rgba(255,255,255,.07);border-left:12px solid var(--acento);padding:28px 30px;border-radius:10px 22px 22px 10px}
+.fi{flex:none;font-size:46px;line-height:1.2}
+.aspas{font-size:260px;line-height:.6;font-weight:900;height:130px;font-family:Georgia,serif}
+.quote{font-size:68px;line-height:1.18;font-weight:800;letter-spacing:-.015em}
+.autor{display:flex;align-items:center;gap:24px}
+.autor img{width:110px;height:110px;border-radius:50%;object-fit:cover}
+.autor .barra{width:12px;height:90px;border-radius:6px}
+.autor b{display:block;font-size:42px}
+.autor small{display:block;font-size:32px;color:var(--suave);margin-top:4px}
+.opcoes{align-self:stretch;display:flex;flex-direction:column;gap:24px}
+.opcao{display:flex;align-items:center;gap:26px;font-size:48px;font-weight:700;text-align:left;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.14);padding:22px 28px;border-radius:24px}
+.opcao b{flex:none;width:76px;height:76px;border-radius:18px;display:grid;place-items:center;color:#fff;font-size:42px}
+.ticker{position:absolute;left:0;right:0;bottom:296px;height:76px;display:flex;align-items:stretch;background:rgba(255,255,255,.96);color:#0b0e14;z-index:6;font-size:34px;font-weight:700}
+.tk-label{flex:none;display:flex;align-items:center;padding:0 28px;background:var(--botao);color:#fff;font-weight:900;letter-spacing:.08em}
+.tk-track{flex:1;overflow:hidden;display:flex;align-items:center}
+.tk-move{display:flex;white-space:nowrap;gap:28px;padding-left:28px}
+.tk-move .dot{color:var(--botao)}
+@keyframes vm-zoom{from{transform:scale(1.18)}to{transform:scale(1)}}
+@keyframes vm-blink{0%{opacity:1}100%{opacity:.15}}
+@keyframes vm-ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes vm-in{from{opacity:0;transform:translateY(40px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes vm-out{to{opacity:0;transform:translateY(-40px) scale(.98)}}
+@keyframes vm-fade{to{opacity:0}}
+@keyframes vm-pop{0%{opacity:0;transform:scale(.6)}70%{opacity:1;transform:scale(1.06)}100%{opacity:1;transform:scale(1)}}
+@keyframes vm-up{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:none}}
+@keyframes vm-left{from{opacity:0;transform:translateX(-80px)}to{opacity:1;transform:none}}
+@keyframes vm-word{from{opacity:0;transform:translateY(34px);filter:blur(10px)}to{opacity:1;transform:none;filter:none}}
+@keyframes vm-fill{from{width:0}to{width:100%}}
+@keyframes vm-press{0%,100%{transform:scale(1)}50%{transform:scale(.88)}}
+@keyframes vm-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+@keyframes vm-cursor{from{opacity:0;transform:translate(260px,320px)}25%{opacity:1}to{opacity:1;transform:translate(0,0)}}
+@keyframes vm-drift1{from{transform:translate(0,0)}to{transform:translate(380px,672px)}}
+@keyframes vm-drift2{from{transform:translate(0,0)}to{transform:translate(-320px,-576px)}}
+</style></head><body>
+<div class="bg"><div class="blob b1"></div><div class="blob b2"></div><div class="grain"></div></div>
+<div class="progress"><div></div></div>
+<div class="ticker"><span class="tk-label">MUNDO</span><div class="tk-track"><div class="tk-move" style="animation:vm-ticker 38.1s linear 0s infinite"><span>China ameaça &quot;medidas necessárias&quot; após novas tarifas dos EUA</span><span class="dot">•</span><span>Trégua comercial entre China e EUA vence em 10 de janeiro</span><span class="dot">•</span><span>China ameaça &quot;medidas necessárias&quot; após novas tarifas dos EUA</span><span class="dot">•</span><span>Trégua comercial entre China e EUA vence em 10 de janeiro</span><span class="dot">•</span><span>China ameaça &quot;medidas necessárias&quot; após novas tarifas dos EUA</span><span class="dot">•</span><span>Trégua comercial entre China e EUA vence em 10 de janeiro</span><span class="dot">•</span><span>China ameaça &quot;medidas necessárias&quot; após novas tarifas dos EUA</span><span class="dot">•</span><span>Trégua comercial entre China e EUA vence em 10 de janeiro</span><span class="dot">•</span></div></div></div>
+<div class="brand">@seucanal</div>
+<section class="scene" style="animation:vm-in .45s cubic-bezier(.2,.8,.2,1) 0.000s both, vm-out .4s ease-in 2.600s forwards">
+    <div class="content hook"><div class="pill" style="animation:vm-pop 0.5s cubic-bezier(.2,.8,.2,1) 0.100s both;">26 de novembro</div>
+      <h1 class="big"><span class="w hl" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 0.250s both;">3</span> <span class="w hl" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 0.390s both;">notícias</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 0.530s both;">que</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 0.670s both;">você</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 0.810s both;">precisa</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 0.950s both;">saber</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 1.090s both;">hoje</span></h1>
+      <p class="sub" style="animation:vm-up 0.6s cubic-bezier(.2,.8,.2,1) 1.200s both;">Economia · Famosos · Cinema</p></div>
+    
+  </section>
+<section class="scene" style="animation:vm-in .45s cubic-bezier(.2,.8,.2,1) 3.000s both, vm-out .4s ease-in 7.560s forwards">
+    <div class="content manchete"><div class="emoji" style="animation:vm-pop 0.6s cubic-bezier(.2,.8,.2,1) 3.050s both;">💸</div>
+      <div class="tags" style="animation:vm-pop 0.5s cubic-bezier(.2,.8,.2,1) 3.250s both;"><span class="tag" style="background:#eab308">Economia</span></div>
+      <h1 class="news"><span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 3.450s both;">EUA</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 3.540s both;">ameaçam</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 3.630s both;">nova</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 3.720s both;">tarifa</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 3.810s both;">e</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 3.900s both;">governo</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 3.990s both;">diz</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 4.080s both;">que</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 4.170s both;">o</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 4.260s both;">alvo</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 4.350s both;">é</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 4.440s both;">o</span> <span class="w hl" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 4.530s both;">Pix</span></h1>
+      <p class="sub" style="animation:vm-up 0.6s cubic-bezier(.2,.8,.2,1) 4.870s both;">Proposta prevê sobretaxa de 10% sobre aviões brasileiros</p>
+      <div class="fonte" style="animation:vm-up 0.5s cubic-bezier(.2,.8,.2,1) 5.170s both;">Fonte: nota do Planalto via ac24horas / Revista Fórum · 25–26/11/2026</div></div>
+    
+  </section>
+<section class="scene" style="animation:vm-in .45s cubic-bezier(.2,.8,.2,1) 7.960s both, vm-out .4s ease-in 13.060s forwards">
+    <div class="content fatos"><h2 class="mid" style="animation:vm-up 0.6s cubic-bezier(.2,.8,.2,1) 8.110s both;">A resposta do <em>governo</em>:</h2>
+      <div class="fatos-list"><div class="fato" style="animation:vm-left 0.55s cubic-bezier(.2,.8,.2,1) 8.660s both;border-left-color:#eab308"><span class="fi">🚫</span><span>Chamou a proposta de <em>inaceitável</em></span></div><div class="fato" style="animation:vm-left 0.55s cubic-bezier(.2,.8,.2,1) 9.560s both;border-left-color:#eab308"><span class="fi">🤝</span><span>Quer negociar, mas não descarta <em>reciprocidade</em></span></div><div class="fato" style="animation:vm-left 0.55s cubic-bezier(.2,.8,.2,1) 10.460s both;border-left-color:#eab308"><span class="fi">🌐</span><span>Pode levar o caso à <em>OMC</em></span></div></div>
+      <div class="fonte" style="animation:vm-up 0.5s cubic-bezier(.2,.8,.2,1) 11.560s both;">Fonte: Revista Oeste / ac24horas</div></div>
+    
+  </section>
+<section class="scene" style="animation:vm-in .45s cubic-bezier(.2,.8,.2,1) 13.460s both, vm-out .4s ease-in 17.900s forwards">
+    <div class="content manchete"><div class="emoji" style="animation:vm-pop 0.6s cubic-bezier(.2,.8,.2,1) 13.510s both;">🍷</div>
+      <div class="tags" style="animation:vm-pop 0.5s cubic-bezier(.2,.8,.2,1) 13.710s both;"><span class="tag" style="background:#ff4fa3">Famosos</span></div>
+      <h1 class="news"><span class="w hl" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 13.910s both;">Brad</span> <span class="w hl" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 14.000s both;">Pitt</span> <span class="w hl" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 14.090s both;">e</span> <span class="w hl" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 14.180s both;">Angelina</span> <span class="w hl" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 14.270s both;">Jolie</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 14.360s both;">fecham</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 14.450s both;">acordo</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 14.540s both;">e</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 14.630s both;">encerram</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 14.720s both;">briga</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 14.810s both;">pela</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 14.900s both;">vinícola</span></h1>
+      <p class="sub" style="animation:vm-up 0.6s cubic-bezier(.2,.8,.2,1) 15.240s both;">Disputa pelo Château Miraval durava 4 anos; termos não foram divulgados</p>
+      <div class="fonte" style="animation:vm-up 0.5s cubic-bezier(.2,.8,.2,1) 15.540s both;">Fonte: ABC News / CBC · 25/11/2026</div></div>
+    
+  </section>
+<section class="scene" style="animation:vm-in .45s cubic-bezier(.2,.8,.2,1) 18.300s both, vm-out .4s ease-in 22.500s forwards">
+    <div class="content manchete"><div class="emoji" style="animation:vm-pop 0.6s cubic-bezier(.2,.8,.2,1) 18.350s both;">🎬</div>
+      <div class="tags" style="animation:vm-pop 0.5s cubic-bezier(.2,.8,.2,1) 18.550s both;"><span class="tag" style="background:#f59e0b">Filmes</span></div>
+      <h1 class="news"><span class="w hl" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 18.750s both;">Entrando</span> <span class="w hl" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 18.840s both;">Numa</span> <span class="w hl" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 18.930s both;">Grande</span> <span class="w hl" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 19.020s both;">Fria</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 19.110s both;">estreia</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 19.200s both;">hoje</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 19.290s both;">nos</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 19.380s both;">cinemas</span></h1>
+      <p class="sub" style="animation:vm-up 0.6s cubic-bezier(.2,.8,.2,1) 19.720s both;">Ariana Grande se junta a Ben Stiller e Robert De Niro</p>
+      <div class="fonte" style="animation:vm-up 0.5s cubic-bezier(.2,.8,.2,1) 20.020s both;">Fonte: iBahia / Séries em Cena · 26/11/2026</div></div>
+    
+  </section>
+<section class="scene" style="animation:vm-in .45s cubic-bezier(.2,.8,.2,1) 22.900s both, vm-out .4s ease-in 26.900s forwards">
+    <div class="content enquete"><h2 class="mid"><span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 23.100s both;">Qual</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 23.190s both;">dessas</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 23.280s both;">notícias</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 23.370s both;">mais</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 23.460s both;">te</span> <span class="w hl" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 23.550s both;">surpreendeu?</span></h2>
+      <div class="opcoes"><div class="opcao" style="animation:vm-pop 0.5s cubic-bezier(.2,.8,.2,1) 24.000s both;"><b style="background:#ff3b3b">A</b><span>Tarifa dos EUA e o Pix</span></div><div class="opcao" style="animation:vm-pop 0.5s cubic-bezier(.2,.8,.2,1) 24.350s both;"><b style="background:#ff3b3b">B</b><span>Acordo de Pitt e Jolie</span></div><div class="opcao" style="animation:vm-pop 0.5s cubic-bezier(.2,.8,.2,1) 24.700s both;"><b style="background:#ff3b3b">C</b><span>Grande Fria nos cinemas</span></div></div>
+      <p class="sub" style="animation:vm-up 0.5s cubic-bezier(.2,.8,.2,1) 25.100s both;">Comenta aqui embaixo 👇</p></div>
+    
+  </section>
+<section class="scene" style="animation:vm-in .45s cubic-bezier(.2,.8,.2,1) 27.300s both">
+    <div class="content cta"><div class="avatar" style="animation:vm-pop 0.6s cubic-bezier(.2,.8,.2,1) 27.400s both;">N</div>
+      <div class="handle" style="animation:vm-up 0.5s cubic-bezier(.2,.8,.2,1) 27.750s both;">@seucanal</div>
+      <h2 class="mid"><span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 28.000s both;">Segue</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 28.100s both;">para</span> <span class="w hl" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 28.200s both;">notícias</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 28.300s both;">todo</span> <span class="w" style="animation:vm-word 0.5s cubic-bezier(.2,.8,.2,1) 28.400s both;">dia</span></h2>
+      <span style="animation:vm-pop 0.5s cubic-bezier(.2,.8,.2,1) 28.800s both;"><button class="follow" style="animation:vm-pulse 1.3s ease-in-out 29.300s infinite">Seguir</button></span>
+      <p class="sub" style="animation:vm-up 0.5s cubic-bezier(.2,.8,.2,1) 29.200s both;">Política · Famosos · Mundo · Games · Filmes</p></div>
+    
+  </section>
+<script>
+const ease = (x) => 1 - Math.pow(1 - x, 3);
+window.__seek = (ms) => {
+  for (const a of document.getAnimations()) { a.pause(); a.currentTime = ms; }
+  for (const el of document.querySelectorAll('[data-count]')) {
+    const p = Math.min(1, Math.max(0, (ms - +el.dataset.start) / +el.dataset.dur));
+    const v = +el.dataset.from + (+el.dataset.to - +el.dataset.from) * ease(p);
+    const dec = +el.dataset.dec;
+    el.textContent = el.dataset.pre + v.toLocaleString('pt-BR', { minimumFractionDigits: dec, maximumFractionDigits: dec }) + el.dataset.suf;
+  }
+};
+</script></body></html>

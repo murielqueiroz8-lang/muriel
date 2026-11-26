@@ -1,0 +1,82 @@
+{
+  "estilo": "noticia",
+  "marca": {
+    "handle": "@seucanal",
+    "nome": "Notícias"
+  },
+  "tickerRotulo": "MUNDO",
+  "ticker": [
+    "China ameaça \"medidas necessárias\" após novas tarifas dos EUA",
+    "Trégua comercial entre China e EUA vence em 10 de janeiro"
+  ],
+  "cenas": [
+    {
+      "type": "hook",
+      "etiqueta": "26 de novembro",
+      "texto": "*3 notícias* que você precisa saber hoje",
+      "sub": "Economia · Famosos · Cinema"
+    },
+    {
+      "type": "manchete",
+      "categoria": "Economia",
+      "icone": "💸",
+      "texto": "EUA ameaçam nova tarifa e governo diz que o alvo é o *Pix*",
+      "sub": "Proposta prevê sobretaxa de 10% sobre aviões brasileiros",
+      "fonte": "nota do Planalto via ac24horas / Revista Fórum",
+      "data": "25–26/11/2026"
+    },
+    {
+      "type": "fatos",
+      "categoria": "Economia",
+      "titulo": "A resposta do *governo*:",
+      "itens": [
+        {
+          "icone": "🚫",
+          "texto": "Chamou a proposta de *inaceitável*"
+        },
+        {
+          "icone": "🤝",
+          "texto": "Quer negociar, mas não descarta *reciprocidade*"
+        },
+        {
+          "icone": "🌐",
+          "texto": "Pode levar o caso à *OMC*"
+        }
+      ],
+      "fonte": "Revista Oeste / ac24horas"
+    },
+    {
+      "type": "manchete",
+      "categoria": "Famosos",
+      "icone": "🍷",
+      "texto": "*Brad Pitt e Angelina Jolie* fecham acordo e encerram briga pela vinícola",
+      "sub": "Disputa pelo Château Miraval durava 4 anos; termos não foram divulgados",
+      "fonte": "ABC News / CBC",
+      "data": "25/11/2026"
+    },
+    {
+      "type": "manchete",
+      "categoria": "Filmes",
+      "icone": "🎬",
+      "texto": "*Entrando Numa Grande Fria* estreia hoje nos cinemas",
+      "sub": "Ariana Grande se junta a Ben Stiller e Robert De Niro",
+      "fonte": "iBahia / Séries em Cena",
+      "data": "26/11/2026"
+    },
+    {
+      "type": "enquete",
+      "pergunta": "Qual dessas notícias mais te *surpreendeu*?",
+      "opcoes": [
+        "Tarifa dos EUA e o Pix",
+        "Acordo de Pitt e Jolie",
+        "Grande Fria nos cinemas"
+      ]
+    },
+    {
+      "type": "cta",
+      "texto": "Segue para *notícias* todo dia",
+      "botao": "Seguir",
+      "sub": "Política · Famosos · Mundo · Games · Filmes"
+    }
+  ]
+}
