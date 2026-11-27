@@ -625,7 +625,7 @@ window.__seek = (ms) => {
     filtros.push(`[${idx}:a]aresample=44100,aformat=channel_layouts=mono,volume=${c.vol},adelay=${ms}|${ms}[c${c.k}]`);
     rotulos.push(`[c${c.k}]`); idx++;
   }
-  ffArgs.push('-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-pix_fmt', 'yuv420p', '-r', String(FPS));
+  ffArgs.push('-c:v', 'libx264', '-preset', 'medium', '-crf', '24', '-maxrate', '5M', '-bufsize', '10M', '-pix_fmt', 'yuv420p', '-r', String(FPS));
   if (rotulos.length > 1) {
     filtros.push(`${rotulos.join('')}amix=inputs=${rotulos.length}:duration=longest:normalize=0[a]`);
     ffArgs.push('-filter_complex', filtros.join(';'), '-map', '0:v', '-map', '[a]');

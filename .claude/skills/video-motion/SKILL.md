@@ -122,6 +122,13 @@ Modelo: `exemplos/story-plantao.json` (uma única cena `manchete`, 6,5 s, sem ba
 - Para não repetir sem precisar de histórico, **alterne a editoria pela hora** (hora mod 6): 0 política, 1 mundo, 2 famosos, 3 games/filmes/música, 4 curiosidades/coisas anormais, 5 esportes/economia.
 - Publicação (testado até "FINISHED", sem publicar): `POST /17841466108447631/media` com `media_type=STORIES`, `upload_type=resumable` → enviar o mp4 ao `uri` → aguardar `status_code=FINISHED` → `media_publish`. Só depois da palavra "posta".
 
+### Publicar no Instagram (o que aprendemos)
+
+- **Preferido: `video_url`.** Faça commit e push do mp4 (repositório público), espere `https://raw.githubusercontent.com/murielqueiroz8-lang/muriel/<branch>/<caminho>.mp4` responder 200 e crie o contêiner com `video_url`. O Instagram baixa e processa sozinho (~1 min para 33 MB), sem limite de tempo da nossa parte. Testado até `FINISHED`.
+- **Upload resumível (`rupload`)** trava no último pedaço enquanto o Instagram processa (18 a 32 s hoje) e aborta acima de ~32 s com `Request processing failed` (400). Arquivos até ~1 MB (Stories) costumam passar; Reels grandes falharam em todos os testes de 27/11. Use só como plano B, com até 3 tentativas (contêiner novo a cada uma) e consulte o status depois de uma falha.
+- Os vídeos agora são codificados com `-crf 24 -maxrate 5M` (Reels de 51 s ≈ 13 MB; Story ≈ 1,4 MB).
+- `user_tags` falha se o perfil marcado for privado ou o nome estiver errado; nesse caso publique sem a marcação.
+
 ### Marcas salvas
 
 `marcas/<nome>/marca.json` guarda a identidade de um perfil (estilo, @, nome, logo, CTA e editorias). Ao fazer vídeo para um perfil salvo, copie desses campos para o roteiro; `marca.logo` é relativo ao JSON do roteiro, então use o caminho até `marcas/<nome>/logo.png`.
