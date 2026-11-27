@@ -21,6 +21,7 @@
 
 ## Rotinas automáticas
 - Tarefa agendada **"Vídeo diário Seres HU"**: todo dia 6h41 (Brasília) gera o vídeo das 3 notícias do dia e envia para aprovação.
+- Tarefa agendada **"Plantão de Stories Seres HU"**: de hora em hora (7h11–21h11) gera 1 card de notícia (modelo `exemplos/story-plantao.json`) e envia para aprovação.
 - Publicação: API do Instagram (token no ambiente, host `graph.facebook.com`; upload por `rupload.facebook.com`).
 
 ## Pendências conhecidas

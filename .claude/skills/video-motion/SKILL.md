@@ -113,6 +113,15 @@ Formatos de meme prontos (todos originais, feitos com emoji):
 - **Clipes de meme reais** (cena `clipe`): só use **os arquivos que a pessoa colocou na biblioteca** (`marcas/seres-hu/memes/`), sempre com `credito` do criador na tela, em trechos curtos de 3 a 6 s. O áudio original do clipe toca e a trilha some enquanto ele passa. Avise a pessoa, uma vez, que clipes com marca d'água do TikTok podem ter menos alcance no Instagram e que o áudio original pode ser silenciado se tiver direito autoral. **Não baixe nem copie memes da internet por conta própria**, nem use prints de redes sociais: têm dono, e muitos mostram pessoas comuns. Não use meme com foto de criança nem de pessoa comum identificável, nem com conteúdo discriminatório, sexual ou de ódio.
 - O texto do meme tem no máximo ~6 palavras por linha, em português, e deve fazer sentido sem contexto.
 
+### Plantão de Stories (1 notícia por card, de hora em hora)
+
+Modelo: `exemplos/story-plantao.json` (uma única cena `manchete`, 6,5 s, sem barra de progresso e sem trilha). Regras:
+- **1 notícia por Story**, confirmada em pelo menos 2 fontes, com `fonte` e `data` na tela e `"urgente": "PLANTÃO"`.
+- Em tragédia, morte, crime ou desastre: **tire o selo** (`"urgente"` ausente), tom sóbrio, sem emoji de festa, sem meme.
+- Sem legenda: Stories pela API não levam texto. Tudo precisa estar no card.
+- Para não repetir sem precisar de histórico, **alterne a editoria pela hora** (hora mod 6): 0 política, 1 mundo, 2 famosos, 3 games/filmes/música, 4 curiosidades/coisas anormais, 5 esportes/economia.
+- Publicação (testado até "FINISHED", sem publicar): `POST /17841466108447631/media` com `media_type=STORIES`, `upload_type=resumable` → enviar o mp4 ao `uri` → aguardar `status_code=FINISHED` → `media_publish`. Só depois da palavra "posta".
+
 ### Marcas salvas
 
 `marcas/<nome>/marca.json` guarda a identidade de um perfil (estilo, @, nome, logo, CTA e editorias). Ao fazer vídeo para um perfil salvo, copie desses campos para o roteiro; `marca.logo` é relativo ao JSON do roteiro, então use o caminho até `marcas/<nome>/logo.png`.
