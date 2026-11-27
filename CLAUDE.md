@@ -20,7 +20,7 @@
 - Antes de entregar um vídeo, extraia 6–8 quadros e confira texto cortado e datas.
 
 ## Rotinas automáticas
-- Tarefa agendada **"Vídeo diário Seres HU"**: todo dia 6h41 (Brasília) gera o vídeo das 3 notícias do dia e envia para aprovação.
+- Tarefa agendada **"Vídeos diários Seres HU"**: 4 Reels por dia, entregues por volta de 7h, 12h, 18h e 21h (rodam às 6h41, 11h41, 17h41 e 20h41, Brasília), cada um com 3 notícias, enviados para aprovação.
 - Tarefa agendada **"Plantão de Stories Seres HU"**: de hora em hora (7h11–21h11) gera 1 card de notícia (modelo `exemplos/story-plantao.json`) e envia para aprovação.
 - Publicação: API do Instagram (token no ambiente, host `graph.facebook.com`; upload por `rupload.facebook.com`).
 
