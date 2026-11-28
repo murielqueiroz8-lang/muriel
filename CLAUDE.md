@@ -14,6 +14,7 @@
 - Responda em **português do Brasil**. Trate por "você", sem presumir gênero.
 - **Nunca** escreva token, senha ou chave em arquivo, commit ou chat. Credenciais só via `request_credential`.
 - **Instagram @seres.hu:** só publique depois que a Muriel responder **"posta"**. Nunca apague nem edite posts já publicados.
+- **Foco editorial: Brasil.** Pelo menos 2 das 3 notícias de cada Reels e a maioria dos Stories são do Brasil (ou com impacto direto nele).
 - **Notícias:** pesquise na web (nunca de memória), confirme em pelo menos 2 fontes, mostre fonte e data na tela, não invente citações, política com tom neutro, sem meme em assunto com vítimas (ver `SKILL.md`).
 - **Memes:** só os da biblioteca ou originais de emoji; clipes sempre com crédito do criador; não baixar memes por conta própria.
 - **Honestidade:** se não conseguiu ouvir/ver/testar algo (áudio, Excel real, celular), diga isso. Não prometa resultado de vendas ou de alcance.

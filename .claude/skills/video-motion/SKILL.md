@@ -128,7 +128,7 @@ Modelo: `exemplos/story-plantao.json` (uma única cena `manchete`, 6,5 s, sem ba
 - **1 notícia por Story**, confirmada em pelo menos 2 fontes, com `fonte` e `data` na tela e `"urgente": "PLANTÃO"`.
 - Em tragédia, morte, crime ou desastre: **tire o selo** (`"urgente"` ausente), tom sóbrio, sem emoji de festa, sem meme.
 - Sem legenda: Stories pela API não levam texto. Tudo precisa estar no card.
-- Para não repetir sem precisar de histórico, **alterne a editoria pela hora** (hora mod 6): 0 política, 1 mundo, 2 famosos, 3 games/filmes/música, 4 curiosidades/coisas anormais, 5 esportes/economia.
+- **Foco no Brasil.** Para não repetir sem precisar de histórico, **alterne a editoria pela hora** (hora mod 6): 0 política do Brasil, 1 Brasil (cidades, segurança pública, saúde, educação, clima), 2 famosos e entretenimento (priorize brasileiros), 3 mundo só com impacto no Brasil (senão games/filmes/música), 4 curiosidades e coisas anormais (priorize o Brasil), 5 economia e esportes do Brasil.
 - Publicação (testado até "FINISHED", sem publicar): `POST /17841466108447631/media` com `media_type=STORIES`, `upload_type=resumable` → enviar o mp4 ao `uri` → aguardar `status_code=FINISHED` → `media_publish`. Só depois da palavra "posta".
 
 ### Publicar no Instagram (o que aprendemos)
@@ -137,6 +137,10 @@ Modelo: `exemplos/story-plantao.json` (uma única cena `manchete`, 6,5 s, sem ba
 - **Upload resumível (`rupload`)** trava no último pedaço enquanto o Instagram processa (18 a 32 s hoje) e aborta acima de ~32 s com `Request processing failed` (400). Arquivos até ~1 MB (Stories) costumam passar; Reels grandes falharam em todos os testes de 27/11. Use só como plano B, com até 3 tentativas (contêiner novo a cada uma) e consulte o status depois de uma falha.
 - Os vídeos agora são codificados com `-crf 24 -maxrate 5M` (Reels de 51 s ≈ 13 MB; Story ≈ 1,4 MB).
 - `user_tags` falha se o perfil marcado for privado ou o nome estiver errado; nesse caso publique sem a marcação.
+
+### Foco editorial: Brasil
+
+Pelo menos **2 das 3 notícias de cada Reels** são do Brasil ou têm impacto direto nele (política, economia, cidades, segurança pública, saúde, educação, cultura, esportes, famosos brasileiros); a terceira pode ser mundo, games, filmes, música ou curiosidade. Nos Stories, a maioria das horas também é de Brasil. Priorize g1, Agência Brasil, CNN Brasil, Folha, Estadão, UOL, Poder360 e Metrópoles; na cena `local` use `"bandeira": "🇧🇷"` e a cidade/estado. O estilo e o tom não mudam.
 
 ### Marcas salvas
 

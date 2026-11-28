@@ -37,8 +37,8 @@ Notícia rápida, com fonte e sem fake news.
 ## Foto de perfil
 O logo atual funciona, mas a versão que tenho é pequena. Mande o arquivo original (PNG grande, fundo azul) que eu preparo uma versão nítida em 1080x1080.
 
-## Destaques (8 capas prontas na pasta `destaques/`)
-Notícias · Mundo · Política · Famosos · Games · Curiosidades · Fake News · Sobre
+## Destaques (9 capas prontas na pasta `destaques/`)
+Notícias · **Brasil** · Mundo · Política · Famosos · Games · Curiosidades · Fake News · Sobre
 Como colocar: Perfil → botão **+ Novo** nos Destaques → escolha Stories do arquivo → toque em **Editar capa → Galeria** e escolha o PNG correspondente → dê o nome.
 Dica: salve os Stories do plantão nos Destaques certos (o Instagram só deixa Destaques com Stories já publicados).
 
