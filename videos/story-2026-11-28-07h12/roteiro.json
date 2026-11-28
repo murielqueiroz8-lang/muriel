@@ -1,0 +1,13 @@
+{
+  "estilo": "seres",
+  "marca": { "handle": "@seres.hu", "nome": "Muriel Queiroz", "logo": "../../.claude/skills/video-motion/marcas/seres-hu/logo.png" },
+  "barraProgresso": false,
+  "trilha": false,
+  "enfeites": true,
+  "cenas": [
+    { "type": "manchete", "urgente": "PLANTÃO", "categoria": "Mundo", "icone": "🇪🇸",
+      "texto": "Espanha vai às urnas *neste domingo* em eleição antecipada, com a crise da *habitação* no centro",
+      "sub": "Pesquisas apontam PP à frente e o Vox como possível aliado",
+      "fonte": "Euronews / ANI", "data": "28/11/2026", "duracao": 6.5 }
+  ]
+}
