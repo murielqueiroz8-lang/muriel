@@ -79,6 +79,15 @@ Exemplos completos: `exemplos/fechamento-do-mes.json` (educativo) e `exemplos/no
 
 Recursos automáticos no modo notícia: transição com faixas coloridas cruzando a tela (com o logo), marca-texto animado nas `*palavras*`, emoji flutuando com onda, estrelas e globo girando no fundo, leve zoom contínuo. Controle com `"transicao": "wipe" | "fade"` e `"enfeites": false`.
 
+### Narração (voz que explica as notícias)
+
+No estilo `seres` a **música sintética sai e entra uma voz** (neural, pt-BR, "faber" do projeto Piper; dados CC0) lendo o essencial de cada cena. Efeitos sonoros continuam, mais baixos. `"voz": false` desliga; `"trilha": "funk"` (texto) traz a música de volta por baixo da voz.
+- **O que a voz lê:** hook e texto (o texto), capitulo ("Notícia 1"), local ("Direto de X"), manchete (só o texto grande; `falaSub: true` lê a linha de apoio, `falaFonte: true` lê a fonte), fatos (os itens, um a um, e cada item **aparece quando é falado**), curiosidade (o texto), enquete (a pergunta + "Comente A, B ou C"), cta (o texto). Vinheta, meme e clipe ficam sem fala. Para mudar: `"fala": "texto"`, `"fala": ["trecho 1", "trecho 2"]` ou `"fala": false`.
+- A cena **alarga sozinha** para caber na fala. Um Reels de 3 notícias fica em ~60 s e um Story em ~9 s; escreva textos curtos (manchete até ~18 palavras).
+- Texto para fala: números, datas ("26/11/2026"), "R$" e "%" são lidos por extenso; evite siglas difíceis.
+- Instalação automática na primeira vez: `scripts/narrar.py` baixa o modelo (67 MB, GitHub `k2-fsa/sherpa-onnx`) para `~/.cache/seres-voz` e instala o `sherpa-onnx==1.12.40` (a 2.x não funciona com as vozes Piper). Se falhar, o vídeo sai **sem voz** e o render avisa com "AVISO: não consegui gerar a voz".
+- Limite honesto: é uma voz de computador de boa qualidade, não uma pessoa. Quem gerou não consegue ouvir; peça sempre a conferência da dona.
+
 ### Som
 
 Todo vídeo sai com **trilha original sintetizada** (batida + acordes, sem direitos autorais) e **efeitos sincronizados** (swoosh nas transições, pop nas etiquetas, impacto nos capítulos, brilho nas revelações). A trilha abaixa sozinha quando entra um efeito.

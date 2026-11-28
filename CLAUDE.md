@@ -18,6 +18,7 @@
 - **Memes:** só os da biblioteca ou originais de emoji; clipes sempre com crédito do criador; não baixar memes por conta própria.
 - **Honestidade:** se não conseguiu ouvir/ver/testar algo (áudio, Excel real, celular), diga isso. Não prometa resultado de vendas ou de alcance.
 - Antes de entregar um vídeo, extraia 6–8 quadros e confira texto cortado e datas.
+- **Narração:** os vídeos do Seres HU saem com voz (sem música). Se o render mostrar "AVISO: não consegui gerar a voz", diga isso à Muriel ao entregar.
 
 ## Rotinas automáticas
 - Tarefa agendada **"Vídeos diários Seres HU"**: 4 Reels por dia, entregues por volta de 7h, 12h, 18h e 21h (rodam às 6h41, 11h41, 17h41 e 20h41, Brasília), cada um com 3 notícias, enviados para aprovação.

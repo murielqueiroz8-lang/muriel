@@ -11,7 +11,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { spawn } = require('child_process');
+const { spawn, spawnSync } = require('child_process');
 
 // ---------- argumentos ----------
 const args = process.argv.slice(2);
@@ -66,9 +66,11 @@ const tema = Object.assign({
 // no estilo seres todas as editorias usam o roxo da marca (como nos posts do perfil)
 const catCor = (c) => c.cor || (seres ? tema.acento : corCategoria(c.categoria || roteiro.categoria) || tema.acento);
 const marca = roteiro.marca || {};
+// narração: voz neural pt-BR lendo o texto das cenas (padrão ligado no estilo "seres"; "voz": false desliga)
+const comVoz = (roteiro.voz ?? (roteiro.estilo === 'seres')) && roteiro.som !== false;
 
 const DUR_PADRAO = { hook: 3, texto: 3.2, step: 4.8, stat: 3.6, cta: 4.2, manchete: 4.6, citacao: 5, enquete: 4.4, vinheta: 1.8, meme: 2.8, clipe: 4, capitulo: 1.4, local: 3.4, curiosidade: 5.2 };
-const durDe = (c) => {
+const durBase = (c) => {
   if (c.duracao) return c.duracao;
   const n = (c.itens || []).length;
   if (c.type === 'list') return 1.6 + 0.7 * n + 1;
@@ -78,6 +80,7 @@ const durDe = (c) => {
   if (c.type === 'manchete') return Math.max(4.6, 2.4 + 0.12 * String(c.texto || '').split(/\s+/).length + (c.sub ? 1 : 0));
   return DUR_PADRAO[c.type] || 3;
 };
+const durDe = (c) => { const b = durBase(c); return c._vtot ? Math.max(b, c._vtot + 0.8) : b; };
 const fonteHtml = (c, t) => (c.fonte || c.data)
   ? `<div class="fonte" style="${anim('vm-up', t, 0.5)}">${c.fonte ? 'Fonte: ' + esc(c.fonte) : ''}${c.fonte && c.data ? ' · ' : ''}${esc(c.data || '')}</div>` : '';
 
@@ -298,13 +301,14 @@ const CENAS = {
   },
   fatos(c, t) {
     const cor = catCor(c), itens = c.itens || [];
-    itens.forEach((_, i) => som('tick', t + 0.75 + i * 0.9));
+    const tI = (i) => (c._vi && c._vi[i] != null ? t + c._vi[i] - 0.05 : t + 0.7 + i * 0.9);
+    itens.forEach((_, i) => som('tick', tI(i) + 0.05));
     return `${c.titulo ? `<h2 class="mid" style="${anim('vm-up', t + 0.15, 0.6)}">${rich(c.titulo)}</h2>` : ''}
       <div class="fatos-list">${itens.map((it, i) => {
         const o = typeof it === 'string' ? { texto: it } : it;
-        return `<div class="fato" style="${anim('vm-left', t + 0.7 + i * 0.9, 0.55)}border-left-color:${cor}"><span class="fi">${esc(o.icone || '▸')}</span><span>${rich(o.texto)}</span></div>`;
+        return `<div class="fato" style="${anim('vm-left', tI(i), 0.55)}border-left-color:${cor}"><span class="fi">${esc(o.icone || '▸')}</span><span>${rich(o.texto)}</span></div>`;
       }).join('')}</div>
-      ${fonteHtml(c, t + 0.9 + itens.length * 0.9)}`;
+      ${fonteHtml(c, c._vtot ? t + c._vtot : t + 0.9 + itens.length * 0.9)}`;
   },
   citacao(c, t) {
     som('pop', t + 0.15);
@@ -316,17 +320,69 @@ const CENAS = {
   },
   enquete(c, t) {
     const cor = catCor(c);
-    (c.opcoes || []).slice(0, 3).forEach((_, i) => som('pop', t + 1.15 + i * 0.35));
+    const o0 = c._vo != null ? c._vo - 0.05 : 1.1;
+    (c.opcoes || []).slice(0, 3).forEach((_, i) => som('pop', t + o0 + 0.05 + i * (c._vo != null ? 0.7 : 0.35)));
     return `<h2 class="mid">${palavras(c.pergunta || 'E você, o que acha?', t + 0.2, 0.09)}</h2>
-      <div class="opcoes">${(c.opcoes || []).slice(0, 3).map((o, i) => `<div class="opcao" style="${anim('vm-pop', t + 1.1 + i * 0.35, 0.5)}"><b style="background:${cor}">${String.fromCharCode(65 + i)}</b><span>${rich(o)}</span></div>`).join('')}</div>
+      <div class="opcoes">${(c.opcoes || []).slice(0, 3).map((o, i) => `<div class="opcao" style="${anim('vm-pop', t + o0 + i * (c._vo != null ? 0.7 : 0.35), 0.5)}"><b style="background:${cor}">${String.fromCharCode(65 + i)}</b><span>${rich(o)}</span></div>`).join('')}</div>
       <p class="sub" style="${anim('vm-up', t + 2.2, 0.5)}">${rich(c.sub || 'Comenta aqui embaixo 👇')}</p>`;
   },
 };
+
+// ---------- narração ----------
+const falaDe = (c) => {
+  if (c.fala === false) return [];
+  if (c.fala) return [].concat(c.fala);
+  const j = (...p) => p.filter(Boolean).join('. ');
+  // regra: a voz lê o essencial; legendas e detalhes que já estão na tela ficam só na tela
+  switch (c.type) {
+    case 'hook': return [c.texto];
+    case 'texto': return [c.texto];
+    case 'capitulo': return [c.numero ? `Notícia ${c.numero}` : (c.titulo || '')].filter(Boolean);
+    case 'local': return [c.lugar ? `Direto de ${c.lugar}` : ''].filter(Boolean);
+    case 'manchete': return [j(c.texto, c.falaSub ? c.sub : '', c.falaFonte && c.fonte ? 'Fonte: ' + c.fonte : '')];
+    case 'fatos': case 'list': return [...(c.itens || []).map((x) => (typeof x === 'string' ? x : x.texto))].filter(Boolean);
+    case 'stat': return [j(c.antes, `${c.prefixo || ''}${c.valor}${c.sufixo || ''}`, c.texto)];
+    case 'citacao': return [j(c.texto, c.autor)];
+    case 'curiosidade': return [c.texto].filter(Boolean);
+    case 'enquete': return [c.pergunta, 'Comente A, B ou C.'].filter(Boolean);
+    case 'grafico': return [c.titulo].filter(Boolean);
+    case 'pov': return [c.texto].filter(Boolean);
+    case 'cta': return [c.texto];
+    default: return [];   // vinheta, meme e clipe ficam sem fala (efeitos ou áudio original)
+  }
+};
+const VOZ_TRECHOS = [];
+if (comVoz && !htmlOnly) {
+  const itens = [];
+  (roteiro.cenas || []).forEach((c, i) => { c._vtexto = falaDe(c); c._vtexto.forEach((tx, k) => itens.push({ id: `c${i}_${k}`, texto: tx })); });
+  if (itens.length) {
+    const dir = saida.replace(/\.mp4$/i, '') + '-voz';
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, 'entrada.json'), JSON.stringify(itens));
+    const r = spawnSync('python3', [path.join(__dirname, 'narrar.py'), 'sintetizar', path.join(dir, 'entrada.json'), path.join(dir, 'wav')], { encoding: 'utf8', maxBuffer: 1e8 });
+    if (r.status !== 0) {
+      console.warn('AVISO: não consegui gerar a voz; o vídeo sai sem narração.\n' + String(r.stderr || '').slice(-400));
+    } else {
+      const res = JSON.parse(r.stdout.trim().split('\n').pop());
+      (roteiro.cenas || []).forEach((c, i) => {
+        const lead = 0.45, gap = 0.3; let cum = lead; const offs = [];
+        c._vsegs = (c._vtexto || []).map((_, k) => res[`c${i}_${k}`]).filter(Boolean);
+        c._vsegs.forEach((sg) => { offs.push(cum); sg.off = cum; cum += sg.duracao + gap; });
+        if (c._vsegs.length) {
+          c._vtot = cum - gap;
+          if (c.type === 'fatos') c._vi = offs;
+          if (c.type === 'enquete' && offs[1] != null) c._vo = offs[1];
+        }
+      });
+    }
+  }
+}
 
 // ---------- linha do tempo ----------
 let t = 0;
 const cenas = (roteiro.cenas || []).map((c, i, arr) => {
   const d = durDe(c);
+  (c._vsegs || []).forEach((sg) => VOZ_TRECHOS.push({ arquivo: sg.arquivo, inicio: t + sg.off }));
   const gerar = CENAS[c.type];
   if (!gerar) throw new Error(`Tipo de cena desconhecido: "${c.type}" (use: ${Object.keys(CENAS).join(', ')})`);
   const ultima = i === arr.length - 1;
@@ -611,13 +667,21 @@ window.__seek = (ms) => {
   let wav = null;
   if (comSom) {
     wav = saida.replace(/\.mp4$/i, '') + '-audio.wav';
-    require('./audio.cjs').gerarAudio(wav, TOTAL, SFX, { trilha: roteiro.trilha !== false && !musica, estilo: typeof roteiro.trilha === 'string' ? roteiro.trilha : roteiro.estiloMusica, bpm: roteiro.bpm, mudo: MUDO });
+    require('./audio.cjs').gerarAudio(wav, TOTAL, SFX, { trilha: roteiro.trilha !== false && !musica && (!comVoz || typeof roteiro.trilha === 'string'), volumeEfeitos: comVoz ? 0.5 : undefined, estilo: typeof roteiro.trilha === 'string' ? roteiro.trilha : roteiro.estiloMusica, bpm: roteiro.bpm, mudo: MUDO });
   }
   const ffArgs = ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'mjpeg', '-i', '-'];
   const fadeOut = `afade=t=out:st=${Math.max(0, TOTAL - 1.5).toFixed(2)}:d=1.5`;
   const filtros = [], rotulos = [];
   let idx = 1;
   if (wav) { ffArgs.push('-i', wav); rotulos.push(`[${idx}:a]`); idx++; }
+  let vozWav = null;
+  if (VOZ_TRECHOS.length) {
+    const dir = saida.replace(/\.mp4$/i, '') + '-voz';
+    fs.writeFileSync(path.join(dir, 'linha.json'), JSON.stringify({ total: TOTAL, trechos: VOZ_TRECHOS }));
+    vozWav = path.join(dir, 'voz.wav');
+    const r = spawnSync('python3', [path.join(__dirname, 'narrar.py'), 'misturar', path.join(dir, 'linha.json'), vozWav], { encoding: 'utf8' });
+    if (r.status === 0) { ffArgs.push('-i', vozWav); rotulos.push(`[${idx}:a]`); idx++; } else { vozWav = null; console.warn('AVISO: falha ao juntar a voz.\n' + String(r.stderr || '').slice(-300)); }
+  }
   if (musica) { ffArgs.push('-i', path.resolve(musica)); filtros.push(`[${idx}:a]volume=0.35,${fadeOut}[m]`); rotulos.push('[m]'); idx++; }
   if (comSom) for (const c of CLIPES.filter((x) => x.audio)) {
     ffArgs.push('-ss', String(c.ss), '-t', c.dur.toFixed(3), '-i', c.arquivo);
@@ -655,6 +719,7 @@ window.__seek = (ms) => {
   await fim;
   if (wav) fs.unlinkSync(wav);
   fs.rmSync(FRAMES_DIR, { recursive: true, force: true });
+  fs.rmSync(saida.replace(/\.mp4$/i, '') + '-voz', { recursive: true, force: true });
   process.stdout.write('\rRenderizando 100%\n');
   console.log('Vídeo:', saida);
   console.log('Capa: ', capa);
