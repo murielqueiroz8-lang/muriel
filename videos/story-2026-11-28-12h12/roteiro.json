@@ -1,0 +1,13 @@
+{
+  "estilo": "seres",
+  "marca": { "handle": "@seres.hu", "nome": "Muriel Queiroz", "logo": "../../.claude/skills/video-motion/marcas/seres-hu/logo.png" },
+  "barraProgresso": false,
+  "trilha": false,
+  "enfeites": true,
+  "cenas": [
+    { "type": "manchete", "urgente": "PLANTÃO", "categoria": "Política", "icone": "🇧🇷",
+      "texto": "Câmara aprova o *ajuste fiscal* do governo Lula sem mudanças, e o texto vai à *sanção*",
+      "sub": "Placar de 353 a 128; governo estima economizar até R$ 56 bi em 2027",
+      "fonte": "CNN Brasil / Câmara dos Deputados", "data": "24/11/2026", "duracao": 6.5 }
+  ]
+}
