@@ -1,0 +1,35 @@
+{
+  "estilo": "seres",
+  "marca": {"handle": "@seres.hu", "nome": "Muriel Queiroz", "logo": "../../.claude/skills/video-motion/marcas/seres-hu/logo.png"},
+  "tickerRotulo": "MUNDO",
+  "ticker": [
+    "Botafogo e Bahia jogam hoje, 21h, pela 37ª rodada do Brasileirão",
+    "Mercados de Natal abrem na Alemanha com segurança reforçada"
+  ],
+  "cenas": [
+    {"type": "vinheta", "texto": "notícia do dia · 28/11 · manhã"},
+    {"type": "hook", "etiqueta": "notícia do dia · 28/11", "texto": "*Minas no mar*, Lula e um bicho que *brilha*", "sub": "Fica até o fim: tem enquete 👀"},
+    {"type": "capitulo", "numero": 1, "total": 3, "titulo": "Mundo", "duracao": 1.3},
+    {"type": "local", "lugar": "Estreito de Ormuz", "bandeira": "🇮🇷", "texto": "Perto da costa de *Omã*, na rota do petróleo", "duracao": 3.4},
+    {"type": "manchete", "categoria": "Mundo", "icone": "🛢️", "texto": "Guarda Revolucionária do Irã diz que *petroleiros atingiram minas* em Ormuz", "sub": "Versão iraniana; sem confirmação independente", "fonte": "Reuters via US News / Times of Israel", "data": "26/11/2026"},
+    {"type": "fatos", "categoria": "Mundo", "titulo": "O que *se sabe*:", "itens": [
+      {"icone": "📍", "texto": "Perto de Khasab, em *Omã*"},
+      {"icone": "🚢", "texto": "Navios usavam rota *não autorizada*"},
+      {"icone": "⚠️", "texto": "Irã diz que a rota está *minada*"}
+    ], "fonte": "Reuters / Times of Israel"},
+    {"type": "capitulo", "numero": 2, "total": 3, "titulo": "Política", "duracao": 1.3},
+    {"type": "manchete", "categoria": "Política", "icone": "🏛️", "texto": "Lula diz que vai *revisar benefícios sociais*, mas sem cortar dos mais pobres", "sub": "Fala em Niterói (RJ), um dia após indicar Trabuco à Fazenda", "fonte": "Imirante / Diário Carioca", "data": "27/11/2026"},
+    {"type": "fatos", "categoria": "Política", "titulo": "O que *ele disse*:", "itens": [
+      {"icone": "🔍", "texto": "Haverá *revisão* nos programas"},
+      {"icone": "🚫", "texto": "Sem cortes para os *mais pobres* e a educação"},
+      {"icone": "💰", "texto": "Defende *ajuste* para a economia crescer"}
+    ], "fonte": "Imirante / Diário Carioca"},
+    {"type": "capitulo", "numero": 3, "total": 3, "titulo": "Curiosidade", "duracao": 1.3},
+    {"type": "local", "lugar": "Chetumal, México", "bandeira": "🇲🇽", "texto": "Onde pesquisadores *flagraram o brilho*", "duracao": 3.4},
+    {"type": "manchete", "categoria": "Curiosidade", "icone": "🦔", "texto": "Porco-espinho-anão mexicano *brilha sob luz ultravioleta*", "sub": "Estudo na revista Neotropical Biology and Conservation", "fonte": "Pensoft / Gizmodo / CP24", "data": "25–27/11/2026"},
+    {"type": "curiosidade", "etiqueta": "Você sabia?", "pergunta": "Como *descobriram*?", "texto": "O pesquisador notou o brilho em *junho de 2024*, ao examinar dois animais com uma *lanterna UV*.", "fonte": "Pensoft"},
+    {"type": "meme", "emoji": "🔦", "topo": "ELE BRILHA", "base": "E NINGUÉM SABIA", "som": "shine"},
+    {"type": "enquete", "pergunta": "Qual dessas notícias mais te *surpreendeu*?", "opcoes": ["Minas no Estreito de Ormuz", "Lula e os benefícios", "Porco-espinho que brilha"]},
+    {"type": "cta", "texto": "Segue o *Seres HU* para notícias todo dia", "botao": "Seguir", "sub": "Curiosidades · Coisas anormais · Política", "rodape": "SE VOCÊ GOSTOU DO CONTEÚDO"}
+  ]
+}
