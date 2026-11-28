@@ -51,3 +51,12 @@ Como: abra o post → ⋯ → **Fixar no seu perfil**.
 ## Consistência visual
 - Todos os posts novos já saem no mesmo estilo (roxo, selo de editoria, fonte na tela). Os posts antigos estão em estilos diferentes e mostram **@seres.eu** em vez de **@seres.hu**; vale arquivar os mais antigos para a grade ficar uniforme (arquivar não apaga).
 - Mantenha o @ igual em tudo: seres.hu.
+
+## Bio escolhida (atual, com foco no Brasil)
+```
+📰 Notícias em 1 minuto, com fonte na tela
+🇧🇷 Brasil · Política · Famosos · Mundo
+🤯 Curiosidades e coisas anormais
+⏰ Conteúdo novo todo dia
+```
+(138 caracteres; limite de 150)
