@@ -1,0 +1,152 @@
+{
+ "estilo": "seres",
+ "marca": {
+  "handle": "@seres.hu",
+  "nome": "Muriel Queiroz",
+  "logo": "../../.claude/skills/video-motion/marcas/seres-hu/logo.png"
+ },
+ "tickerRotulo": "BRASIL",
+ "ticker": [
+  "PM do Rio ocupa comunidades de Jacarepaguá por tempo indeterminado",
+  "Palmeiras e Estudiantes decidem a Libertadores hoje, 17h, em Montevidéu"
+ ],
+ "cenas": [
+  {
+   "type": "vinheta",
+   "texto": "notícia do dia · 28/11 · meio-dia"
+  },
+  {
+   "type": "hook",
+   "etiqueta": "notícia do dia · 28/11",
+   "texto": "*Dólar* despenca, *temporal* chegando e vacina inédita",
+   "sub": "Fica até o fim: tem enquete 👀"
+  },
+  {
+   "type": "capitulo",
+   "numero": 1,
+   "total": 3,
+   "titulo": "Economia",
+   "duracao": 1.3
+  },
+  {
+   "type": "manchete",
+   "categoria": "Economia",
+   "icone": "📉",
+   "texto": "Dólar cai quase 4% e fecha a *R$ 5,51*, com a maior queda semanal desde 2008",
+   "sub": "Mercado reagiu à escolha de Trabuco para a Fazenda",
+   "fonte": "O Povo / O Livre / Jovem Pan",
+   "data": "27/11/2026"
+  },
+  {
+   "type": "fatos",
+   "categoria": "Economia",
+   "titulo": "Os *números*:",
+   "itens": [
+    {
+     "icone": "💵",
+     "texto": "Dólar fechou a *R$ 5,51* na sexta"
+    },
+    {
+     "icone": "📉",
+     "texto": "Queda de *7%* na semana"
+    },
+    {
+     "icone": "📈",
+     "texto": "Ibovespa subiu cerca de *6%*"
+    }
+   ],
+   "fonte": "O Povo / O Livre"
+  },
+  {
+   "type": "curiosidade",
+   "etiqueta": "Você sabia?",
+   "pergunta": "De onde ele *saiu*?",
+   "texto": "A semana começou com o dólar perto de *R$ 5,92*. A última queda semanal assim foi em *outubro de 2008*.",
+   "fonte": "Jovem Pan / O Livre"
+  },
+  {
+   "type": "capitulo",
+   "numero": 2,
+   "total": 3,
+   "titulo": "Brasil",
+   "duracao": 1.3
+  },
+  {
+   "type": "manchete",
+   "categoria": "Brasil",
+   "icone": "⛈️",
+   "texto": "Inmet alerta para *chuva intensa* em SP, MG, RJ e outros estados no fim de semana",
+   "sub": "Alerta amarelo: risco de alagamentos e queda de árvores",
+   "fonte": "InfoMoney / Brasil em Folhas",
+   "data": "28/11/2026"
+  },
+  {
+   "type": "fatos",
+   "categoria": "Brasil",
+   "titulo": "O que *esperar*:",
+   "itens": [
+    {
+     "icone": "🌧️",
+     "texto": "Até *50 mm* de chuva por dia"
+    },
+    {
+     "icone": "💨",
+     "texto": "Ventos de até *60 km/h*"
+    },
+    {
+     "icone": "⚠️",
+     "texto": "Risco de *alagamentos* e queda de árvores"
+    }
+   ],
+   "fonte": "InfoMoney / Inmet"
+  },
+  {
+   "type": "capitulo",
+   "numero": 3,
+   "total": 3,
+   "titulo": "Mundo",
+   "duracao": 1.3
+  },
+  {
+   "type": "manchete",
+   "categoria": "Mundo",
+   "icone": "💉",
+   "texto": "Uganda começa o *primeiro teste africano* de vacina de mRNA contra o ebola",
+   "sub": "Fase 1, com a Moderna, contra a cepa Bundibugyo",
+   "fonte": "Reuters via Yahoo / Bernama",
+   "data": "27–28/11/2026"
+  },
+  {
+   "type": "fatos",
+   "categoria": "Mundo",
+   "titulo": "O que *se sabe*:",
+   "itens": [
+    {
+     "icone": "🧪",
+     "texto": "Cerca de *224 voluntários* saudáveis"
+    },
+    {
+     "icone": "👶",
+     "texto": "Idades de *1 a 65 anos*"
+    }
+   ],
+   "fonte": "Reuters via Yahoo / Bernama"
+  },
+  {
+   "type": "enquete",
+   "pergunta": "Qual dessas notícias mais te *chamou atenção*?",
+   "opcoes": [
+    "Dólar a R$ 5,51",
+    "Alerta de chuva forte",
+    "Vacina de ebola na África"
+   ]
+  },
+  {
+   "type": "cta",
+   "texto": "Segue o *Seres HU* para notícias todo dia",
+   "botao": "Seguir",
+   "sub": "Curiosidades · Coisas anormais · Política",
+   "rodape": "SE VOCÊ GOSTOU DO CONTEÚDO"
+  }
+ ]
+}
