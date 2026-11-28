@@ -1,0 +1,12 @@
+{
+  "estilo": "seres",
+  "marca": { "handle": "@seres.hu", "nome": "Muriel Queiroz", "logo": "../../.claude/skills/video-motion/marcas/seres-hu/logo.png" },
+  "tickerRotulo": "TESTE",
+  "ticker": ["Teste dos clipes de meme com áudio original"],
+  "cenas": [
+    { "type": "hook", "etiqueta": "teste de clipes", "texto": "Meme *de verdade*, com o áudio", "sub": "Direto da sua biblioteca", "duracao": 2.6 },
+    { "type": "clipe", "arquivo": "../../.claude/skills/video-motion/marcas/seres-hu/memes/pizza-coisas-que-mais-falei.mp4", "inicio": 0, "duracao": 6, "credito": "@vitorzer0 (TikTok)" },
+    { "type": "clipe", "arquivo": "../../.claude/skills/video-motion/marcas/seres-hu/memes/pov-teaser-vingadores.mp4", "inicio": 0, "duracao": 6, "credito": "@fr4nkl1nfk (TikTok)" },
+    { "type": "cta", "texto": "Segue o *Seres HU*", "botao": "Seguir", "sub": "Notícia todo dia às 7h" }
+  ]
+}

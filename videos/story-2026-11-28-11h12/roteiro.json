@@ -1,0 +1,13 @@
+{
+  "estilo": "seres",
+  "marca": { "handle": "@seres.hu", "nome": "Muriel Queiroz", "logo": "../../.claude/skills/video-motion/marcas/seres-hu/logo.png" },
+  "barraProgresso": false,
+  "trilha": false,
+  "enfeites": true,
+  "cenas": [
+    { "type": "manchete", "urgente": "PLANTÃO", "categoria": "Esportes", "icone": "⚽",
+      "texto": "*Palmeiras* e Estudiantes decidem hoje a final da *Libertadores*, às 17h, em Montevidéu",
+      "sub": "Jogo único no Estádio Centenario; transmissão na TV Globo e ESPN",
+      "fonte": "CNN Brasil / Jovem Pan", "data": "28/11/2026", "duracao": 6.5 }
+  ]
+}

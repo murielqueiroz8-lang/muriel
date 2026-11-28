@@ -1,0 +1,16 @@
+{
+  "estilo": "seres",
+  "marca": { "handle": "@seres.hu", "nome": "Muriel Queiroz", "logo": "../../.claude/skills/video-motion/marcas/seres-hu/logo.png" },
+  "tickerRotulo": "TESTE",
+  "ticker": ["Teste dos formatos de meme: pizza e POV"],
+  "cenas": [
+    { "type": "grafico", "titulo": "Coisas que *mais falei* essa semana", "itens": [
+        { "texto": "Obrigado", "valor": 5 },
+        { "texto": "Por favor", "valor": 4 },
+        { "texto": "Te amo", "valor": 4 },
+        { "texto": "Você viu a notícia?!", "valor": 87 }
+      ], "emoji": "🙀", "destaque": "Todo dia às 7h no Seres HU", "som": "boing" },
+    { "type": "pov", "texto": "POV: você vendo a notícia sair às 7h da manhã", "reacoes": ["😴", "😳", "🤩"], "base": "ACORDEI DE VEZ" },
+    { "type": "cta", "texto": "Segue o *Seres HU*", "botao": "Seguir", "sub": "Notícia todo dia às 7h" }
+  ]
+}

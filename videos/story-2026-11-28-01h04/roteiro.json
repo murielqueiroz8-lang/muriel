@@ -1,0 +1,13 @@
+{
+  "estilo": "seres",
+  "marca": { "handle": "@seres.hu", "nome": "Muriel Queiroz", "logo": "../../.claude/skills/video-motion/marcas/seres-hu/logo.png" },
+  "barraProgresso": false,
+  "trilha": false,
+  "enfeites": true,
+  "cenas": [
+    { "type": "manchete", "urgente": "PLANTÃO", "categoria": "Mundo", "icone": "🇳🇿",
+      "texto": "Resultado oficial na *Nova Zelândia*: coalizão do premiê Luxon fica a 1 cadeira da maioria",
+      "sub": "Partido Opportunity vira fiel da balança com 7 cadeiras",
+      "fonte": "The Spinoff / Jerusalem Post", "data": "27/11/2026", "duracao": 6.5 }
+  ]
+}

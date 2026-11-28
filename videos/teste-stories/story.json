@@ -1,0 +1,13 @@
+{
+  "estilo": "seres",
+  "marca": { "handle": "@seres.hu", "nome": "Muriel Queiroz", "logo": "../../.claude/skills/video-motion/marcas/seres-hu/logo.png" },
+  "barraProgresso": false,
+  "trilha": false,
+  "enfeites": true,
+  "cenas": [
+    { "type": "manchete", "urgente": "PLANTÃO", "categoria": "Economia", "icone": "💸",
+      "texto": "EUA propõem nova tarifa sobre aviões brasileiros e o governo diz que o alvo é o *Pix*",
+      "sub": "Planalto chama a proposta de inaceitável e quer negociar",
+      "fonte": "Revista Fórum / ac24horas", "data": "26/11/2026", "duracao": 6.5 }
+  ]
+}

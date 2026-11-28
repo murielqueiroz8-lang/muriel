@@ -1,0 +1,42 @@
+{
+  "estilo": "noticia",
+  "categoria": "games",
+  "marca": { "handle": "@seucanal", "nome": "Notícias" },
+  "ticker": [
+    "Remake de Zelda: Ocarina of Time chegou ao Switch 2 em 5/11",
+    "Football Manager 27 foi lançado em 10/11",
+    "Pikmin 4 ganhou edição para Switch 2 em 12/11"
+  ],
+  "cenas": [
+    {
+      "type": "manchete",
+      "urgente": "AGORA",
+      "icone": "🎮",
+      "texto": "*GTA 6* finalmente chegou depois de anos de espera",
+      "sub": "Lançamento oficial foi em 19 de novembro",
+      "fonte": "Oficina da Net / Adrenaline",
+      "data": "nov. 2026"
+    },
+    {
+      "type": "fatos",
+      "titulo": "O que você precisa *saber*:",
+      "itens": [
+        { "icone": "📅", "texto": "Saiu em *19/11/2026*, data confirmada pela Rockstar" },
+        { "icone": "🕹️", "texto": "Disponível para *PS5* e *Xbox Series X|S*" },
+        { "icone": "⬇️", "texto": "Pré-download digital liberado desde *10/11*" }
+      ],
+      "fonte": "Zoom / Oficina da Net"
+    },
+    {
+      "type": "enquete",
+      "pergunta": "E aí, já está jogando *GTA 6*?",
+      "opcoes": ["Já tô jogando!", "Vou esperar baixar o preço", "Não curto GTA"]
+    },
+    {
+      "type": "cta",
+      "texto": "Segue para *notícias* todo dia",
+      "botao": "Seguir",
+      "sub": "Games · Filmes · Música · Mundo"
+    }
+  ]
+}

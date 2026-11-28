@@ -1,0 +1,130 @@
+{
+  "estilo": "seres",
+  "marca": {
+    "handle": "@seres.hu",
+    "nome": "Muriel Queiroz",
+    "logo": "../../.claude/skills/video-motion/marcas/seres-hu/logo.png"
+  },
+  "tickerRotulo": "MUNDO",
+  "ticker": [
+    "China ameaça \"medidas necessárias\" após novas tarifas dos EUA",
+    "Trégua comercial entre China e EUA vence em 10 de janeiro"
+  ],
+  "cenas": [
+    {
+      "type": "vinheta",
+      "texto": "notícia do dia · 26/11"
+    },
+    {
+      "type": "hook",
+      "etiqueta": "3 notícias em 1 minuto",
+      "texto": "O que *todo mundo* está comentando hoje",
+      "sub": "Fica até o fim: tem enquete 👀"
+    },
+    {
+      "type": "capitulo",
+      "numero": 1,
+      "total": 3,
+      "titulo": "Economia",
+      "duracao": 1.3
+    },
+    {
+      "type": "local",
+      "lugar": "Washington, EUA",
+      "bandeira": "🇺🇸",
+      "texto": "Os EUA propuseram uma *nova tarifa* contra o Brasil",
+      "duracao": 3.6
+    },
+    {
+      "type": "manchete",
+      "categoria": "Economia",
+      "icone": "💸",
+      "texto": "EUA ameaçam nova tarifa e governo diz que o alvo é o *Pix*",
+      "sub": "Proposta prevê sobretaxa de 10% sobre aviões brasileiros",
+      "fonte": "nota do Planalto via ac24horas / Revista Fórum",
+      "data": "25–26/11/2026"
+    },
+    {
+      "type": "fatos",
+      "categoria": "Economia",
+      "titulo": "A resposta do *governo*:",
+      "itens": [
+        {
+          "icone": "🚫",
+          "texto": "Chamou a proposta de *inaceitável*"
+        },
+        {
+          "icone": "🤝",
+          "texto": "Quer negociar, mas não descarta *reciprocidade*"
+        },
+        {
+          "icone": "🌐",
+          "texto": "Pode levar o caso à *OMC*"
+        }
+      ],
+      "fonte": "Revista Oeste / ac24horas"
+    },
+    {
+      "type": "capitulo",
+      "numero": 2,
+      "total": 3,
+      "titulo": "Famosos",
+      "duracao": 1.3
+    },
+    {
+      "type": "manchete",
+      "categoria": "Famosos",
+      "icone": "🍷",
+      "texto": "*Brad Pitt e Angelina Jolie* fecham acordo e encerram briga pela vinícola",
+      "sub": "Disputa pelo Château Miraval durava 4 anos; termos não foram divulgados",
+      "fonte": "ABC News / CBC",
+      "data": "25/11/2026"
+    },
+    {
+      "type": "curiosidade",
+      "etiqueta": "Você sabia?",
+      "pergunta": "E tem um *detalhe*…",
+      "texto": "Brad Pitt e Angelina Jolie se *casaram* no próprio Château Miraval, em 2014.",
+      "fonte": "ABC News"
+    },
+    {
+      "type": "capitulo",
+      "numero": 3,
+      "total": 3,
+      "titulo": "Filmes",
+      "duracao": 1.3
+    },
+    {
+      "type": "manchete",
+      "categoria": "Filmes",
+      "icone": "🎬",
+      "texto": "*Entrando Numa Grande Fria* estreia hoje nos cinemas",
+      "sub": "Ariana Grande se junta a Ben Stiller e Robert De Niro",
+      "fonte": "iBahia / Séries em Cena",
+      "data": "26/11/2026"
+    },
+    {
+      "type": "curiosidade",
+      "etiqueta": "Curiosidade",
+      "pergunta": "Por que *Grande* Fria?",
+      "texto": "O título era *Entrando Na Maior Fria*, mas mudou em homenagem ao sobrenome de *Ariana Grande*.",
+      "fonte": "iBahia"
+    },
+    {
+      "type": "enquete",
+      "pergunta": "Qual dessas notícias mais te *surpreendeu*?",
+      "opcoes": [
+        "Tarifa dos EUA e o Pix",
+        "Acordo de Pitt e Jolie",
+        "Grande Fria nos cinemas"
+      ]
+    },
+    {
+      "type": "cta",
+      "texto": "Segue o *Seres HU* para notícias todo dia",
+      "botao": "Seguir",
+      "sub": "Curiosidades · Coisas anormais · Política",
+      "rodape": "SE VOCÊ GOSTOU DO CONTEÚDO"
+    }
+  ]
+}

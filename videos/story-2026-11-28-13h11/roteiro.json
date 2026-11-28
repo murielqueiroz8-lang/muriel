@@ -1,0 +1,13 @@
+{
+  "estilo": "seres",
+  "marca": { "handle": "@seres.hu", "nome": "Muriel Queiroz", "logo": "../../.claude/skills/video-motion/marcas/seres-hu/logo.png" },
+  "barraProgresso": false,
+  "trilha": false,
+  "enfeites": true,
+  "cenas": [
+    { "type": "manchete", "urgente": "PLANTÃO", "categoria": "Saúde", "icone": "💉",
+      "texto": "Saúde manda *WhatsApp* para convocar a vacina da *covid* e libera 2,1 milhões de doses extras",
+      "sub": "Covid sobe em 21 estados; vacina é grátis nas UBS",
+      "fonte": "Ministério da Saúde / O Tempo", "data": "27/11/2026", "duracao": 6.5 }
+  ]
+}
