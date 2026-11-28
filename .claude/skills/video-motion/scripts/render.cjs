@@ -720,6 +720,7 @@ window.__seek = (ms) => {
   if (wav) fs.unlinkSync(wav);
   fs.rmSync(FRAMES_DIR, { recursive: true, force: true });
   fs.rmSync(saida.replace(/\.mp4$/i, '') + '-voz', { recursive: true, force: true });
+  if (!process.argv.includes('--manter-html')) fs.rmSync(htmlPath, { force: true });   // o .html só serve para pré-visualizar (--html-only); não vai para o repositório
   process.stdout.write('\rRenderizando 100%\n');
   console.log('Vídeo:', saida);
   console.log('Capa: ', capa);

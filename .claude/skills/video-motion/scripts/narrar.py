@@ -42,6 +42,10 @@ def garantir_runtime():
         ok = sherpa_onnx.__version__ == VERSAO
     except ImportError:
         ok = False
+    try:
+        import numpy  # noqa
+    except ImportError:
+        subprocess.run([sys.executable, "-m", "pip", "install", "-q", "numpy"], check=True)
     if not ok:
         subprocess.run([sys.executable, "-m", "pip", "install", "-q", f"sherpa-onnx=={VERSAO}"], check=True)
 
