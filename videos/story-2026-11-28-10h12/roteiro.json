@@ -1,0 +1,13 @@
+{
+  "estilo": "seres",
+  "marca": { "handle": "@seres.hu", "nome": "Muriel Queiroz", "logo": "../../.claude/skills/video-motion/marcas/seres-hu/logo.png" },
+  "barraProgresso": false,
+  "trilha": false,
+  "enfeites": true,
+  "cenas": [
+    { "type": "manchete", "urgente": "PLANTÃO", "categoria": "Curiosidade", "icone": "🐒",
+      "texto": "Cientistas descobrem *2 novos macacos bugio* na Amazônia, um deles em *Mato Grosso*",
+      "sub": "Estudo aponta que o bugio-ruivo-de-MT pode estar quase extinto",
+      "fonte": "Correio Braziliense / Catraca Livre", "data": "27/11/2026", "duracao": 6.5 }
+  ]
+}
