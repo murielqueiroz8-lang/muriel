@@ -37,7 +37,16 @@ Esse link funciona como uma senha: não o envie para ninguém e não o coloque n
 3. Confira o **Registro de execução**. Deve aparecer algo como "Blackboard: 12 criados, 0 atualizados...".
 4. Abra o Google Agenda: a agenda "Faculdade (Blackboard)" aparece na lista do lado esquerdo.
 
-No celular, confira se as notificações do app Google Agenda estão ativadas e se a agenda "Faculdade (Blackboard)" está marcada para sincronizar (em **Configurações** > sua conta).
+## 3.1. Ver a agenda no celular Samsung
+
+Use a mesma conta Google do script. Os nomes dos menus mudam um pouco conforme a versão do One UI.
+
+1. **Conta sincronizando:** **Configurações** > **Contas e backup** > **Gerenciar contas** > sua conta Google > **Sincronização de conta**. Deixe **Calendário** ligado.
+2. **Agenda visível:** abra o app **Calendário** (Samsung) > menu de três linhas > **Gerenciar calendários** (ou o ícone de engrenagem) e marque **Faculdade (Blackboard)** dentro da sua conta Google.
+3. **Notificações:** **Configurações** > **Notificações** > **Notificações do app** > **Calendário** (ou **Google Agenda**, se você usa esse app) e deixe ligadas. Em **Configurações** > **Aplicativos** > **Calendário** > **Bateria**, escolha **Sem restrições** para o Android não adiar os lembretes.
+4. **Teste:** na primeira vez, force a sincronização em **Sincronização de conta** > três pontos > **Sincronizar agora**. Os eventos podem levar alguns minutos para chegar.
+
+Os lembretes (2 dias, 1 dia, 2 horas e 30 minutos antes) vêm junto com cada evento, sem precisar configurar nada no celular.
 
 ## 4. Se as aulas não aparecerem
 
